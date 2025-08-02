@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Enhanced Gallery - Debug</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .oval-portrait {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 20px auto;
+      display: block;
+      border: 2px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+    }
+
+    .gallery-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .folder-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .folder-tabs button {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.7);
+      padding: 12px 28px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 30px;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .folder-tabs button.active {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 10px 40px -10px rgba(102, 126, 234, 0.6);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      cursor: pointer;
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      aspect-ratio: 1 / 1;
+      transition: all 0.4s ease;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 30px 60px -20px rgba(102, 126, 234, 0.4),
+                  0 0 0 1px rgba(102, 126, 234, 0.6);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .image-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
+      transform: translateY(100%);
+      transition: transform 0.4s ease;
+      z-index: 2;
+    }
+
+    .gallery-item:hover .image-info {
+      transform: translateY(0);
+    }
+
+    .image-info h3 { font-size: 18px; margin-bottom: 5px; }
+    .image-info p { font-size: 14px; color: rgba(255, 255, 255, 0.8); }
+
+    .preview-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: rgba(20, 20, 20, 0.95);
+      border-radius: 30px;
+      padding: 30px;
+      max-width: 90vw;
+      max-height: 90vh;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-modal.active {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+      pointer-events: all;
+    }
+
+    .preview-modal img {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .preview-modal h3 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .preview-modal p {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+      .preview-modal { padding: 20px; }
+      .preview-modal h3 { font-size: 22px; }
+    }
+
+    @media (max-width: 480px) {
+      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+
+    .carousel {
+      display: flex;
+      gap: 12px;
+      margin: 20px 0;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .carousel img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .carousel img:hover {
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+
+    .view-link {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .view-link:hover {
+      background: linear-gradient(135deg, #5a67d8, #6b46c1);
+    }
+
+
+  </style>
+</head>
+<body>
+
+
+
+  <div class="gallery-container">
+    <img class="oval-portrait" src="./oc/4k.jpg" alt="Artist Portrait" />
+
+    <div class="folder-tabs">
+      <button class="active" data-folder="OCs">OCs</button>
+      <button data-folder="Submissions">Submissions</button>
+      <button data-folder="Commissions">Commissions</button>
+      <button data-folder="3D">3D</button>
+      <button data-folder="Animations">Animations</button>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid"></div>
+
+    <div class="preview-modal" id="previewModal">
+      <img src="" alt="" id="previewImage" />
+      <h3 id="previewTitle"></h3>
+      <p id="previewDescription"></p>
+    </div>
+  </div>
+  
+  <div class="preview-modal" id="ocModal">
+    <h3 id="ocTitle"></h3>
+    <p id="ocDescription"></p>
+    <div class="carousel" id="ocCarousel"></div>
+    <a id="ocLink" class="view-link" href="#" target="_blank">View OC Page</a>
+  </div>
+
+  <script>
+    const mockImages = {
+      'OCs': [
+        {
+          id: '1',
+          title: 'Reggie',
+          description: 'A Demon Goat that loves torture and blood',
+          url: './oc/reggie.jpg',
+          carousel: ['./oc/reggie1.jpg', './oc/reggie2.jpg', './oc/reggie3.jpg']
+        },
+        {
+          id: '2',
+          title: 'RedRum',
+          description: 'Inspired by Bob Velsep, Blood is love',
+          url: './oc/redrum.jpg',
+          carousel: ['./oc/redrum1.jpg', './oc/redrum2.jpg', './oc/redrum3.jpg']
+        },
+        {
+          id: '3',
+          title: 'LSD',
+          description: 'Koro-sensei style OC',
+          url: './oc/lsd.jpg',
+          carousel: ['./oc/lsd1.jpg', './oc/lsd2.jpg', './oc/lsd3.jpg']
+        }, 
+        {
+          id: '4',
+          title: 'Blindo',
+          description: 'Dave & Bambi OC',
+          url: './oc/blindo.jpg',
+          carousel: ['./oc/blind1.jpg', './oc/blindo2.jpg', './oc/blindo3.jpg']
+        },
+        {
+          id: '5',
+          title: 'D4MHER',
+          description: 'Dave & Bambi OC',
+          url: './oc/d4mher.jpg',
+          carousel: ['./oc/d4mher1.jpg', './oc/d4mher2.jpg', './oc/d4mher3.jpg']
+        },
+        {
+          id: '6',
+          title: '4k',
+          description: 'An OC inspired by a fusion of Max Gilardi x CapriBlueSEYT',
+          url: './oc/4k.jpg',
+          carousel: ['./oc/4k1.jpg', './oc/4k2.jpg','./oc/4k3.jpg']
+        }
+      ],
+      'Submissions': [
+        { id: '7', title: 'Monthly Submission', description: 'Monthly art challenge submission', url: 'https://picsum.photos/400/400?random=7' },
+        { id: '8', title: 'Fan Art Friday', description: 'Community event artwork', url: 'https://picsum.photos/400/400?random=8' },
+        { id: '9', title: 'Theme: Nature', description: 'Exploring natural elements', url: 'https://picsum.photos/400/400?random=9' }
+      ],
+      'Commissions': [
+        { id: '10', title: 'Portrait Commission', description: 'Custom character portrait', url: 'https://picsum.photos/400/400?random=10' },
+        { id: '11', title: 'Book Cover Art', description: 'Fantasy novel illustration', url: 'https://picsum.photos/400/400?random=11' }
+      ],
+      '3D': [
+        { id: '12', title: '3D Character Model', description: 'Fully rigged character', url: 'https://picsum.photos/400/400?random=12' },
+        { id: '13', title: 'Environment Design', description: 'Sci-fi cityscape', url: 'https://picsum.photos/400/400?random=13' }
+      ],
+      'Animations': [
+        { id: '14', title: 'Walk Cycle', description: 'Smooth character animation', url: 'https://picsum.photos/400/400?random=14' },
+        { id: '15', title: 'Combat Sequence', description: 'Action-packed fight scene', url: 'https://picsum.photos/400/400?random=15' }
+      ]
+    };
+
+    let currentFolder = 'OCs';
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadImages(currentFolder);
+      setupEventListeners();
+    });
+
+    function setupEventListeners() {
+      document.querySelectorAll('.folder-tabs button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelector('.folder-tabs button.active').classList.remove('active');
+          btn.classList.add('active');
+          currentFolder = btn.dataset.folder;
+          loadImages(currentFolder);
+          closePreview();
+        });
+      });
+
+      document.addEventListener('click', e => {
+        if (e.target.id === 'previewModal') closePreview();
+        if (e.target.id === 'ocModal') closeOCPreview();
+      });
+
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closePreview();
+          closeOCPreview();
+        }
+      });
+    }
+
+    function loadImages(folder) {
+      const grid = document.getElementById('galleryGrid');
+      const images = mockImages[folder] || [];
+
+      if (!images.length) {
+        grid.innerHTML = `<p style="text-align:center;color:gray">No images available in ${folder}.</p>`;
+        return;
+      }
+
+      grid.innerHTML = images.map((img, index) => `
+        <div class="gallery-item" data-id="${img.id}" style="animation-delay: ${index * 0.1}s">
+          <img src="${img.url}" alt="${img.title}" loading="lazy" />
+          <div class="image-info">
+            <h3>${img.title}</h3>
+            <p>${img.description}</p>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const img = images.find(i => i.id === item.dataset.id);
+          if (folder === 'OCs') {
+            showOCPreview(img);
+          } else {
+            showPreview(img);
+          }
+        });
+      });
+    }
+
+    function showPreview(img) {
+      const modal = document.getElementById('previewModal');
+      document.getElementById('previewImage').src = img.url;
+      document.getElementById('previewTitle').textContent = img.title;
+      document.getElementById('previewDescription').textContent = img.description;
+      modal.classList.add('active');
+    }
+
+    function showOCPreview(img) {
+      const modal = document.getElementById('ocModal');
+      document.getElementById('ocTitle').textContent = img.title;
+      document.getElementById('ocDescription').textContent = img.description;
+      document.getElementById('ocLink').href = `./oc/${encodeURIComponent(img.title.toLowerCase())}.html`;
+
+      const container = document.getElementById('ocCarousel');
+      container.innerHTML = '';
+      img.carousel.forEach(url => {
+        const thumb = document.createElement('img');
+        thumb.src = url;
+        thumb.alt = img.title;
+        container.appendChild(thumb);
+      });
+
+      modal.classList.add('active');
+    }
+
+    function closePreview() {
+      document.getElementById('previewModal').classList.remove('active');
+    }
+
+    function closeOCPreview() {
+      document.getElementById('ocModal').classList.remove('active');
+    }
+  </script>
+</body>
+</html>
