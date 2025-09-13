@@ -1,415 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Enhanced Gallery - Debug</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: #0a0a0a;
-      color: #fff;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    .oval-portrait {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 20px auto;
-      display: block;
-      border: 2px solid rgba(255,255,255,0.2);
-      box-shadow: 0 4px 20px rgba(255,255,255,0.1);
-    }
-
-    .gallery-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 20px;
-      animation: fadeIn 0.6s ease-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .folder-tabs {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 40px;
-      padding-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .folder-tabs button {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: rgba(255, 255, 255, 0.7);
-      padding: 12px 28px;
-      font-size: 15px;
-      font-weight: 500;
-      cursor: pointer;
-      border-radius: 30px;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .folder-tabs button.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 10px 40px -10px rgba(102, 126, 234, 0.6);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .gallery-item {
-      position: relative;
-      cursor: pointer;
-      border-radius: 20px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      aspect-ratio: 1 / 1;
-      transition: all 0.4s ease;
-    }
-
-    .gallery-item:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 30px 60px -20px rgba(102, 126, 234, 0.4),
-                  0 0 0 1px rgba(102, 126, 234, 0.6);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .gallery-item:hover img {
-      transform: scale(1.1);
-    }
-
-    .image-info {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 20px;
-      background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, transparent 100%);
-      transform: translateY(100%);
-      transition: transform 0.4s ease;
-      z-index: 2;
-    }
-
-    .gallery-item:hover .image-info {
-      transform: translateY(0);
-    }
-
-    .image-info h3 { font-size: 18px; margin-bottom: 5px; }
-    .image-info p { font-size: 14px; color: rgba(255, 255, 255, 0.8); }
-
-    .preview-modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
-      background: rgba(20, 20, 20, 0.95);
-      border-radius: 30px;
-      padding: 30px;
-      max-width: 90vw;
-      max-height: 90vh;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .preview-modal.active {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-      pointer-events: all;
-    }
-
-    .preview-modal img {
-      width: 100%;
-      max-width: 600px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
-
-    .preview-modal h3 {
-      font-size: 28px;
-      margin-bottom: 10px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .preview-modal p {
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    @media (max-width: 768px) {
-      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
-      .preview-modal { padding: 20px; }
-      .preview-modal h3 { font-size: 22px; }
-    }
-
-    @media (max-width: 480px) {
-      .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
-    }
-
-    .carousel {
-      display: flex;
-      gap: 12px;
-      margin: 20px 0;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .carousel img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .carousel img:hover {
-      transform: scale(1.1);
-      cursor: pointer;
-    }
-
-    .view-link {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .view-link:hover {
-      background: linear-gradient(135deg, #5a67d8, #6b46c1);
-    }
-
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4K - Digital Artist Portfolio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-
-
-  <div class="gallery-container">
-    <img class="oval-portrait" src="./4k.jpg" alt="Artist Portrait" />
-
-    <div class="folder-tabs">
-      <button class="active" data-folder="OCs">OCs</button>
-      <button data-folder="Submissions">Submissions</button>
-      <button data-folder="Commissions">Commissions</button>
-      <button data-folder="3D">3D</button>
-      <button data-folder="Animations">Animations</button>
-    </div>
-
-    <div class="gallery-grid" id="galleryGrid"></div>
-
-    <div class="preview-modal" id="previewModal">
-      <img src="" alt="" id="previewImage" />
-      <h3 id="previewTitle"></h3>
-      <p id="previewDescription"></p>
-    </div>
-  </div>
-  
-  <div class="preview-modal" id="ocModal">
-    <h3 id="ocTitle"></h3>
-    <p id="ocDescription"></p>
-    <div class="carousel" id="ocCarousel"></div>
-    <a id="ocLink" class="view-link" href="#" target="_blank">View OC Page</a>
-  </div>
-
-  <script>
-    const mockImages = {
-      'OCs': [
-        {
-          id: '1',
-          title: 'Reggie',
-          description: 'A Demon Goat that loves torture and blood',
-          url: './reggie.jpg',
-          carousel: ['./reggie1.jpg', './reggie2.jpg', './reggie3.jpg']
-        },
-        {
-          id: '2',
-          title: 'RedRum',
-          description: 'Inspired by Bob Velsep, Blood is love',
-          url: './redrum.jpg',
-          carousel: ['./redrum1.jpg', './redrum2.jpg', './redrum3.jpg']
-        },
-        {
-          id: '3',
-          title: 'LSD',
-          description: 'Koro-sensei style OC',
-          url: './lsd.jpg',
-          carousel: ['./lsd1.jpg', './lsd2.jpg', './lsd3.jpg']
-        }, 
-        {
-          id: '4',
-          title: 'Blindo',
-          description: 'Dave & Bambi OC',
-          url: './blindo.jpg',
-          carousel: ['./blind1.jpg', './blindo2.jpg', './blindo3.jpg']
-        },
-        {
-          id: '5',
-          title: 'D4MHER',
-          description: 'Dave & Bambi OC',
-          url: './d4mher.jpg',
-          carousel: ['./d4mher1.jpg', './d4mher2.jpg', './d4mher3.jpg']
-        },
-        {
-          id: '6',
-          title: '4k',
-          description: 'An OC inspired by a fusion of Max Gilardi x CapriBlueSEYT',
-          url: './4k.jpg',
-          carousel: ['./4k1.jpg', './4k2.jpg','./4k3.jpg']
-        }
-      ],
-      'Submissions': [
-        { id: '7', title: 'Monthly Submission', description: 'Monthly art challenge submission', url: 'https://picsum.photos/400/400?random=7' },
-        { id: '8', title: 'Fan Art Friday', description: 'Community event artwork', url: 'https://picsum.photos/400/400?random=8' },
-        { id: '9', title: 'Theme: Nature', description: 'Exploring natural elements', url: 'https://picsum.photos/400/400?random=9' }
-      ],
-      'Commissions': [
-        { id: '10', title: 'Portrait Commission', description: 'Custom character portrait', url: 'https://picsum.photos/400/400?random=10' },
-        { id: '11', title: 'Book Cover Art', description: 'Fantasy novel illustration', url: 'https://picsum.photos/400/400?random=11' }
-      ],
-      '3D': [
-        { id: '12', title: '3D Character Model', description: 'Fully rigged character', url: 'https://picsum.photos/400/400?random=12' },
-        { id: '13', title: 'Environment Design', description: 'Sci-fi cityscape', url: 'https://picsum.photos/400/400?random=13' }
-      ],
-      'Animations': [
-        { id: '14', title: 'Walk Cycle', description: 'Smooth character animation', url: 'https://picsum.photos/400/400?random=14' },
-        { id: '15', title: 'Combat Sequence', description: 'Action-packed fight scene', url: 'https://picsum.photos/400/400?random=15' }
-      ]
-    };
-
-    let currentFolder = 'OCs';
-
-    document.addEventListener('DOMContentLoaded', () => {
-      loadImages(currentFolder);
-      setupEventListeners();
-    });
-
-    function setupEventListeners() {
-      document.querySelectorAll('.folder-tabs button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          document.querySelector('.folder-tabs button.active').classList.remove('active');
-          btn.classList.add('active');
-          currentFolder = btn.dataset.folder;
-          loadImages(currentFolder);
-          closePreview();
-        });
-      });
-
-      document.addEventListener('click', e => {
-        if (e.target.id === 'previewModal') closePreview();
-        if (e.target.id === 'ocModal') closeOCPreview();
-      });
-
-      document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') {
-          closePreview();
-          closeOCPreview();
-        }
-      });
-    }
-
-    function loadImages(folder) {
-      const grid = document.getElementById('galleryGrid');
-      const images = mockImages[folder] || [];
-
-      if (!images.length) {
-        grid.innerHTML = `<p style="text-align:center;color:gray">No images available in ${folder}.</p>`;
-        return;
-      }
-
-      grid.innerHTML = images.map((img, index) => `
-        <div class="gallery-item" data-id="${img.id}" style="animation-delay: ${index * 0.1}s">
-          <img src="${img.url}" alt="${img.title}" loading="lazy" />
-          <div class="image-info">
-            <h3>${img.title}</h3>
-            <p>${img.description}</p>
-          </div>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">4K</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="commissions.html">Commissions</a></li>
+                <li><a href="drawing.html">Draw</a></li>
+            </ul>
+            <div class="mobile-menu-btn">☰</div>
         </div>
-      `).join('');
+    </nav>
 
-      document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const img = images.find(i => i.id === item.dataset.id);
-          if (folder === 'OCs') {
-            showOCPreview(img);
-          } else {
-            showPreview(img);
-          }
-        });
-      });
-    }
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>4K</h1>
+                    <p>Welcome to my digital art world! I'm a passionate 14-year-old artist who loves creating original characters and bringing imagination to life through digital art.</p>
+                    
+                    <div class="social-links">
+                        <a href="#" title="Instagram" aria-label="Instagram">📷</a>
+                        <a href="#" title="Twitter" aria-label="Twitter">🐦</a>
+                        <a href="#" title="TikTok" aria-label="TikTok">📱</a>
+                        <a href="#" title="Discord" aria-label="Discord">💬</a>
+                    </div>
 
-    function showPreview(img) {
-      const modal = document.getElementById('previewModal');
-      document.getElementById('previewImage').src = img.url;
-      document.getElementById('previewTitle').textContent = img.title;
-      document.getElementById('previewDescription').textContent = img.description;
-      modal.classList.add('active');
-    }
+                    <div class="cta-buttons">
+                        <a href="gallery.html" class="btn primary">View Gallery</a>
+                        <a href="commissions.html" class="btn secondary">Commission Me</a>
+                    </div>
+                </div>
 
-    function showOCPreview(img) {
-      const modal = document.getElementById('ocModal');
-      document.getElementById('ocTitle').textContent = img.title;
-      document.getElementById('ocDescription').textContent = img.description;
-      document.getElementById('ocLink').href = `./oc/${encodeURIComponent(img.title.toLowerCase())}.html`;
+                <div class="featured-carousel">
+                    <div class="carousel-container">
+                        <div class="carousel-slide active" data-character="luna">
+                            <img src="https://via.placeholder.com/400x300/ff6b6b/ffffff?text=Luna+-+Moon+Guardian" alt="Luna - Moon Guardian">
+                            <div class="slide-content">
+                                <h3>Luna - Moon Guardian</h3>
+                                <p>My latest original character with celestial powers</p>
+                                <a href="oc-luna.html" class="slide-btn">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="carousel-slide" data-character="zara">
+                            <img src="https://via.placeholder.com/400x300/4ecdc4/ffffff?text=Zara+-+Tech+Witch" alt="Zara - Tech Witch">
+                            <div class="slide-content">
+                                <h3>Zara - Tech Witch</h3>
+                                <p>Blending magic with technology in a futuristic world</p>
+                                <a href="oc-zara.html" class="slide-btn">Learn More</a>
+                            </div>
+                        </div>
+                        <div class="carousel-slide" data-character="kai">
+                            <img src="https://via.placeholder.com/400x300/a8e6cf/ffffff?text=Kai+-+Storm+Rider" alt="Kai - Storm Rider">
+                            <div class="slide-content">
+                                <h3>Kai - Storm Rider</h3>
+                                <p>Adventure awaits with this fearless storm rider</p>
+                                <a href="oc-kai.html" class="slide-btn">Learn More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-nav">
+                        <button class="carousel-dot active" data-slide="0" aria-label="View Luna"></button>
+                        <button class="carousel-dot" data-slide="1" aria-label="View Zara"></button>
+                        <button class="carousel-dot" data-slide="2" aria-label="View Kai"></button>
+                    </div>
+                    <button class="carousel-arrow prev" aria-label="Previous slide">‹</button>
+                    <button class="carousel-arrow next" aria-label="Next slide">›</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      const container = document.getElementById('ocCarousel');
-      container.innerHTML = '';
-      img.carousel.forEach(url => {
-        const thumb = document.createElement('img');
-        thumb.src = url;
-        thumb.alt = img.title;
-        container.appendChild(thumb);
-      });
+    <!-- Featured Work Section -->
+    <section class="featured-work">
+        <div class="container">
+            <h2>Latest Creations</h2>
+            <div class="work-grid">
+                <div class="work-item">
+                    <img src="https://via.placeholder.com/300x200/ff8b94/ffffff?text=Recent+Commission" alt="Recent Commission">
+                    <h3>Dragon Warrior Commission</h3>
+                    <p>Character design for a fantasy novel</p>
+                </div>
+                <div class="work-item">
+                    <img src="https://via.placeholder.com/300x200/c7cedb/ffffff?text=Work+in+Progress" alt="Work in Progress">
+                    <h3>New OC in Development</h3>
+                    <p>Sneak peek at my latest character</p>
+                </div>
+                <div class="work-item">
+                    <img src="https://via.placeholder.com/300x200/ffd93d/ffffff?text=Fan+Art" alt="Fan Art">
+                    <h3>Fan Art Friday</h3>
+                    <p>My take on a popular anime character</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      modal.classList.add('active');
-    }
+    <!-- Quick Links Section -->
+    <section class="quick-links">
+        <div class="container">
+            <div class="links-grid">
+                <a href="gallery.html" class="link-card">
+                    <div class="link-icon">🎨</div>
+                    <h3>Browse Gallery</h3>
+                    <p>Explore my complete collection of original characters and artwork</p>
+                </a>
+                <a href="commissions.html" class="link-card">
+                    <div class="link-icon">💼</div>
+                    <h3>Commission Work</h3>
+                    <p>Let's bring your character ideas to life together</p>
+                </a>
+                <a href="drawing.html" class="link-card">
+                    <div class="link-icon">✏️</div>
+                    <h3>Try Drawing</h3>
+                    <p>Use my interactive drawing tool to create your own art</p>
+                </a>
+                <a href="about.html" class="link-card">
+                    <div class="link-icon">👋</div>
+                    <h3>About Me</h3>
+                    <p>Learn more about my artistic journey and inspiration</p>
+                </a>
+            </div>
+        </div>
+    </section>
 
-    function closePreview() {
-      document.getElementById('previewModal').classList.remove('active');
-    }
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>4K Digital Art</h4>
+                    <p>Creating original characters and bringing imagination to life</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="commissions.html">Commissions</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="drawing.html">Drawing Tool</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="Twitter">🐦</a>
+                        <a href="#" title="TikTok">📱</a>
+                        <a href="#" title="Discord">💬</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 4K Digital Art. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-    function closeOCPreview() {
-      document.getElementById('ocModal').classList.remove('active');
-    }
-  </script>
+    <script src="main.js"></script>
 </body>
-
 </html>
