@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - 4K Digital Art</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Gallery Specific Styles */
+        .gallery-section {
+            min-height: 100vh;
+            padding: 120px 0 50px;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-header h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-header p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .gallery-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.6);
+            transform: translateY(-2px);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        .gallery-item-content {
+            padding: 1.5rem;
+        }
+
+        .gallery-item h3 {
+            color: white;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .gallery-item p {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .gallery-item-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .progress-indicator {
+            background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* OC Character Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 3rem;
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .modal-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .oc-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .oc-header h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .oc-subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.2rem;
+        }
+
+        .oc-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .oc-info {
+            color: white;
+        }
+
+        .oc-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .oc-info p, .oc-info li {
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .oc-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .oc-info ul li {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            margin-bottom: 8px;
+            border-radius: 20px;
+            border-left: 4px solid rgba(255,255,255,0.5);
+        }
+
+        .oc-main-image {
+            text-align: center;
+        }
+
+        .oc-main-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .oc-gallery {
+            margin-top: 2rem;
+        }
+
+        .oc-gallery h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 1.8rem;
+        }
+
+        .oc-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .oc-image {
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+
+        .oc-image:hover {
+            transform: scale(1.05);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .oc-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .oc-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .oc-tab {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 20px;
+            color: rgba(255,255,255,0.8);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .oc-tab.active {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .oc-tab-content {
+            display: none;
+        }
+
+        .oc-tab-content.active {
+            display: block;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .gallery-filters {
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modal-content {
+                margin: 1rem;
+                padding: 2rem;
+            }
+
+            .oc-details {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .oc-header h2 {
+                font-size: 2rem;
+            }
+
+            .oc-images {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+
+            .oc-tabs {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .oc-tab {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Fade in animation for gallery items */
+        .gallery-item {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .gallery-item:nth-child(1) { animation-delay: 0.1s; }
+        .gallery-item:nth-child(2) { animation-delay: 0.2s; }
+        .gallery-item:nth-child(3) { animation-delay: 0.3s; }
+        .gallery-item:nth-child(4) { animation-delay: 0.4s; }
+        .gallery-item:nth-child(5) { animation-delay: 0.5s; }
+        .gallery-item:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">4K</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html" class="active">Gallery</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="commissions.html">Commissions</a></li>
+                <li><a href="drawing.html">Draw</a></li>
+            </ul>
+            <div class="mobile-menu-btn">☰</div>
+        </div>
+    </nav>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <div class="gallery-header">
+                <h1>Art Gallery</h1>
+                <p>Explore my collection of original characters, commission work, and artistic journey. Each piece tells a unique story!</p>
+            </div>
+
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">All Artwork</button>
+                <button class="filter-btn" data-filter="ocs">Original Characters</button>
+                <button class="filter-btn" data-filter="commissions">Commissions</button>
+                <button class="filter-btn" data-filter="progress">In Progress</button>
+                <button class="filter-btn" data-filter="fanart">Fan Art</button>
+            </div>
+
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Original Characters -->
+                <div class="gallery-item ocs" data-character="4K">
+                    <img src="./4k.jpeg" alt="4K - ME!!">
+                    <div class="gallery-item-content">
+                        <h3>4K </h3>
+                        <p>Just your mild mannored artist.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag">Dandy's World</span>
+                            <span class="tag">Original Character</span>
+                            <span class="tag">FORSAKEN</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item ocs" data-character="ReDRuM">
+                    <img src="./redrum" alt="redrum=">
+                    <div class="gallery-item-content">
+                        <h3>Zara - Tech Witch</h3>
+                        <p>Demon Anthro.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag"></span></span>
+                            <span class="tag">Original Character</span>
+                            <span class="tag"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item ocs" data-character="kai">
+                    <img src="./blindo" alt="blindo">
+                    <div class="gallery-item-content">
+                        <h3>Kai - Storm Rider</h3>
+                        <p>Blind Dave + Bambi Character.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag">D+B</span>
+                            <span class="tag">Original Character</span>
+                            <span class="tag"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Commissions -->
+                <div class="gallery-item commissions">
+                    <img src="./reggie" alt="Dragon Warrior Commission">
+                    <div class="gallery-item-content">
+                        <h3>REGGIE</h3>
+                        <p>Demon Anthro.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag"></span>
+                            <span class="tag">Fantasy</span>
+                            <span class="tag">OC</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item commissions">
+                    <img src="https://via.placeholder.com/320x250/ffd93d/ffffff?text=Mystical+Forest+Spirit" alt="Forest Spirit Commission">
+                    <div class="gallery-item-content">
+                        <h3>Mystical Forest Spirit</h3>
+                        <p>An ethereal guardian of ancient woodlands - commissioned artwork for a novel.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag">Commission</span>
+                            <span class="tag">Nature</span>
+                            <span class="tag">Spirit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- In Progress -->
+                <div class="gallery-item progress ocs">
+                    <img src="https://via.placeholder.com/320x250/c7cedb/ffffff?text=WIP+-+Shadow+Dancer" alt="Work in Progress">
+                    <div class="gallery-item-content">
+                        <h3>Shadow Dancer</h3>
+                        <p>New original character in development - a mysterious figure who dances between light and shadow.</p>
+                        <div class="gallery-item-tags">
+                            <span class="progress-indicator">In Progress</span>
+                            <span class="tag">Original Character</span>
+                            <span class="tag">Mystery</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fan Art -->
+                <div class="gallery-item fanart">
+                    <img src="https://via.placeholder.com/320x250/b8860b/ffffff?text=Anime+Fan+Art" alt="Anime Fan Art">
+                    <div class="gallery-item-content">
+                        <h3>Anime Character Reimagined</h3>
+                        <p>My artistic take on a popular anime character with a unique twist.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag">Fan Art</span>
+                            <span class="tag">Anime</span>
+                            <span class="tag">Reimagined</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item fanart">
+                    <img src="https://via.placeholder.com/320x250/9370db/ffffff?text=Game+Character+Art" alt="Game Character Fan Art">
+                    <div class="gallery-item-content">
+                        <h3>Video Game Hero</h3>
+                        <p>Fan art tribute to one of my favorite video game characters.</p>
+                        <div class="gallery-item-tags">
+                            <span class="tag">Fan Art</span>
+                            <span class="tag">Gaming</span>
+                            <span class="tag">Tribute</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OC Character Modal -->
+    <div id="ocModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalContent">
+                <!-- Dynamic content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Gallery functionality
+        class Gallery {
+            constructor() {
+                this.currentFilter = 'all';
+                this.ocData = {
+                    luna: {
+                        name: "Luna - Moon Guardian",
+                        subtitle: "Celestial Protector of Dreams",
+                        description: "Luna is a mystical guardian who draws her power from the moon's phases. She protects the dream realm and guides lost souls back to safety through the ethereal landscapes of sleep.",
+                        personality: "Calm, wise, and deeply protective. Luna has a gentle nature that soothes troubled minds, but becomes fierce and unwavering when defending those in need. She speaks in whispers that carry the weight of ancient wisdom.",
+                        abilities: [
+                            "Moonbeam projection for healing and protection",
+                            "Dream walking through subconscious realms",
+                            "Healing light that mends both body and spirit", 
+                            "Telepathic communication with dream spirits",
+                            "Lunar phase manipulation for enhanced power"
+                        ],
+                        stats: {
+                            "Power Level": "85/100",
+                            "Wisdom": "95/100", 
+                            "Combat": "70/100",
+                            "Magic": "90/100"
+                        },
+                        images: [
+                            "Main character design",
+                            "Character expression sheet", 
+                            "Dream realm scene",
+                            "Lunar powers showcase",
+                            "Color palette variations",
+                            "In-progress sketches"
+                        ],
+                        mainImage: "https://via.placeholder.com/400x500/ff6b6b/ffffff?text=Luna+Full+Design"
+                    },
+                    zara: {
+                        name: "Zara - Tech Witch",
+                        subtitle: "Digital Sorceress of the Cyber Age",
+                        description: "In a world where magic and technology collide, Zara bridges both realms with unprecedented skill. She codes spells into reality and hacks the very fabric of the digital-magical universe.",
+                        personality: "Curious, innovative, and slightly mischievous. Zara loves solving complex problems with creative combinations of ancient magic and cutting-edge technology. She's always experimenting with new spell-code combinations.",
+                        abilities: [
+                            "Spell coding - writing magic into digital form",
+                            "Reality hacking through mystical algorithms", 
+                            "Digital familiar summoning",
+                            "Tech enchantment and magical programming",
+                            "Cyber-space astral projection"
+                        ],
+                        stats: {
+                            "Innovation": "98/100",
+                            "Magic": "85/100",
+                            "Technology": "95/100", 
+                            "Problem Solving": "92/100"
+                        },
+                        images: [
+                            "Character design with tech gear",
+                            "Spell-coding in action",
+                            "Digital familiar companions", 
+                            "Cyberpunk magic workshop",
+                            "Expression and pose studies",
+                            "Concept art progression"
+                        ],
+                        mainImage: "https://via.placeholder.com/400x500/4ecdc4/ffffff?text=Zara+Full+Design"
+                    },
+                    kai: {
+                        name: "Kai - Storm Rider", 
+                        subtitle: "Master of Wind and Lightning",
+                        description: "A fearless adventurer who has made a sacred pact with the storm spirits. Kai travels on bolts of lightning and rides the winds across vast landscapes, seeking adventure and protecting the innocent.",
+                        personality: "Bold, adventurous, and free-spirited. Kai never backs down from a challenge and values freedom above all else. Has an infectious enthusiasm for exploration and a strong sense of justice.",
+                        abilities: [
+                            "Lightning travel across great distances",
+                            "Wind manipulation and storm calling", 
+                            "Electrical immunity and absorption",
+                            "Weather prediction and control",
+                            "Storm spirit communication"
+                        ],
+                        stats: {
+                            "Speed": "95/100",
+                            "Courage": "98/100",
+                            "Storm Magic": "88/100",
+                            "Adventure Spirit": "100/100"
+                        },
+                        images: [
+                            "Dynamic action pose",
+                            "Storm riding sequence",
+                            "Lightning power showcase", 
+                            "Character expressions",
+                            "Costume and gear details",
+                            "Environmental concept art"
+                        ],
+                        mainImage: "https://via.placeholder.com/400x500/a8e6cf/ffffff?text=Kai+Full+Design"
+                    }
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.setupEventListeners();
+                this.showAll();
+            }
+            
+            setupEventListeners() {
+                // Filter buttons
+                const filterBtns = document.querySelectorAll('.filter-btn');
+                filterBtns.forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.setActiveFilter(e.target);
+                        this.filterGallery(e.target.dataset.filter);
+                    });
+                });
+                
+                // Gallery items with OC data
+                const ocItems = document.querySelectorAll('.gallery-item[data-character]');
+                ocItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        const characterId = item.dataset.character;
+                        this.showOCModal(characterId);
+                    });
+                });
+                
+                // Modal close events
+                const modal = document.getElementById('ocModal');
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        this.closeModal();
+                    }
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    }
+                });
+            }
+            
+            setActiveFilter(activeBtn) {
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                activeBtn.classList.add('active');
+            }
+            
+            filterGallery(filter) {
+                this.currentFilter = filter;
+                const items = document.querySelectorAll('.gallery-item');
+                
+                items.forEach((item, index) => {
+                    const shouldShow = filter === 'all' || item.classList.contains(filter);
+                    
+                    if (shouldShow) {
+                        item.style.display = 'block';
+                        item.style.animationDelay = `${index * 0.1}s`;
+                        item.classList.add('fade-in');
+                    } else {
+                        item.style.display = 'none';
+                        item.classList.remove('fade-in');
+                    }
+                });
+            }
+            
+            showAll() {
+                this.filterGallery('all');
+            }
+            
+            showOCModal(characterId) {
+                const character = this.ocData[characterId];
+                if (!character) return;
+                
+                const modal = document.getElementById('ocModal');
+                const modalContent = document.getElementById('modalContent');
+                
+                modalContent.innerHTML = this.generateOCModalContent(character);
+                modal.classList.add('active');
+                
+                // Setup tab functionality
+                this.setupModalTabs();
+                
+                // Prevent body scrolling
+                document.body.style.overflow = 'hidden';
+            }
+            
+            generateOCModalContent(character) {
+                return `
+                    <div class="oc-header">
+                        <h2>${character.name}</h2>
+                        <div class="oc-subtitle">${character.subtitle}</div>
+                    </div>
+                    
+                    <div class="oc-tabs">
+                        <button class="oc-tab active" data-tab="overview">Overview</button>
+                        <button class="oc-tab" data-tab="abilities">Abilities</button>
+                        <button class="oc-tab" data-tab="gallery">Gallery</button>
+                        <button class="oc-tab" data-tab="stats">Stats</button>
+                    </div>
+                    
+                    <div class="oc-tab-content active" id="overview">
+                        <div class="oc-details">
+                            <div class="oc-info">
+                                <h3>About ${character.name.split(' - ')[0]}</h3>
+                                <p>${character.description}</p>
+                                
+                                <h3>Personality</h3>
+                                <p>${character.personality}</p>
+                            </div>
+                            <div class="oc-main-image">
+                                <img src="${character.mainImage}" alt="${character.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                <div style="display:none; height:400px; background:rgba(255,255,255,0.1); border-radius:15px; align-items:center; justify-content:center; color:rgba(255,255,255,0.6);">
+                                    Main Character Art
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oc-tab-content" id="abilities">
+                        <div class="oc-info">
+                            <h3>Powers & Abilities</h3>
+                            <ul>
+                                ${character.abilities.map(ability => `<li>${ability}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="oc-tab-content" id="gallery">
+                        <div class="oc-gallery">
+                            <h3>Artwork Gallery</h3>
+                            <div class="oc-images">
+                                ${character.images.map((image, index) => `
+                                    <div class="oc-image" onclick="this.classList.toggle('expanded')">
+                                        <img src="https://via.placeholder.com/200x200/667eea/ffffff?text=Art+${index + 1}" alt="${image}" onerror="this.style.display='none'; this.parentElement.innerHTML='${image}';">
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="oc-tab-content" id="stats">
+                        <div class="oc-info">
+                            <h3>Character Statistics</h3>
+                            ${Object.entries(character.stats).map(([stat, value]) => `
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>${stat}</span>
+                                        <span>${value}</span>
+                                    </div>
+                                    <div style="background: rgba(255,255,255,0.2); height: 8px; border-radius: 4px; overflow: hidden;">
+                                        <div style="background: linear-gradient(45deg, #667eea, #764ba2); height: 100%; width: ${value.split('/')[0]}%; transition: width 0.5s ease;"></div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            setupModalTabs() {
+                const tabs = document.querySelectorAll('.oc-tab');
+                const tabContents = document.querySelectorAll('.oc-tab-content');
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Remove active class from all tabs and content
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tabContents.forEach(content => content.classList.remove('active'));
+                        
+                        // Add active class to clicked tab
+                        tab.classList.add('active');
+                        
+                        // Show corresponding content
+                        const targetTab = tab.dataset.tab;
+                        document.getElementById(targetTab).classList.add('active');
+                    });
+                });
+            }
+            
+            closeModal() {
+                const modal = document.getElementById('ocModal');
+                modal.classList.remove('active');
+                
+                // Restore body scrolling
+                document.body.style.overflow = '';
+            }
+        }
+        
+        // Global function for modal close button
+        function closeModal() {
+            if (window.gallery) {
+                window.gallery.closeModal();
+            }
+        }
+        
+        // Initialize gallery when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            window.gallery = new Gallery();
+        });
+    </script>
+</body>
+</html>
