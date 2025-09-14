@@ -175,29 +175,29 @@
                 grid-template-columns: 1fr;
                 gap: 1rem;
             }
-            
+
             .control-group {
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-between;
             }
-            
+
             .control-group input,
             .control-group select {
                 flex: 1;
                 max-width: 150px;
             }
-            
+
             #drawingCanvas {
                 width: 100%;
                 max-width: 100%;
             }
-            
+
             .canvas-actions {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             .canvas-actions .btn {
                 width: 200px;
             }
@@ -208,11 +208,11 @@
             #drawingCanvas {
                 cursor: none;
             }
-            
+
             .control-group input[type="range"] {
                 height: 40px;
             }
-            
+
             .canvas-actions .btn {
                 padding: 15px 30px;
                 font-size: 1.1rem;
@@ -246,17 +246,26 @@
 
             <div class="drawing-app">
                 <div class="drawing-controls">
+                	<div class="control-group">
+  <label for="hexInput">Hex (AA supported)</label>
+  <input id="hexInput" type="text" value="#000000ff" placeholder="#RRGGBBAA">
+</div>
+
+<div class="control-group">
+  <label>&nbsp;</label>
+  <button class="btn secondary" id="eyedropperBtn" title="Alt/Option+Click also works">Eyedropper</button>
+</div>
                     <div class="control-group">
                         <label for="brushColor">Brush Color</label>
                         <input type="color" id="brushColor" value="#000000">
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="brushSize">Brush Size</label>
                         <input type="range" id="brushSize" min="1" max="100" value="5">
                         <div class="size-display" id="sizeDisplay">5px</div>
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="brushType">Tool</label>
                         <select id="brushType">
@@ -265,18 +274,30 @@
                             <option value="spray">Spray Paint</option>
                         </select>
                     </div>
-                    
+
                     <div class="control-group">
                         <label for="opacity">Opacity</label>
                         <input type="range" id="opacity" min="10" max="100" value="100">
                         <div class="size-display" id="opacityDisplay">100%</div>
                     </div>
                 </div>
-                
-                <div class="canvas-container">
-                    <canvas id="drawingCanvas" width="800" height="600"></canvas>
+				
+				<div class="layers-panel" style="margin-bottom:1rem;background:rgba(255,255,255,0.1);padding:14px;border-radius:12px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+    <strong style="color:white;">Layers</strong>
+    <div>
+      <button class="btn secondary" onclick="layerUI.addLayer()">+ Layer</button>
+      <button class="btn secondary" onclick="layerUI.duplicateLayer()">Duplicate</button>
+      <button class="btn secondary" onclick="layerUI.deleteLayer()">Delete</button>
+    </div>
+  </div>
+  <div id="layersList" style="display:flex;flex-direction:column;gap:8px;"></div>
+</div>
+             
+			   <div class="canvas-container">
+                    <canvas id="drawingCanvas" width="1000" height="800"></canvas>
                 </div>
-                
+
                 <div class="canvas-actions">
                     <button class="btn" onclick="clearCanvas()">Clear Canvas</button>
                     <button class="btn" onclick="undoLastStroke()">Undo</button>
@@ -308,237 +329,548 @@
 
     <script src="main.js"></script>
     <script>
-        // Drawing App JavaScript
-        class DrawingApp {
-            constructor() {
-                this.canvas = document.getElementById('drawingCanvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.isDrawing = false;
-                this.lastX = 0;
-                this.lastY = 0;
-                this.strokes = []; // For undo functionality
-                this.currentStroke = [];
-                
-                this.init();
-            }
-            
-            init() {
-                // Set canvas background to white
-                this.ctx.fillStyle = 'white';
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Set initial drawing settings
-                this.ctx.lineJoin = 'round';
-                this.ctx.lineCap = 'round';
-                
-                this.setupEventListeners();
-                this.updateDisplays();
-            }
-            
-            setupEventListeners() {
-                // Mouse events
-                this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
-                this.canvas.addEventListener('mousemove', (e) => this.draw(e));
-                this.canvas.addEventListener('mouseup', () => this.stopDrawing());
-                this.canvas.addEventListener('mouseout', () => this.stopDrawing());
-                
-                // Touch events for mobile
-                this.canvas.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    this.startDrawing(e);
-                });
-                this.canvas.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
-                    this.draw(e);
-                });
-                this.canvas.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    this.stopDrawing();
-                });
-                
-                // Control updates
-                document.getElementById('brushSize').addEventListener('input', () => this.updateDisplays());
-                document.getElementById('opacity').addEventListener('input', () => this.updateDisplays());
-                document.getElementById('imageLoader').addEventListener('change', (e) => this.handleImageLoad(e));
-            }
-            
-            getMousePos(e) {
-                const rect = this.canvas.getBoundingClientRect();
-                const scaleX = this.canvas.width / rect.width;
-                const scaleY = this.canvas.height / rect.height;
-                
-                if (e.touches) {
-                    return {
-                        x: (e.touches[0].clientX - rect.left) * scaleX,
-                        y: (e.touches[0].clientY - rect.top) * scaleY
-                    };
-                } else {
-                    return {
-                        x: (e.clientX - rect.left) * scaleX,
-                        y: (e.clientY - rect.top) * scaleY
-                    };
-                }
-            }
-            
-            startDrawing(e) {
-                this.isDrawing = true;
-                const pos = this.getMousePos(e);
-                this.lastX = pos.x;
-                this.lastY = pos.y;
-                this.currentStroke = [];
-                
-                // Save canvas state for undo
-                this.currentStroke.push({
-                    type: 'start',
-                    imageData: this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height)
-                });
-            }
-            
-            draw(e) {
-                if (!this.isDrawing) return;
-                
-                const pos = this.getMousePos(e);
-                const brushType = document.getElementById('brushType').value;
-                const brushColor = document.getElementById('brushColor').value;
-                const brushSize = document.getElementById('brushSize').value;
-                const opacity = document.getElementById('opacity').value / 100;
-                
-                this.ctx.globalAlpha = opacity;
-                
-                if (brushType === 'eraser') {
-                    this.ctx.globalCompositeOperation = 'destination-out';
-                    this.ctx.lineWidth = brushSize;
-                } else if (brushType === 'spray') {
-                    this.sprayPaint(pos.x, pos.y, brushSize, brushColor);
-                    this.lastX = pos.x;
-                    this.lastY = pos.y;
-                    return;
-                } else {
-                    this.ctx.globalCompositeOperation = 'source-over';
-                    this.ctx.strokeStyle = brushColor;
-                    this.ctx.lineWidth = brushSize;
-                }
-                
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.lastX, this.lastY);
-                this.ctx.lineTo(pos.x, pos.y);
-                this.ctx.stroke();
-                
-                this.lastX = pos.x;
-                this.lastY = pos.y;
-            }
-            
-            sprayPaint(x, y, size, color) {
-                const density = 20;
-                this.ctx.fillStyle = color;
-                
-                for (let i = 0; i < density; i++) {
-                    const offsetX = (Math.random() - 0.5) * size;
-                    const offsetY = (Math.random() - 0.5) * size;
-                    
-                    this.ctx.beginPath();
-                    this.ctx.arc(x + offsetX, y + offsetY, 1, 0, Math.PI * 2);
-                    this.ctx.fill();
-                }
-            }
-            
-            stopDrawing() {
-                if (this.isDrawing) {
-                    this.isDrawing = false;
-                    this.ctx.globalAlpha = 1;
-                    this.strokes.push([...this.currentStroke]);
-                    
-                    // Limit undo history to 50 strokes for performance
-                    if (this.strokes.length > 50) {
-                        this.strokes.shift();
-                    }
-                }
-            }
-            
-            updateDisplays() {
-                const brushSize = document.getElementById('brushSize').value;
-                const opacity = document.getElementById('opacity').value;
-                
-                document.getElementById('sizeDisplay').textContent = brushSize + 'px';
-                document.getElementById('opacityDisplay').textContent = opacity + '%';
-            }
-            
-            clearCanvas() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.fillStyle = 'white';
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                this.strokes = [];
-            }
-            
-            undoLastStroke() {
-                if (this.strokes.length > 0) {
-                    const lastStroke = this.strokes.pop();
-                    if (lastStroke.length > 0 && lastStroke[0].type === 'start') {
-                        this.ctx.putImageData(lastStroke[0].imageData, 0, 0);
-                    }
-                }
-            }
-            
-            saveDrawing() {
-                const link = document.createElement('a');
-                link.download = '4k-artwork-' + new Date().getTime() + '.png';
-                link.href = this.canvas.toDataURL();
-                link.click();
-            }
-            
-            handleImageLoad(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                        this.ctx.fillStyle = 'white';
-                        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                        
-                        // Scale image to fit canvas while maintaining aspect ratio
-                        const scale = Math.min(
-                            this.canvas.width / img.width,
-                            this.canvas.height / img.height
-                        );
-                        const scaledWidth = img.width * scale;
-                        const scaledHeight = img.height * scale;
-                        const x = (this.canvas.width - scaledWidth) / 2;
-                        const y = (this.canvas.height - scaledHeight) / 2;
-                        
-                        this.ctx.drawImage(img, x, y, scaledWidth, scaledHeight);
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-        
-        // Global functions for button clicks
-        let drawingApp;
-        
-        function clearCanvas() {
-            drawingApp.clearCanvas();
-        }
-        
-        function undoLastStroke() {
-            drawingApp.undoLastStroke();
-        }
-        
-        function saveDrawing() {
-            drawingApp.saveDrawing();
-        }
-        
-        function loadImage() {
-            document.getElementById('imageLoader').click();
-        }
-        
-        // Initialize drawing app when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            drawingApp = new DrawingApp();
-        });
-    </script>
+class Layer {
+  constructor(width, height, name = "Layer") {
+    this.id = crypto.randomUUID();
+    this.name = name;
+    this.visible = true;
+    this.opacity = 1.0;
+    this.canvas = document.createElement('canvas');
+    this.canvas.width = width;
+    this.canvas.height = height;
+    this.ctx = this.canvas.getContext('2d');
+    this.undoStack = []; // ImageData snapshots for undo
+  }
+
+  snapshot(max = 30) {
+    try {
+      const data = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+      this.undoStack.push(data);
+      if (this.undoStack.length > max) this.undoStack.shift();
+    } catch (e) {
+      // cross-origin images can block getImageData; ignore in that rare case
+    }
+  }
+
+  undo() {
+    if (!this.undoStack.length) return;
+    const img = this.undoStack.pop();
+    this.ctx.putImageData(img, 0, 0);
+  }
+}
+
+class DrawingApp {
+  constructor() {
+    this.canvas = document.getElementById('drawingCanvas');        // display canvas
+    this.ctx = this.canvas.getContext('2d');                        // display context
+    this.isDrawing = false;
+    this.lastX = 0;
+    this.lastY = 0;
+    this.layers = [];
+    this.activeLayerIndex = 0;
+    this.tool = 'brush';
+    this.strokes = []; // kept for compatibility; we now use per-layer snapshots
+    this.pointerPressure = 1;
+
+    // DOM
+    this.brushTypeEl = document.getElementById('brushType');
+    this.brushColorEl = document.getElementById('brushColor');
+    this.brushSizeEl = document.getElementById('brushSize');
+    this.opacityEl = document.getElementById('opacity');
+    this.sizeDisplayEl = document.getElementById('sizeDisplay');
+    this.opacityDisplayEl = document.getElementById('opacityDisplay');
+    this.hexInputEl = document.getElementById('hexInput');
+    this.eyedropperBtn = document.getElementById('eyedropperBtn');
+
+    this.init();
+  }
+
+  init() {
+    // white background for display canvas, but we’ll render layers on top
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // default stroke caps
+    this.ctx.lineJoin = 'round';
+    this.ctx.lineCap = 'round';
+
+    // Create first layer
+    this.addLayer("Layer 1", true);
+
+    this.setupEventListeners();
+    this.updateDisplays();
+    this.renderAll(); // initial render
+  }
+
+  // ===== Layers =====
+  addLayer(name = null, setActive = false) {
+    const layer = new Layer(this.canvas.width, this.canvas.height, name ?? `Layer ${this.layers.length + 1}`);
+    // initialize as transparent
+    layer.ctx.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
+    this.layers.push(layer);
+    if (setActive) this.activeLayerIndex = this.layers.length - 1;
+    layer.snapshot(); // initial state for undo baseline
+    LayerUI.refresh();
+    this.renderAll();
+  }
+
+  deleteLayer(index = this.activeLayerIndex) {
+    if (this.layers.length <= 1) return; // keep at least one
+    this.layers.splice(index, 1);
+    if (this.activeLayerIndex >= this.layers.length) {
+      this.activeLayerIndex = this.layers.length - 1;
+    }
+    LayerUI.refresh();
+    this.renderAll();
+  }
+
+  duplicateLayer(index = this.activeLayerIndex) {
+    const src = this.layers[index];
+    const copy = new Layer(this.canvas.width, this.canvas.height, src.name + " copy");
+    copy.ctx.globalAlpha = 1;
+    copy.ctx.drawImage(src.canvas, 0, 0);
+    copy.snapshot();
+    this.layers.splice(index + 1, 0, copy);
+    this.activeLayerIndex = index + 1;
+    LayerUI.refresh();
+    this.renderAll();
+  }
+
+  moveLayer(index, direction) {
+    const newIndex = index + direction; // -1 up, +1 down
+    if (newIndex < 0 || newIndex >= this.layers.length) return;
+    const [l] = this.layers.splice(index, 1);
+    this.layers.splice(newIndex, 0, l);
+    this.activeLayerIndex = newIndex;
+    LayerUI.refresh();
+    this.renderAll();
+  }
+
+  setActiveLayer(i) {
+    this.activeLayerIndex = i;
+    LayerUI.refresh();
+  }
+
+  toggleVisibility(i) {
+    this.layers[i].visible = !this.layers[i].visible;
+    LayerUI.refresh();
+    this.renderAll();
+  }
+
+  // Flatten and draw to display canvas
+  renderAll() {
+    // clear display
+    this.ctx.save();
+    this.ctx.globalAlpha = 1;
+    this.ctx.globalCompositeOperation = 'source-over';
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // draw each visible layer in order
+    for (const layer of this.layers) {
+      if (!layer.visible) continue;
+      this.ctx.globalAlpha = layer.opacity;
+      this.ctx.drawImage(layer.canvas, 0, 0);
+    }
+    this.ctx.restore();
+  }
+
+  // ===== Events & Tools =====
+  setupEventListeners() {
+    // Pointer (handles mouse+pen+touch)
+    const start = (e) => { this.startDrawing(e); };
+    const move  = (e) => { this.draw(e); };
+    const end   = () =>   { this.stopDrawing(); };
+
+    this.canvas.addEventListener('pointerdown', start);
+    this.canvas.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', end);
+    this.canvas.addEventListener('pointerleave', end);
+
+    // Controls
+    this.brushSizeEl.addEventListener('input', () => this.updateDisplays());
+    this.opacityEl.addEventListener('input', () => this.updateDisplays());
+    this.brushTypeEl.addEventListener('change', () => { this.tool = this.brushTypeEl.value; });
+
+    // Hex input: accept #RRGGBB or #RRGGBBAA
+    this.hexInputEl.addEventListener('change', () => {
+      const val = this.normalizeHex(this.hexInputEl.value);
+      if (val) {
+        this.hexInputEl.value = val;
+        // set <input type="color"> to opaque portion
+        this.brushColorEl.value = '#' + val.slice(1, 7);
+      }
+    });
+
+    // sync color input back to hex (keep alpha if present)
+    this.brushColorEl.addEventListener('input', () => {
+      const current = this.hexInputEl.value;
+      const alpha = current && current.length === 9 ? current.slice(7) : 'ff';
+      this.hexInputEl.value = this.normalizeHex(this.brushColorEl.value + alpha);
+    });
+
+    // Eyedropper button
+    this.eyedropperBtn.addEventListener('click', () => {
+      this.awaitEyedropperClick = true;
+      this.eyedropperBtn.textContent = 'Click canvas…';
+      setTimeout(() => (this.eyedropperBtn.textContent = 'Eyedropper'), 3000);
+    });
+
+    // Alt/Option click eyedropper (handled in startDrawing)
+  }
+
+  getPos(e) {
+    const rect = this.canvas.getBoundingClientRect();
+    const scaleX = this.canvas.width / rect.width;
+    const scaleY = this.canvas.height / rect.height;
+    const x = (e.clientX - rect.left) * scaleX;
+    const y = (e.clientY - rect.top) * scaleY;
+    return { x, y };
+  }
+
+  startDrawing(e) {
+    // Eyedropper?
+    if (e.altKey || this.awaitEyedropperClick) {
+      this.awaitEyedropperClick = false;
+      const { x, y } = this.getPos(e);
+      const pixel = this.ctx.getImageData(Math.floor(x), Math.floor(y), 1, 1).data; // from flattened
+      const hex = this.rgbaToHex(pixel[0], pixel[1], pixel[2], pixel[3]);
+      this.hexInputEl.value = hex;
+      this.brushColorEl.value = '#' + hex.slice(1, 7);
+      return;
+    }
+
+    this.isDrawing = true;
+    const { x, y } = this.getPos(e);
+    this.lastX = x;
+    this.lastY = y;
+
+    // pressure if available
+    this.pointerPressure = (e.pressure && e.pressure > 0) ? e.pressure : 1;
+
+    // snapshot for undo on active layer
+    const layer = this.layers[this.activeLayerIndex];
+    layer.snapshot();
+  }
+
+  draw(e) {
+    if (!this.isDrawing) return;
+    const layer = this.layers[this.activeLayerIndex];
+    const lctx = layer.ctx;
+
+    const { x, y } = this.getPos(e);
+    this.pointerPressure = (e.pressure && e.pressure > 0) ? e.pressure : this.pointerPressure;
+
+    const brushType = this.brushTypeEl.value;
+    const sizeBase = parseFloat(this.brushSizeEl.value);
+    const size = Math.max(0.5, sizeBase * this.pointerPressure);
+    const hex = this.normalizeHex(this.hexInputEl.value) || '#000000ff';
+    const { r, g, b, a } = this.hexToRgba(hex);
+    const opacity = parseInt(this.opacityEl.value, 10) / 100;
+
+    lctx.save();
+    if (brushType === 'eraser') {
+      lctx.globalCompositeOperation = 'destination-out';
+      lctx.globalAlpha = opacity;
+      lctx.lineWidth = size;
+      lctx.lineJoin = 'round';
+      lctx.lineCap = 'round';
+      lctx.beginPath();
+      lctx.moveTo(this.lastX, this.lastY);
+      lctx.lineTo(x, y);
+      lctx.stroke();
+    } else if (brushType === 'spray') {
+      lctx.globalCompositeOperation = 'source-over';
+      lctx.globalAlpha = opacity * (a / 255);
+      lctx.fillStyle = `rgba(${r},${g},${b},${lctx.globalAlpha})`;
+      const density = 20;
+      for (let i = 0; i < density; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = Math.random() * (size / 2);
+        const px = x + Math.cos(angle) * radius;
+        const py = y + Math.sin(angle) * radius;
+        lctx.beginPath();
+        lctx.arc(px, py, Math.max(0.5, size * 0.05), 0, Math.PI * 2);
+        lctx.fill();
+      }
+    } else { // brush
+      lctx.globalCompositeOperation = 'source-over';
+      lctx.strokeStyle = `rgba(${r},${g},${b},${(a/255) * opacity})`;
+      lctx.lineWidth = size;
+      lctx.lineJoin = 'round';
+      lctx.lineCap = 'round';
+      lctx.beginPath();
+      lctx.moveTo(this.lastX, this.lastY);
+      lctx.lineTo(x, y);
+      lctx.stroke();
+    }
+    lctx.restore();
+
+    this.lastX = x;
+    this.lastY = y;
+
+    // re-flatten for display
+    this.renderAll();
+  }
+
+  stopDrawing() {
+    if (!this.isDrawing) return;
+    this.isDrawing = false;
+  }
+
+  // ===== Utilities =====
+  updateDisplays() {
+    const brushSize = this.brushSizeEl.value;
+    const opacity = this.opacityEl.value;
+    this.sizeDisplayEl.textContent = brushSize + 'px';
+    this.opacityDisplayEl.textContent = opacity + '%';
+  }
+
+  clearCanvas() {
+    for (const layer of this.layers) {
+      layer.ctx.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
+    }
+    this.renderAll();
+    for (const l of this.layers) l.undoStack = [];
+  }
+
+  undoLastStroke() {
+    const layer = this.layers[this.activeLayerIndex];
+    layer.undo();
+    this.renderAll();
+  }
+
+  // Flatten to PNG
+  saveDrawing() {
+    const link = document.createElement('a');
+    link.download = '4k-artwork-' + new Date().getTime() + '.png';
+    this.renderAll();
+    link.href = this.canvas.toDataURL();
+    link.click();
+  }
+
+  // Save project with layers
+  saveProject() {
+    const project = {
+      version: 1,
+      width: this.canvas.width,
+      height: this.canvas.height,
+      layers: this.layers.map(l => ({
+        id: l.id,
+        name: l.name,
+        visible: l.visible,
+        opacity: l.opacity,
+        dataURL: l.canvas.toDataURL('image/png')
+      })),
+      activeLayerIndex: this.activeLayerIndex
+    };
+    const blob = new Blob([JSON.stringify(project)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `project-${Date.now()}.4kdraw`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async loadProjectFile(file) {
+    const text = await file.text();
+    const project = JSON.parse(text);
+    // resize display canvas if needed
+    if (project.width && project.height) {
+      this.canvas.width = project.width;
+      this.canvas.height = project.height;
+    }
+    // rebuild layers
+    this.layers = [];
+    for (const pl of project.layers) {
+      const l = new Layer(this.canvas.width, this.canvas.height, pl.name);
+      l.visible = pl.visible;
+      l.opacity = pl.opacity;
+      await this.drawDataUrlToLayer(l.ctx, pl.dataURL);
+      l.snapshot();
+      this.layers.push(l);
+    }
+    this.activeLayerIndex = Math.min(project.activeLayerIndex ?? 0, this.layers.length - 1);
+    LayerUI.refresh();
+    this.renderAll();
+  }
+
+  drawDataUrlToLayer(ctx, dataURL) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.onload = () => { ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height); ctx.drawImage(img, 0, 0); resolve(); };
+      img.src = dataURL;
+    });
+  }
+
+  handleImageLoad(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const layer = this.layers[this.activeLayerIndex];
+        layer.ctx.clearRect(0, 0, layer.canvas.width, layer.canvas.height);
+
+        // fit image
+        const scale = Math.min(
+          this.canvas.width / img.width,
+          this.canvas.height / img.height
+        );
+        const w = img.width * scale;
+        const h = img.height * scale;
+        const x = (this.canvas.width - w) / 2;
+        const y = (this.canvas.height - h) / 2;
+        layer.ctx.drawImage(img, x, y, w, h);
+        this.renderAll();
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // color helpers
+  normalizeHex(v) {
+    if (!v) return null;
+    let s = v.trim().toLowerCase();
+    if (!s.startsWith('#')) s = '#' + s;
+    if (s.length === 4) {
+      // #rgb -> #rrggbbff
+      const r = s[1], g = s[2], b = s[3];
+      s = `#${r}${r}${g}${g}${b}${b}ff`;
+    } else if (s.length === 7) {
+      // #rrggbb -> #rrggbbff
+      s = s + 'ff';
+    } else if (s.length === 9) {
+      // #rrggbbaa OK
+    } else {
+      return null;
+    }
+    // validate hex
+    if (!/^#[0-9a-f]{8}$/.test(s)) return null;
+    return s;
+  }
+
+  hexToRgba(hex) {
+    const h = this.normalizeHex(hex) ?? '#000000ff';
+    const r = parseInt(h.slice(1,3),16);
+    const g = parseInt(h.slice(3,5),16);
+    const b = parseInt(h.slice(5,7),16);
+    const a = parseInt(h.slice(7,9),16);
+    return { r,g,b,a };
+  }
+
+  rgbaToHex(r,g,b,a=255) {
+    const to2 = (n)=> n.toString(16).padStart(2,'0');
+    return '#' + to2(r) + to2(g) + to2(b) + to2(a);
+  }
+}
+
+// ===== Layer UI binder (keeps your styling) =====
+const LayerUI = {
+  get app() { return drawingApp; },
+  el() { return document.getElementById('layersList'); },
+
+  refresh() {
+    const root = this.el();
+    root.innerHTML = '';
+    drawingApp.layers.forEach((layer, i) => {
+      const row = document.createElement('div');
+      row.style.display = 'grid';
+      row.style.gridTemplateColumns = '28px 1fr auto';
+      row.style.alignItems = 'center';
+      row.style.gap = '8px';
+      row.style.background = 'rgba(255,255,255,0.08)';
+      row.style.padding = '8px 10px';
+      row.style.borderRadius = '8px';
+
+      const vis = document.createElement('input');
+      vis.type = 'checkbox';
+      vis.checked = layer.visible;
+      vis.title = 'Toggle visibility';
+      vis.addEventListener('change', () => drawingApp.toggleVisibility(i));
+
+      const name = document.createElement('input');
+      name.type = 'text';
+      name.value = layer.name;
+      name.style.width = '100%';
+      name.addEventListener('change', () => { layer.name = name.value; });
+
+      const btns = document.createElement('div');
+      btns.style.display = 'flex';
+      btns.style.gap = '6px';
+      btns.innerHTML = `
+        <button class="btn secondary" title="Move up">↑</button>
+        <button class="btn secondary" title="Move down">↓</button>
+        <button class="btn ${i===drawingApp.activeLayerIndex ? '' : 'secondary'}" title="Activate">Use</button>
+      `;
+      const [up, down, use] = btns.querySelectorAll('button');
+      up.onclick = () => drawingApp.moveLayer(i, -1);
+      down.onclick = () => drawingApp.moveLayer(i, +1);
+      use.onclick = () => drawingApp.setActiveLayer(i);
+
+      if (i === drawingApp.activeLayerIndex) {
+        row.style.outline = '2px solid rgba(255,255,255,0.35)';
+      }
+
+      row.appendChild(vis);
+      row.appendChild(name);
+      row.appendChild(btns);
+      root.appendChild(row);
+    });
+  },
+
+  addLayer() { drawingApp.addLayer(); },
+  deleteLayer() { drawingApp.deleteLayer(); },
+  duplicateLayer() { drawingApp.duplicateLayer(); },
+};
+
+// ===== Global button hooks (keep your existing buttons) =====
+let drawingApp;
+
+function clearCanvas() { drawingApp.clearCanvas(); }
+function undoLastStroke() { drawingApp.undoLastStroke(); }
+function saveDrawing() { drawingApp.saveDrawing(); }
+
+function loadImage() {
+  const input = document.getElementById('imageLoader');
+  input.onchange = (e) => drawingApp.handleImageLoad(e);
+  input.click();
+}
+
+// Add project save/load buttons next to your existing actions (optional)
+function saveProject() { drawingApp.saveProject(); }
+function loadProject() {
+  const file = document.createElement('input');
+  file.type = 'file';
+  file.accept = '.4kdraw,application/json';
+  file.onchange = async (e) => {
+    if (e.target.files && e.target.files[0]) {
+      await drawingApp.loadProjectFile(e.target.files[0]);
+    }
+  };
+  file.click();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  drawingApp = new DrawingApp();
+
+  // Add two new buttons to your .canvas-actions quickly:
+  const actions = document.querySelector('.canvas-actions');
+  const saveP = document.createElement('button');
+  saveP.className = 'btn secondary';
+  saveP.textContent = 'Save Project (.4kdraw)';
+  saveP.onclick = saveProject;
+  const loadP = document.createElement('button');
+  loadP.className = 'btn secondary';
+  loadP.textContent = 'Load Project';
+  loadP.onclick = loadProject;
+  actions.appendChild(saveP);
+  actions.appendChild(loadP);
+});
+	</script>
 </body>
 </html>
