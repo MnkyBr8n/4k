@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gallery - 4K Digital Art</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styels/style.css">
     <style>
         /* Gallery Specific Styles */
         .gallery-section {
@@ -405,10 +405,10 @@
             <div class="logo">4K</div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="gallery.html" class="active">Gallery</a></li>
-                <li><a href="about.html">About Me</a></li>
-                <li><a href="commissions.html">Commissions</a></li>
-                <li><a href="drawing.html">Draw</a></li>
+                <li><a href="pages/gallery.html" class="active">Gallery</a></li>
+                <li><a href="pages/about.html">About Me</a></li>
+                <li><a href="pages/commissions.html">Commissions</a></li>
+                <li><a href="pages/drawing.html">Draw</a></li>
             </ul>
             <div class="mobile-menu-btn">☰</div>
         </div>
@@ -433,7 +433,7 @@
             <div class="gallery-grid" id="galleryGrid">
                 <!-- Original Characters -->
                 <div class="gallery-item ocs" data-character="4K">
-                    <img src="4k.jpg" alt="4K - ME!!">
+                    <img src="componets/4k.jpg" alt="4K - ME!!">
                     <div class="gallery-item-content">
                         <h3>4K </h3>
                         <p>Just your mild mannored artist.</p>
@@ -447,7 +447,7 @@
                 </div>
 
                 <div class="gallery-item ocs" data-character="ReDRuM">
-                    <img src="redrum.jpg" alt="redrum=">
+                    <img src="componets/redrum.jpg" alt="redrum=">
                     <div class="gallery-item-content">
                         <h3>REDRuM</h3>
                         <p>Demon Anthro.</p>
@@ -461,7 +461,7 @@
                 </div>
 
                 <div class="gallery-item ocs" data-character="kai">
-                    <img src="blindo.jpg" alt="blindo">
+                    <img src="componets/blindo.jpg" alt="blindo">
                     <div class="gallery-item-content">
                         <h3>Blindo</h3>
                         <p>Blind Dave + Bambi Character.</p>
@@ -476,7 +476,7 @@
 
                 <!-- Commissions -->
                 <div class="gallery-item ocs">
-                    <img src="reggie.jpg" alt="REGGIE">
+                    <img src="componets/reggie.jpg" alt="REGGIE">
                     <div class="gallery-item-content">
                         <h3>REGGIE</h3>
                         <p>Demon Anthro.</p>
@@ -490,7 +490,7 @@
                 </div>
 
                 <div class="gallery-item ocs">
-                    <img src="d4mher.jpg" alt="Cereal Killer">
+                    <img src="componets/d4mher.jpg" alt="Cereal Killer">
                     <div class="gallery-item-content">
                         <h3>D4mher</h3>
                         <p>Crazed cereal killer. Deatgs include: Tony the tiger, Suga Smack Frog, Capt.Crunch.</p>
@@ -503,7 +503,7 @@
                 </div>
 
 <div class="gallery-item ocs">
-                    <img src="anton.jpg" alt="Cereal Killer">
+                    <img src="componets/anton.png" alt="Cereal Killer">
                     <div class="gallery-item-content">
                         <h3>Anton</h3>
                         <p>.</p>
@@ -577,22 +577,20 @@
                 this.currentFilter = 'all';
                 this.ocData = {
                     luna: {
-                        name: "Luna - Moon Guardian",
-                        subtitle: "Celestial Protector of Dreams",
-                        description: "Luna is a mystical guardian who draws her power from the moon's phases. She protects the dream realm and guides lost souls back to safety through the ethereal landscapes of sleep.",
-                        personality: "Calm, wise, and deeply protective. Luna has a gentle nature that soothes troubled minds, but becomes fierce and unwavering when defending those in need. She speaks in whispers that carry the weight of ancient wisdom.",
+                        name: "4k",
+                        subtitle: "Artist",
+                        description: "I draw and stuff.",
+                        personality: "Nerd Face.",
                         abilities: [
-                            "Moonbeam projection for healing and protection",
-                            "Dream walking through subconscious realms",
-                            "Healing light that mends both body and spirit", 
-                            "Telepathic communication with dream spirits",
-                            "Lunar phase manipulation for enhanced power"
+                            "4 eyed nerd",
+                            "Dream walking into poles",
+                            "being a nerd face",
                         ],
                         stats: {
                             "Power Level": "85/100",
-                            "Wisdom": "95/100", 
+                            "Faceness": "95/100", 
                             "Combat": "70/100",
-                            "Magic": "90/100"
+                            "Nerdness": "90/100"
                         },
                         images: [
                             "Main character design",
@@ -602,7 +600,7 @@
                             "Color palette variations",
                             "In-progress sketches"
                         ],
-                        mainImage: "https://via.placeholder.com/400x500/ff6b6b/ffffff?text=Luna+Full+Design"
+                        mainImage: "componets/4k.jpg"
                     },
                     zara: {
                         name: "Zara - Tech Witch",
