@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Create Character · 4K Studio</title>
+  <link rel="stylesheet" href="css/studio.css">
+  
+</head>
+<body>
+<header>
+  <div><strong>Create Character</strong></div>
+  <div class="actions">
+    <a class="btn secondary" href="index.html">Back</a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="card">
+    <div class="row">
+      <div style="flex:1;min-width:280px">
+        <label>Character Name *</label>
+        <input id="name" type="text" placeholder="Anton, Conrad, 4K…" required>
+
+        <label style="margin-top:10px">Template *</label>
+        <select id="template" required>
+          <option value="passport">Passport / College ID</option>
+          <option value="storycard">Story Card</option>
+          <option value="roblox">Roblox</option>
+          <option value="fortnite">Fortnite</option>
+          <option value="dandy">Dandy</option>
+          <option value="classic">Classic</option>
+        </select>
+
+        <label style="margin-top:10px">Role / Subtitle</label>
+        <input id="role" type="text" placeholder="Informatik-Student, Artist, etc.">
+
+        <label style="margin-top:10px">About (quick)</label>
+        <textarea id="aboutQuick" placeholder="1–2 lines about the character"></textarea>
+      </div>
+
+      <div style="flex:1;min-width:260px">
+        <label>Required Portrait Image *</label>
+        <input id="portrait" type="file" accept="image/*" capture="environment" required>
+        <div class="thumb" id="preview" style="margin-top:10px"><div class="small">Preview</div></div>
+
+        <div class="row" style="margin-top:10px">
+          <button id="create" class="ok">Create Character</button>
+        </div>
+        <div class="small">Note: You must provide a portrait image before creation.</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import { upsertCharacter, getCharacter } from './js/store.js';
+import { slugify, fileToObjectURL, pickColor } from './js/ui.js';
+
+const nameEl = document.getElementById('name');
+const roleEl = document.getElementById('role');
+const aboutQuickEl = document.getElementById('aboutQuick');
+const templateEl = document.getElementById('template');
+const portraitEl = document.getElementById('portrait');
+const previewEl = document.getElementById('preview');
+let portraitURL = "";
+
+portraitEl.addEventListener('change', async (e) => {
+  const f = e.target.files?.[0];
+  if (!f) return;
+  portraitURL = await fileToObjectURL(f); // Stage 1: local object URL (replace with upload later)
+  previewEl.innerHTML = `<img src="${portraitURL}" alt="">`;
+});
+
+document.getElementById('create').onclick = () => {
+  const name = nameEl.value.trim();
+  if (!name) return alert('Please enter a name.');
+  if (!portraitURL) return alert('Please select a portrait image.');
+
+  const id = slugify(name);
+  if (getCharacter(id)) return alert('A character with this name already exists.');
+
+  const char = {
+    id, name,
+    template: templateEl.value,
+    role: roleEl.value.trim(),
+    aboutQuick: aboutQuickEl.value.trim(),
+    color: pickColor(id),
+    images: [{ src: portraitURL, album: "profile", carousel: false }],
+    // minimal fields for the public templates
+    portrait: portraitURL,
+    fullArt: portraitURL,
+    link: `oc-pages/oc-${id}.html`,
+    website: ""
+  };
+  upsertCharacter(char);
+  alert('Character created! Now add details and images.');
+  location.href = `edit-character.html?id=${encodeURIComponent(id)}`;
+};
+</script>
+</body>
+</html>

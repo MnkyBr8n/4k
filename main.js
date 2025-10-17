@@ -2,10 +2,10 @@
 document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
     const navLinks = document.querySelector('.nav-links');
-    
+
     if (mobileMenuBtn && navLinks) {
         mobileMenuBtn.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
+            navLinks.classList.toggle('open');
         });
     }
 
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinkItems = document.querySelectorAll('.nav-links a');
     navLinkItems.forEach(link => {
         link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
+            navLinks.classList.remove('open');
         });
     });
 });
@@ -27,18 +27,18 @@ class Carousel {
         this.prevBtn = document.querySelector('.carousel-arrow.prev');
         this.nextBtn = document.querySelector('.carousel-arrow.next');
         this.autoPlayInterval = null;
-        
+
         this.init();
     }
-    
+
     init() {
         if (this.slides.length === 0) return;
-        
+
         // Add event listeners to dots
         this.dots.forEach((dot, index) => {
             dot.addEventListener('click', () => this.goToSlide(index));
         });
-        
+
         // Add event listeners to arrow buttons
         if (this.prevBtn) {
             this.prevBtn.addEventListener('click', () => this.previousSlide());
@@ -46,79 +46,79 @@ class Carousel {
         if (this.nextBtn) {
             this.nextBtn.addEventListener('click', () => this.nextSlide());
         }
-        
+
         // Start autoplay
         this.startAutoPlay();
-        
+
         // Pause autoplay on hover
         const carousel = document.querySelector('.featured-carousel');
         if (carousel) {
             carousel.addEventListener('mouseenter', () => this.stopAutoPlay());
             carousel.addEventListener('mouseleave', () => this.startAutoPlay());
         }
-        
+
         // Touch/swipe support for mobile
         this.addTouchSupport();
     }
-    
+
     goToSlide(slideIndex) {
         // Remove active class from current slide and dot
         this.slides[this.currentSlide].classList.remove('active');
         this.dots[this.currentSlide].classList.remove('active');
-        
+
         // Update current slide index
         this.currentSlide = slideIndex;
-        
+
         // Add active class to new slide and dot
         this.slides[this.currentSlide].classList.add('active');
         this.dots[this.currentSlide].classList.add('active');
     }
-    
+
     nextSlide() {
         const nextIndex = (this.currentSlide + 1) % this.slides.length;
         this.goToSlide(nextIndex);
     }
-    
+
     previousSlide() {
         const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
         this.goToSlide(prevIndex);
     }
-    
+
     startAutoPlay() {
         this.stopAutoPlay(); // Clear any existing interval
         this.autoPlayInterval = setInterval(() => {
             this.nextSlide();
         }, 5000); // Change slide every 5 seconds
     }
-    
+
     stopAutoPlay() {
         if (this.autoPlayInterval) {
             clearInterval(this.autoPlayInterval);
             this.autoPlayInterval = null;
         }
     }
-    
+
     addTouchSupport() {
         const carousel = document.querySelector('.carousel-container');
         if (!carousel) return;
-        
+
         let startX = 0;
         let startY = 0;
         let endX = 0;
         let endY = 0;
-        
+
         carousel.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
         });
-        
+
         carousel.addEventListener('touchend', (e) => {
             endX = e.changedTouches[0].clientX;
             endY = e.changedTouches[0].clientY;
-            
+
             const deltaX = endX - startX;
             const deltaY = endY - startY;
-            
+
             // Only trigger if horizontal swipe is more significant than vertical
             if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
                 if (deltaX > 0) {
@@ -139,18 +139,18 @@ document.addEventListener('DOMContentLoaded', function() {
 // Smooth scrolling for anchor links
 document.addEventListener('DOMContentLoaded', function() {
     const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
-    
+
     smoothScrollLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            
+
             const targetId = this.getAttribute('href');
             const targetElement = document.querySelector(targetId);
-            
+
             if (targetElement) {
                 const headerHeight = document.querySelector('nav').offsetHeight;
                 const targetPosition = targetElement.offsetTop - headerHeight;
-                
+
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -164,9 +164,9 @@ document.addEventListener('DOMContentLoaded', function() {
 window.addEventListener('scroll', function() {
     const nav = document.querySelector('nav');
     if (window.scrollY > 50) {
-        nav.style.background = 'rgba(255, 255, 255, 0.98)';
+        nav.style.background = 'rgba(0, 0, 0, 0.95)';
     } else {
-        nav.style.background = 'rgba(255, 255, 255, 0.95)';
+        nav.style.background = 'rgba(0, 0, 0, 0.9)';
     }
 });
 
@@ -188,13 +188,13 @@ const observer = new IntersectionObserver(function(entries) {
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', function() {
     const animatedElements = document.querySelectorAll('.work-item, .link-card');
-    
+
     animatedElements.forEach(el => {
         // Set initial state
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        
+
         observer.observe(el);
     });
 });
@@ -213,7 +213,7 @@ const utils = {
             timeout = setTimeout(later, wait);
         };
     },
-    
+
     // Format date for display
     formatDate: function(date) {
         return new Intl.DateTimeFormat('en-US', {
@@ -222,7 +222,7 @@ const utils = {
             day: 'numeric'
         }).format(date);
     },
-    
+
     // Check if element is in viewport
     isInViewport: function(element) {
         const rect = element.getBoundingClientRect();
@@ -245,7 +245,7 @@ function preloadImages() {
         'https://via.placeholder.com/300x200/c7cedb/ffffff?text=Work+in+Progress',
         'https://via.placeholder.com/300x200/ffd93d/ffffff?text=Fan+Art'
     ];
-    
+
     imageUrls.forEach(url => {
         const img = new Image();
         img.src = url;
@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', preloadImages);
 // Error handling for images
 document.addEventListener('DOMContentLoaded', function() {
     const images = document.querySelectorAll('img');
-    
+
     images.forEach(img => {
         img.addEventListener('error', function() {
             this.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('keydown', function(e) {
     const carousel = document.querySelector('.featured-carousel');
     if (!carousel || !utils.isInViewport(carousel)) return;
-    
+
     if (e.key === 'ArrowLeft') {
         e.preventDefault();
         document.querySelector('.carousel-arrow.prev')?.click();
@@ -294,7 +294,7 @@ const performance = {
             console.log(`Page loaded in ${Math.round(loadTime)}ms`);
         });
     },
-    
+
     measureFirstContentfulPaint: function() {
         if ('PerformanceObserver' in window) {
             const observer = new PerformanceObserver((list) => {

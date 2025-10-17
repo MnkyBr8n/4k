@@ -1,0 +1,35 @@
+:root{
+  --bg:#0f1116; --panel:#161a22; --ink:#e9edf6; --muted:#aab4c4;
+  --brand:#7c5cff; --accent:#00c2ff; --warn:#ff6475; --ok:#66e38c;
+  --radius:16px; --shadow:0 8px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,Segoe UI,Roboto}
+a{color:var(--accent);text-decoration:none}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;background:#0c0f14;position:sticky;top:0;z-index:10;border-bottom:1px solid #252a36}
+header .actions{display:flex;gap:8px;flex-wrap:wrap}
+button,.btn{background:var(--brand);color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
+button.secondary,.btn.secondary{background:#1b2130;color:var(--ink);border:1px solid #2a3242}
+button.danger{background:var(--warn)}
+button.ok{background:var(--ok)}
+.main{padding:18px;max-width:1100px;margin:0 auto}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.card{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;border:1px solid #232836}
+.card .thumb{height:140px;border-radius:12px;background:#0f121a;display:grid;place-items:center;overflow:hidden;margin-bottom:10px}
+.card .thumb img{width:100%;height:100%;object-fit:cover}
+.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+label{display:block;margin:10px 0 6px;color:var(--muted)}
+input[type="text"],input[type="url"],select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #2a3242;background:#0f121a;color:#e9edf6}
+textarea{min-height:90px;resize:vertical}
+.kv{display:grid;grid-template-columns:160px 1fr;gap:10px;align-items:center}
+.badge{display:inline-flex;gap:6px;align-items:center;padding:4px 10px;border-radius:999px;background:#0f1320;border:1px solid #2c3448;color:#cfe2ff}
+.table{width:100%;border-collapse:collapse}
+.table th,.table td{border-bottom:1px solid #283042;padding:10px;text-align:left}
+.toolbar{display:flex;gap:8px;justify-content:flex-end;margin:12px 0}
+.folders{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+.folder{background:linear-gradient(180deg,#1f2432,#171b26);border:1px solid #2a3041;border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+.folder .color{width:100%;height:10px;border-radius:8px;margin-bottom:10px}
+.folder h3{margin:4px 0 6px}
+.small{font-size:.85rem;color:var(--muted)}
+hr{border:0;border-top:1px solid #252c3a;margin:16px 0}
+input[type="file"]{display:block;padding:8px;background:#0f121a;border:1px dashed #2a3242;border-radius:10px}

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Hero Backgrounds · 4K Studio</title>
+  <link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+<header>
+  <div><strong>Hero Page Backgrounds</strong></div>
+  <div class="actions">
+    <a class="btn secondary" href="index.html">Back</a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="card">
+    <label>Active Background</label>
+    <select id="bgSel"></select>
+
+    <div class="thumb" id="prev" style="margin-top:10px"><div class="small">Preview</div></div>
+
+    <div class="row" style="margin-top:10px">
+      <button id="save" class="ok">Set Active</button>
+      <button id="export" class="secondary">Export hero-backgrounds.json</button>
+    </div>
+
+    <hr>
+    <label>Add New Background</label>
+    <input id="file" type="file" accept="image/*">
+    <div class="row">
+      <button id="add">Add Background</button>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import { getHeroConfig, setHeroActive, addHeroBackground, exportHeroBackgroundsJSON } from './js/store.js';
+
+const bgSel = document.getElementById('bgSel');
+const prev = document.getElementById('prev');
+const fileEl = document.getElementById('file');
+
+function render(){
+  const cfg = getHeroConfig();
+  bgSel.innerHTML = cfg.items.map(src => `<option value="${src}">${src.split('/').pop()}</option>`).join('');
+  if (cfg.items.length) {
+    bgSel.value = cfg.active || cfg.items[0];
+    prev.innerHTML = `<img src="${bgSel.value}" alt="" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    prev.innerHTML = `<div class="small">No backgrounds yet.</div>`;
+  }
+}
+bgSel.onchange = () => {
+  prev.innerHTML = `<img src="${bgSel.value}" alt="" style="width:100%;height:100%;object-fit:cover">`;
+};
+document.getElementById('save').onclick = () => {
+  if (!bgSel.value) return;
+  setHeroActive(bgSel.value);
+  alert('Active background set.');
+};
+document.getElementById('add').onclick = () => {
+  const f = fileEl.files?.[0]; if (!f) return alert('Pick an image first.');
+  const url = URL.createObjectURL(f); // Stage 1; replace with upload URL later
+  addHeroBackground(url);
+  fileEl.value = "";
+  render();
+};
+document.getElementById('export').onclick = () => {
+  const blob = exportHeroBackgroundsJSON();
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'hero-backgrounds.json'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+};
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>4K Studio – Folders</title>
+  <link rel="stylesheet" href="css/studio.css">
+</head>
+<body>
+<header>
+  <div><strong>4K Studio</strong> · Folders</div>
+  <div class="actions">
+    <a class="btn" href="create-character.html">+ Add Character</a>
+    <a class="btn secondary" href="hero-editor.html">Hero Page</a>
+    <a class="btn secondary" href="../drawing.html">Draw</a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="folders" id="folders"></div>
+
+  <hr>
+  <div class="toolbar">
+    <button id="exportChars" class="secondary">Export characters.js</button>
+    <button id="exportHero" class="secondary">Export hero-backgrounds.json</button>
+  </div>
+</main>
+
+<script type="module">
+import { listCharacters, exportCharactersJS, exportHeroBackgroundsJSON } from './js/store.js';
+import { pickColor } from './js/ui.js';
+
+const el = document.getElementById('folders');
+render();
+
+function render(){
+  const arr = listCharacters();
+  el.innerHTML = arr.map(c => `
+    <div class="folder">
+      <div class="color" style="background:${c.color || pickColor(c.id)}"></div>
+      <h3>${c.name}</h3>
+      <div class="small">${c.template || 'template'} · ${c.images?.length||0} images</div>
+      <div class="thumb" style="margin-top:8px">
+        ${c.images?.length ? `<img src="${c.images[0].src}" alt="">` : '<div class="small">No image</div>'}
+      </div>
+      <div class="row" style="margin-top:10px">
+        <a class="btn secondary" href="edit-character.html?id=${encodeURIComponent(c.id)}">Edit</a>
+      </div>
+    </div>
+  `).join('') || '<div class="small">No characters yet — click “Add Character”.</div>';
+}
+
+document.getElementById('exportChars').onclick = async () => {
+  const blob = exportCharactersJS();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'characters.js'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+};
+document.getElementById('exportHero').onclick = async () => {
+  const blob = exportHeroBackgroundsJSON();
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'hero-backgrounds.json'; a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 2000);
+};
+</script>
+</body>
+</html>

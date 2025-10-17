@@ -1,0 +1,111 @@
+/* Fortnite-style modal */
+.fortnite {
+  --fn-bg: radial-gradient(circle at 40% 30%, #1b1f33, #0b0e19 80%);
+  --fn-accent: #1e90ff;
+  --fn-secondary: #ff43d0;
+  --fn-text: #dce7ff;
+  font-family: "Orbitron", sans-serif;
+  color: var(--fn-text);
+}
+
+.fortnite .fn-card {
+  background: var(--fn-bg);
+  border: 2px solid var(--fn-accent);
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(30,144,255,0.6);
+  padding: 20px;
+  max-width: 960px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.fortnite .fn-top {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 2px solid var(--fn-accent);
+  padding-bottom: 16px;
+  margin-bottom: 20px;
+}
+
+.fortnite .fn-portrait {
+  width: 200px;
+  aspect-ratio: 3/4;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 12px var(--fn-secondary);
+}
+
+.fortnite .fn-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fortnite .fn-info h2 {
+  font-size: 2rem;
+  margin: 0;
+  color: var(--fn-accent);
+}
+
+.fortnite .fn-role {
+  font-size: 1rem;
+  color: var(--fn-secondary);
+  margin-top: 4px;
+}
+
+.fortnite .fn-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(140px,1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.fortnite .fn-stat {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 0 8px rgba(255,255,255,0.05);
+}
+
+.fortnite .fn-stat h4 {
+  color: var(--fn-accent);
+  margin: 0 0 4px;
+}
+
+.fortnite .fn-story {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 20px;
+  line-height: 1.6;
+}
+
+.fortnite .fn-cta {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.fortnite .fn-btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 2px solid var(--fn-accent);
+  background: var(--fn-secondary);
+  color: #fff;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 0 12px var(--fn-secondary);
+}
+
+.fortnite .fn-btn.secondary {
+  background: transparent;
+  border-color: var(--fn-secondary);
+  color: var(--fn-secondary);
+}

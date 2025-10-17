@@ -1,0 +1,17 @@
+/* assets/css/templates/storycard.css */
+.storycard .sc-wrap {
+  display:grid; gap:18px; grid-template-columns:320px 1fr;
+}
+.storycard .sc-left {
+  background:linear-gradient(135deg,#222 0%,#2c2f3a 100%);
+  border-radius:16px; padding:12px; border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 6px 22px rgba(0,0,0,.35);
+}
+.storycard .sc-img { aspect-ratio:4/5; background:#0e1016; border-radius:12px; overflow:hidden; display:grid; place-items:center }
+.storycard .sc-img img { width:100%; height:100%; object-fit:cover }
+.storycard h2 { margin:0 0 4px }
+.storycard .sc-meta { color:#aeb6c5; margin-bottom:8px }
+.storycard .sc-high { display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 14px }
+.storycard .sc-pill { background:#121522; border:1px solid #2a2f44; color:#d3dbef; border-radius:999px; padding:6px 10px }
+.storycard .sc-box { background:#171b26; border:1px solid #2a2f44; border-radius:12px; padding:12px; color:#c9d2e5 }
+.storycard .sc-row { display:flex; align-items:center; gap:10px; margin:8px 0 }

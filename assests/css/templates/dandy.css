@@ -1,0 +1,466 @@
+/* Dandy World Game-Style Template */
+.dandy {
+  --dandy-bg: #1a1a1f;
+  --dandy-card: #2a2a32;
+  --dandy-card-dark: #1e1e24;
+  --dandy-border: #3a3a44;
+  --dandy-text: #e8e8f0;
+  --dandy-text-muted: #9a9aa8;
+  --dandy-accent: #00ff88;
+  --dandy-health: #ff4757;
+  --dandy-skill: #ff8c42;
+  --dandy-move: #d4a017;
+  --dandy-stamina: #00d26a;
+  --dandy-stealth: #4d9de0;
+  --dandy-extract: #9d4edd;
+  font-family: 'Arial', 'Helvetica', sans-serif;
+  background: var(--dandy-bg);
+  color: var(--dandy-text);
+}
+
+/* Main Grid Layout */
+.dandy .oc-grid-3 {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 340px 1fr 340px;
+  padding: 0;
+}
+
+/* Card/Tile Styling */
+.dandy .oc-tile {
+  background: var(--dandy-card);
+  border: 2px solid var(--dandy-border);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* Left Column - Portrait Card */
+.dandy .oc-portrait {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--dandy-card-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.dandy .oc-portrait::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #ff3ea5 0%, #6f1cff 50%, #00e7ff 100%);
+}
+
+.dandy .oc-portrait img {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 12px;
+  margin: 16px;
+  border: 3px solid var(--dandy-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Character Name Section */
+.dandy h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dandy-text);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.dandy small {
+  color: var(--dandy-text-muted);
+  font-size: 14px;
+}
+
+/* Health Badge */
+.dandy .oc-badge {
+  background: var(--dandy-card-dark);
+  border: 2px solid var(--dandy-health);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--dandy-health);
+  box-shadow: 0 0 12px rgba(255, 71, 87, 0.3);
+}
+
+/* Stats Section - Game Style Bars */
+.dandy .oc-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0;
+  background: var(--dandy-card-dark);
+  border-radius: 10px;
+  padding: 12px;
+  border-left: 4px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.dandy .oc-row:hover {
+  background: #25252d;
+  transform: translateX(3px);
+}
+
+/* Individual stat styling */
+.dandy .oc-row:has(.oc-label:contains("Health")) {
+  border-left-color: var(--dandy-health);
+}
+
+.dandy .oc-row:nth-child(1) {
+  border-left-color: var(--dandy-skill);
+}
+
+.dandy .oc-row:nth-child(2) {
+  border-left-color: var(--dandy-move);
+}
+
+.dandy .oc-row:nth-child(3) {
+  border-left-color: var(--dandy-stamina);
+}
+
+.dandy .oc-row:nth-child(4) {
+  border-left-color: var(--dandy-stealth);
+}
+
+.dandy .oc-row:nth-child(5) {
+  border-left-color: var(--dandy-extract);
+}
+
+.dandy .oc-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--dandy-text);
+  margin-bottom: 4px;
+}
+
+/* Stars Styling */
+.dandy .oc-stars {
+  display: flex;
+  gap: 4px;
+}
+
+.dandy .oc-star {
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.dandy .oc-star.on {
+  opacity: 1;
+}
+
+/* Hearts Styling */
+.dandy .oc-hearts {
+  display: flex;
+  gap: 4px;
+}
+
+.dandy .oc-heart {
+  width: 18px;
+  height: 18px;
+  opacity: 0.3;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+.dandy .oc-heart.on {
+  opacity: 1;
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Progress Meters - Game Style */
+.dandy .oc-meter {
+  height: 24px;
+  border-radius: 8px;
+  background: var(--dandy-card-dark);
+  overflow: hidden;
+  border: 2px solid var(--dandy-border);
+  position: relative;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.dandy .oc-meter > span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--dandy-stamina) 0%, var(--dandy-accent) 100%);
+  border-radius: 6px;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px rgba(0, 255, 136, 0.5);
+  position: relative;
+}
+
+.dandy .oc-meter > span::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, transparent 100%);
+  border-radius: 6px 6px 0 0;
+}
+
+/* Companion & Quote Boxes */
+.dandy .oc-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.dandy h3 {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--dandy-accent);
+  margin: 0 0 10px;
+}
+
+.dandy .oc-chip {
+  display: inline-block;
+  background: var(--dandy-card-dark);
+  border: 2px solid var(--dandy-border);
+  color: var(--dandy-text);
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin: 3px;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.dandy .oc-chip:hover {
+  background: var(--dandy-border);
+  border-color: var(--dandy-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 255, 136, 0.3);
+}
+
+/* Identity Section (Right Column) */
+.dandy .kv {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0;
+  padding: 10px;
+  background: var(--dandy-card-dark);
+  border-radius: 8px;
+  border-left: 3px solid var(--dandy-accent);
+}
+
+.dandy .kv b {
+  color: var(--dandy-accent);
+  min-width: 100px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dandy .kv span {
+  color: var(--dandy-text);
+}
+
+/* Abilities Section */
+.dandy .oc-ability {
+  background: var(--dandy-card-dark);
+  border: 2px solid var(--dandy-border);
+  border-radius: 12px;
+  padding: 14px;
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dandy .oc-ability::before {
+  content: 'ABILITY';
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--dandy-text-muted);
+  opacity: 0.5;
+  letter-spacing: 1px;
+}
+
+.dandy .oc-ability h4 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dandy-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dandy .oc-ability p {
+  margin: 0;
+  color: var(--dandy-text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Bio Section */
+.dandy .oc-bio {
+  line-height: 1.6;
+  padding: 20px;
+  background: var(--dandy-card-dark);
+  border-radius: 12px;
+  border: 2px solid var(--dandy-border);
+}
+
+.dandy .oc-bio h3 {
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: var(--dandy-text);
+  text-transform: uppercase;
+}
+
+/* Full Art Section */
+.dandy .oc-fullart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(60% 80% at 50% 30%, #2a2a32 0%, #1a1a1f 100%);
+  border-radius: 16px;
+  padding: 30px;
+  border: 2px solid var(--dandy-border);
+  position: relative;
+  overflow: hidden;
+}
+
+.dandy .oc-fullart::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 62, 165, 0.1) 0%, rgba(111, 28, 255, 0.1) 50%, rgba(0, 231, 255, 0.1) 100%);
+  pointer-events: none;
+}
+
+.dandy .oc-fullart img {
+  width: 100%;
+  max-width: 600px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 40px rgba(0, 0, 0, 0.8));
+  position: relative;
+  z-index: 1;
+}
+
+/* CTA Buttons - Game Style */
+.dandy .oc-cta {
+  padding: 12px 20px;
+  border: 2px solid var(--dandy-accent);
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--dandy-accent) 0%, #00cc70 100%);
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.4);
+  text-align: center;
+}
+
+.dandy .oc-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 255, 136, 0.6);
+  background: linear-gradient(135deg, #00ff88 0%, #00ffaa 100%);
+}
+
+.dandy .oc-cta.secondary {
+  background: transparent;
+  border: 2px solid var(--dandy-border);
+  color: var(--dandy-text);
+  box-shadow: none;
+}
+
+.dandy .oc-cta.secondary:hover {
+  background: var(--dandy-card-dark);
+  border-color: var(--dandy-accent);
+  color: var(--dandy-accent);
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+}
+
+/* REQUIRED Label (like in image) */
+.dandy .required-label {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: var(--dandy-card-dark);
+  border: 2px solid var(--dandy-border);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--dandy-text-muted);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .dandy .oc-grid-3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .dandy .oc-portrait img {
+    max-width: 100%;
+  }
+  
+  .dandy .oc-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Purchase Button Style (from image) */
+.dandy .purchase-btn {
+  width: 100%;
+  padding: 16px;
+  background: var(--dandy-accent);
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #000;
+  cursor: pointer;
+  margin-top: 16px;
+  box-shadow: 0 6px 16px rgba(0, 255, 136, 0.5);
+  transition: all 0.3s ease;
+}
+
+.dandy .purchase-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0, 255, 136, 0.7);
+}
+
+.dandy .purchase-btn:active {
+  transform: scale(0.98);
+}

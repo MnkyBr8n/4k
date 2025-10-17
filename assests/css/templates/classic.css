@@ -1,0 +1,226 @@
+/* Classic Centered Layout Template */
+.classic {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Portrait Photo - Top Center */
+.classic .oc-portrait-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.classic .oc-portrait {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid var(--oc-accent, #8b5cff);
+  box-shadow: 0 8px 32px rgba(139, 92, 255, 0.4);
+  background: linear-gradient(135deg, #222 0%, #2c2f3a 100%);
+}
+
+.classic .portrait-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.classic .oc-portrait:hover .portrait-image {
+  transform: scale(1.05);
+}
+
+/* Name */
+.classic h2 {
+  margin: 0 0 8px;
+  font-size: 32px;
+  color: var(--oc-ink, #e9ecf1);
+  font-weight: 700;
+}
+
+/* Info Section - Separate Lines */
+.classic .oc-info {
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+.classic .oc-info-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.classic .oc-info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 400px;
+  justify-content: space-between;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.classic .oc-info-label {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--oc-muted, #aeb6c5);
+  font-weight: 600;
+  text-align: left;
+}
+
+.classic .oc-info-value {
+  font-size: 16px;
+  color: var(--oc-ink, #e9ecf1);
+  font-weight: 600;
+  text-align: right;
+}
+
+/* Divider */
+.classic .oc-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 20px auto;
+  max-width: 400px;
+}
+
+/* About Me Section */
+.classic .oc-about {
+  background: linear-gradient(135deg, #222 0%, #2c2f3a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 24px auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.classic .oc-about h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: var(--oc-accent2, #00d1ff);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.classic .oc-about p {
+  line-height: 1.6;
+  color: #c9d2e5;
+  margin: 0;
+}
+
+/* Website Link */
+.classic .oc-website-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--oc-accent, #8b5cff), var(--oc-accent2, #00d1ff));
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin: 16px 0 24px;
+  font-size: 15px;
+}
+
+.classic .oc-website-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(139, 92, 255, 0.5);
+}
+
+/* Thumbnails Section */
+.classic .oc-thumbnails {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.classic .oc-thumbnails h3 {
+  margin: 0 0 16px;
+  font-size: 18px;
+  color: var(--oc-accent2, #00d1ff);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.classic .oc-thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.classic .oc-thumbnail {
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #222 0%, #2c2f3a 100%);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.classic .oc-thumbnail:hover {
+  border-color: var(--oc-accent, #8b5cff);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(139, 92, 255, 0.4);
+}
+
+.classic .oc-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.classic .oc-thumbnail-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  padding: 8px;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .classic .oc-portrait {
+    width: 220px;
+    height: 220px;
+  }
+
+  .classic h2 {
+    font-size: 26px;
+  }
+
+  .classic .oc-info-item {
+    max-width: 100%;
+  }
+
+  .classic .oc-thumbnail-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+
+  .classic .oc-about {
+    padding: 16px;
+  }
+}

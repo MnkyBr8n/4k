@@ -1,0 +1,94 @@
+4k/                                  # repo root (GitHub Pages)
+├─ CNAME
+├─ README.md
+│
+├─ index.html                        # public site: home
+├─ gallery.html                      # public site: gallery
+├─ drawing.html                      # public site: drawing tool (existing)
+├─ about.html                        # (if present)
+├─ commissions.html                  # (if present)
+│
+├─ style.css                         # legacy/global styles (keep working)
+├─ main.js                           # legacy/global scripts (keep working)
+│
+├─ oc-pages/                         # PUBLIC: one HTML per character (long-form pages)
+│  ├─ oc-4k.html
+│  ├─ oc-redrum.html
+│  ├─ oc-reggie.html
+│  ├─ oc-anton.html                  # (new suggested)
+│  ├─ oc-conrad.html                 # (new suggested)
+│  └─ (more as you add)
+│
+├─ data/                             # PUBLIC: data consumed by site
+│  ├─ characters.js                  # list/objects the modals & gallery read
+│  └─ hero-backgrounds.json          # hero/landing seasonal backgrounds
+│
+├─ assets/
+│  ├─ css/
+│  │  ├─ oc-base.css                 # shared modal/backdrop primitives
+│  │  └─ templates/                  # modal theme styles
+│  │     ├─ dandy.css
+│  │     ├─ classic.css
+│  │     ├─ passport.css
+│  │     ├─ storycard.css
+│  │     ├─ roblox.css
+│  │     └─ fortnite.css
+│  │
+│  ├─ js/
+│  │  ├─ oc-modal-core.js            # modal core + registry + smart-button logic
+│  │  └─ templates/                  # modal theme renderers
+│  │     ├─ dandy.js
+│  │     ├─ classic.js
+│  │     ├─ passport.js
+│  │     ├─ storycard.js
+│  │     ├─ roblox.js
+│  │     └─ fortnite.js
+│  │
+│  ├─ images/                        # PUBLIC images (new home; optional migration)
+│  │  ├─ hero-backgrounds/           # seasonal/holiday hero art
+│  │  │  ├─ winter.jpg
+│  │  │  ├─ halloween.jpg
+│  │  │  ├─ christmas.jpg
+│  │  │  └─ (more backgrounds)
+│  │  └─ oc/                         # organized per character (recommended)
+│  │     ├─ 4k/
+│  │     │  ├─ profile.jpg
+│  │     │  ├─ digital/
+│  │     │  └─ analog/
+│  │     ├─ redrum/
+│  │     ├─ reggie/
+│  │     ├─ anton/
+│  │     └─ conrad/
+│  │
+│  └─ audio/                         # optional local music (if you use HTML <audio>)
+│
+├─ components/                       # optional HTML snippets/partials (header/footer/etc.)
+│  ├─ header.html
+│  ├─ footer.html
+│  └─ character-card.html
+│
+├─ componets/                        # (EXISTING image folder with typo; keep for now so links don’t break)
+│  ├─ 4k.jpg
+│  ├─ redrum1.png
+│  ├─ anton1.png
+│  └─ (your existing assets here)
+│
+├─ studio/                           # PRIVATE “4K Studio App” (admin/PWA) — minimal UX
+│  ├─ index.html                     # folders view (color-coded per character)
+│  ├─ create-character.html          # wizard: required portrait, template pick, about
+│  ├─ edit-character.html            # tabs: info / images / template / carousel tags
+│  ├─ hero-editor.html               # hero background picker & uploader
+│  ├─ music.html                     # optional Spotify/embed player (simple)
+│  │
+│  ├─ css/
+│  │  └─ studio.css                  # neutral, non-flashy, touch-friendly styles
+│  │
+│  └─ js/
+│     ├─ store.js                    # Stage-1 localStorage store (swap to Firebase later)
+│     └─ ui.js                       # shared helpers (slugify, file->URL, color picker)
+│
+├─ manifest.webmanifest              # PWA manifest (install on iPhone)
+├─ service-worker.js                 # PWA offline caching (optional, simple)
+└─ icons/                            # PWA icons
+   ├─ 4k-192.png
+   └─ 4k-512.png

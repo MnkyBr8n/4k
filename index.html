@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4K - Digital Artist Portfolio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="hero-additions.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
-            <div class="logo">4K</div>
+            <div class="logo">
+                <!-- Watermark Logo - Replace 'images/watermark-logo.png' with your actual logo -->
+                <img src="images/watermark-logo.png" alt="4K Watermark" class="brand-logo">
+            </div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
@@ -18,66 +22,86 @@
                 <li><a href="commissions.html">Commissions</a></li>
                 <li><a href="drawing.html">Draw</a></li>
             </ul>
-            <div class="mobile-menu-btn">☰</div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu"></button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section - NEW LAYOUT -->
     <section class="hero">
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>4K</h1>
-                    <p>Welcome to my digital art world! I'm a passionate 14-year-old artist who loves creating original characters and bringing imagination to life through digital art.</p>
-                    
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram" aria-label="Instagram">📷</a>
-                        <a href="#" title="Twitter" aria-label="Twitter">🐦</a>
-                        <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok" aria-label="TikTok">📱</a>
-                        <a href="https://discord.com/users/1202037619345588295"
- title="Discord" aria-label="Discord">💬</a>
-                    </div>
-
-                    <div class="cta-buttons">
-                        <a href="gallery.html" class="btn primary">View Gallery</a>
-                        <a href="commissions.html" class="btn secondary">Commission Me</a>
+            <div class="hero-content-new">
+                
+                <!-- Portrait Frame - Left Side (Desktop) / Top (Mobile) -->
+                <div class="portrait-frame-wrapper">
+                    <div class="portrait-frame">
+                        <div class="frame-inner">
+                            <!-- Replace 'images/portrait.jpg' with actual portrait photo -->
+                            <img src="images/portrait.jpg" alt="4K Portrait" class="portrait-image">
+                        </div>
                     </div>
                 </div>
 
-                <div class="featured-carousel">
-                    <div class="carousel-container">
-                        <div class="carousel-slide active" data-character="anton">
-                            <img src="anton.png" alt="Anton">
-                            <div class="slide-content">
-                                <h3>Anton</h3>
-                                <p>Human</p>
-                                <a href="oc-anton.html" class="slide-btn">Learn More</a>
-                            </div>
-                        </div>
-                        <div class="carousel-slide" data-character="4k">
-                            <img src="componet/4k.jpg" alt="ME">
-                            <div class="slide-content">
-                                <h3>4k</h3>
-                                <p>Just Me</p>
-                                <a href="oc-4k.html" class="slide-btn">Learn More</a>
-                            </div>
-                        </div>
-                        <div class="carousel-slide" data-character="reggie">
-                            <img src="componets/reggie.jpg" alt="reggie">
-                            <div class="slide-content">
-                                <h3>REGGIE</h3>
-                                <p>Demon Anthro</p>
-                                <a href="oc-reggie.html" class="slide-btn">Learn More</a>
-                            </div>
-                        </div>
+                <!-- Right Side Content (Desktop) / Below Portrait (Mobile) -->
+                <div class="hero-right-content">
+                    <div class="hero-header">
+                        <h1>Welcome to My Art Gallery</h1>
                     </div>
-                    <div class="carousel-nav">
-                        <button class="carousel-dot active" data-slide="0" aria-label="View anton"></button>
-                        <button class="carousel-dot" data-slide="1" aria-label="View 4k"></button>
-                        <button class="carousel-dot" data-slide="2" aria-label="View reggie"></button>
+
+                    <!-- Featured Carousel -->
+                    <div class="featured-carousel">
+                        <div class="carousel-container">
+                            <div class="carousel-slide active" data-character="anton">
+                                <img src="anton.png" alt="Anton">
+                                <div class="slide-content">
+                                    <h3>Anton</h3>
+                                    <p>Human</p>
+                                    <a href="oc-anton.html" class="slide-btn">Learn More</a>
+                                </div>
+                            </div>
+                            <div class="carousel-slide" data-character="4k">
+                                <img src="componet/4k.jpg" alt="ME">
+                                <div class="slide-content">
+                                    <h3>4k</h3>
+                                    <p>Just Me</p>
+                                    <a href="oc-4k.html" class="slide-btn">Learn More</a>
+                                </div>
+                            </div>
+                            <div class="carousel-slide" data-character="reggie">
+                                <img src="componets/reggie.jpg" alt="reggie">
+                                <div class="slide-content">
+                                    <h3>REGGIE</h3>
+                                    <p>Demon Anthro</p>
+                                    <a href="oc-reggie.html" class="slide-btn">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="carousel-nav">
+                            <button class="carousel-dot active" data-slide="0" aria-label="View anton"></button>
+                            <button class="carousel-dot" data-slide="1" aria-label="View 4k"></button>
+                            <button class="carousel-dot" data-slide="2" aria-label="View reggie"></button>
+                        </div>
+                        <button class="carousel-arrow prev" aria-label="Previous slide">�</button>
+                        <button class="carousel-arrow next" aria-label="Next slide">�</button>
                     </div>
-                    <button class="carousel-arrow prev" aria-label="Previous slide">‹</button>
-                    <button class="carousel-arrow next" aria-label="Next slide">›</button>
+                </div>
+            </div>
+
+            <!-- Welcome Text & Social/CTA Section - Below Hero -->
+            <div class="hero-bottom">
+                <div class="welcome-intro">
+                    <p>Welcome to my digital art world! I'm a passionate 14-year-old artist who loves creating original characters and bringing imagination to life through digital art.</p>
+                </div>
+
+                <div class="social-links">
+                    <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram" aria-label="Instagram"></a>
+                    <a href="#" title="Twitter" aria-label="Twitter"></a>
+                    <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok" aria-label="TikTok"></a>
+                    <a href="https://discord.com/users/1202037619345588295" title="Discord" aria-label="Discord"></a>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="gallery.html" class="btn primary">View Gallery</a>
+                    <a href="commissions.html" class="btn secondary">Commission Me</a>
                 </div>
             </div>
         </div>
@@ -89,7 +113,7 @@
             <h2>Latest Creations</h2>
             <div class="work-grid">
                 <div class="work-item">
-                    <img src="" alt="Recent Commission">
+                    <img src="https://via.placeholder.com/300x200/6c5ce7/ffffff?text=Dragon+Commission" alt="Recent Commission">
                     <h3>Dragon Warrior Commission</h3>
                     <p>Character design for a fantasy novel</p>
                 </div>
@@ -112,22 +136,23 @@
         <div class="container">
             <div class="links-grid">
                 <a href="gallery.html" class="link-card">
-                    <div class="link-icon">🎨</div>
+                    <div class="link-icon"></div>
                     <h3>Browse Gallery</h3>
                     <p>Explore my complete collection of original characters and artwork</p>
                 </a>
                 <a href="commissions.html" class="link-card">
-                    <div class="link-icon">💼</div>
+                    <div class="link-icon"></div>
+                    <h3>Commission Work</h3>
                     <h3>Commission Work</h3>
                     <p>Let's bring your character ideas to life together</p>
                 </a>
                 <a href="drawing.html" class="link-card">
-                    <div class="link-icon">✏️</div>
+                    <div class="link-icon"></div>
                     <h3>Try Drawing</h3>
                     <p>Use my interactive drawing tool to create your own art</p>
                 </a>
                 <a href="about.html" class="link-card">
-                    <div class="link-icon">👋</div>
+                    <div class="link-icon"></div>
                     <h3>About Me</h3>
                     <p>Learn more about my artistic journey and inspiration</p>
                 </a>
@@ -154,11 +179,10 @@
                 <div class="footer-section">
                     <h4>Connect</h4>
                     <div class="social-links">
-                        <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram">📷</a>
-                        <a href="" title="Twitter">🐦</a>
-                        <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok">📱</a>
-                        <a href="https://discord.com/users/1202037619345588295"
- title="Discord">💬</a>
+                        <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram"></a>
+                        <a href="#" title="Twitter"></a>
+                        <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok"></a>
+                        <a href="https://discord.com/users/1202037619345588295" title="Discord"></a>
                     </div>
                 </div>
             </div>

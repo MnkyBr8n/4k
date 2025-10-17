@@ -1,0 +1,16 @@
+/* assets/css/studio.css */
+body{margin:0;font:14px/1.5 system-ui,Segoe UI,Roboto;background:#0f1015;color:#e9ecf1}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#151a23;border-bottom:1px solid #232a3b}
+.bar a{color:#9fd1ff;text-decoration:none;margin-left:12px}
+.grid{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 50px)}
+.folders{border-right:1px solid #232a3b;padding:16px}
+.folders ul{list-style:none;padding:0;margin:0}
+.folders li{display:flex;align-items:center;gap:8px;padding:8px 6px;border-radius:8px;cursor:pointer}
+.folders li:hover{background:#1a1f2b}
+.folder-dot{width:10px;height:10px;border-radius:50%}
+.panel{padding:16px}
+.btn{display:inline-block;background:#2a3349;padding:8px 12px;border-radius:8px;color:#dfe7ff;text-decoration:none;border:1px solid #3b4561;margin-right:8px}
+label{display:block;margin:8px 0 4px}
+input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #2c3550;background:#121826;color:#dfe7ff}
+.help{color:#aeb6c5;font-size:12px}
+.row{display:flex;gap:10px}
