@@ -1109,9 +1109,9 @@ footer {
     font-size: 2.5rem;
     font-weight: 800;
     margin: 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #c6c6c6 0%, #764ba2 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: soild;
     background-clip: text;
     text-transform: uppercase;
     letter-spacing: 2px;
