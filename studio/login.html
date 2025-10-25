@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – 4K Studio</title>
+  <link rel="stylesheet" href="css/studio.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #0f1116 0%, #1a1f2e 100%);
+      padding: 20px;
+    }
+    
+    .login-box {
+      background: var(--panel);
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      padding: 40px;
+      width: 100%;
+      max-width: 420px;
+      border: 1px solid #232836;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    
+    .login-logo {
+      font-size: 48px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #7c5cff 0%, #00c2ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+    
+    .login-subtitle {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font-weight: 500;
+      font-size: 14px;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid #2a3242;
+      background: #0f121a;
+      color: var(--ink);
+      font-size: 15px;
+      transition: all 0.3s;
+    }
+    
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.1);
+    }
+    
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #7c5cff 0%, #00c2ff 100%);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+    
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(124, 92, 255, 0.4);
+    }
+    
+    .login-btn:active {
+      transform: translateY(0);
+    }
+    
+    .error-message {
+      background: rgba(255, 100, 117, 0.1);
+      border: 1px solid #ff6475;
+      border-radius: 10px;
+      padding: 12px;
+      color: #ff6475;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    
+    .error-message.show {
+      display: block;
+      animation: shake 0.3s;
+    }
+    
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+    
+    .password-requirements {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    
+    .login-footer {
+      text-align: center;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #232836;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-box">
+      <div class="login-header">
+        <div class="login-logo">4K Studio</div>
+        <div class="login-subtitle">Character Management System</div>
+      </div>
+      
+      <div id="errorMessage" class="error-message"></div>
+      
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            required 
+            autocomplete="username"
+            autofocus
+          >
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            required
+            autocomplete="current-password"
+          >
+          <div class="password-requirements">
+            Min 6 characters • Must include number & special character
+          </div>
+        </div>
+        
+        <button type="submit" class="login-btn">
+          Sign In
+        </button>
+      </form>
+      
+      <div class="login-footer">
+        4K Art Studio © 2025
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { login, isAuthenticated } from './js/auth.js';
+    
+    // Redirect if already logged in
+    if (isAuthenticated()) {
+      window.location.href = 'dashboard.html';
+    }
+    
+    const form = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('errorMessage');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add('show');
+      
+      setTimeout(() => {
+        errorMessage.classList.remove('show');
+      }, 5000);
+    }
+    
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value;
+      
+      if (!username || !password) {
+        showError('Please enter both username and password');
+        return;
+      }
+      
+      const result = login(username, password);
+      
+      if (result.success) {
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+      } else {
+        showError(result.error);
+        passwordInput.value = '';
+        passwordInput.focus();
+      }
+    });
+    
+    // Clear error on input
+    [usernameInput, passwordInput].forEach(input => {
+      input.addEventListener('input', () => {
+        errorMessage.classList.remove('show');
+      });
+    });
+  </script>
+</body>
+</html>

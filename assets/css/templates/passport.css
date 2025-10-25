@@ -1,0 +1,171 @@
+/* Passport/ID Template CSS */
+.id-card {
+    width: 100%;
+    max-width: 650px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.id-card .card-header {
+    background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+    padding: 20px 30px;
+    color: white;
+    text-align: center;
+}
+
+.id-card .university-name {
+    font-size: 24px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.id-card .card-type {
+    font-size: 12px;
+    font-weight: 600;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+.id-card .card-main {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 30px;
+    padding: 30px;
+    background: white;
+}
+
+.id-card .photo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.id-card .id-photo {
+    width: 180px;
+    height: 220px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 3px solid #e5e7eb;
+    background: #f3f4f6;
+    margin-bottom: 15px;
+}
+
+.id-card .role-badge {
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.id-card .info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.id-card .info-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.id-card .info-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.id-card .info-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.id-card .info-divider {
+    height: 1px;
+    background: linear-gradient(90deg, #e5e7eb 0%, transparent 100%);
+    margin: 5px 0;
+}
+
+.id-card .bio-section {
+    padding: 25px 30px;
+    background: #f9fafb;
+    border-top: 2px solid #e5e7eb;
+}
+
+.id-card .bio-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.id-card .bio-text {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.7;
+}
+
+.id-card .card-footer {
+    padding: 20px 30px;
+    background: white;
+    border-top: 2px solid #e5e7eb;
+    display: flex;
+    justify-content: center;
+}
+
+.id-card .university-button {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px 30px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.id-card .university-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.id-card .university-button:active {
+    transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .id-card .card-main {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .id-card .photo-section {
+        align-items: center;
+    }
+
+    .id-card .info-field {
+        align-items: center;
+    }
+}

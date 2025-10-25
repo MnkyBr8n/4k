@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - 4K Studio</title>
+  <link rel="stylesheet" href="css/studio.css">
+  <style>
+    .settings-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .settings-section {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .settings-section h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="password"],
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 1rem;
+    }
+
+    .form-group input[type="password"] {
+      font-family: monospace;
+    }
+
+    .form-help {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-top: 0.5rem;
+    }
+
+    .connection-status {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+
+    .status-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-indicator.success {
+      background: #00ff00;
+      box-shadow: 0 0 10px #00ff00;
+    }
+
+    .status-indicator.error {
+      background: #ff4444;
+      box-shadow: 0 0 10px #ff4444;
+    }
+
+    .status-indicator.testing {
+      background: #ffaa00;
+      box-shadow: 0 0 10px #ffaa00;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .danger-zone {
+      border: 2px solid #ff4444;
+      background: rgba(255, 68, 68, 0.1);
+    }
+
+    .danger-zone h3 {
+      color: #ff4444;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Studio Header -->
+  <header class="studio-header">
+    <nav class="studio-nav">
+      <div class="studio-logo">4K Studio</div>
+      <ul class="studio-links">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="characters.html">Characters</a></li>
+        <li><a href="images.html">Images</a></li>
+        <li><a href="draw-editor.html">Draw Editor</a></li>
+        <li><a href="settings.html" class="active">Settings</a></li>
+        <li><a href="#" onclick="logout()">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="studio-main">
+    <div class="studio-container settings-container">
+      <div class="page-header">
+        <h1>⚙️ Settings</h1>
+        <p>Configure your 4K Studio</p>
+      </div>
+
+      <!-- GitHub Configuration -->
+      <div class="settings-section">
+        <h2>🔗 GitHub Configuration</h2>
+        <p style="margin-bottom: 1.5rem; opacity: 0.8;">
+          Connect your GitHub repository to sync your artwork and character data.
+        </p>
+
+        <div class="form-group">
+          <label for="githubOwner">Repository Owner</label>
+          <input type="text" id="githubOwner" placeholder="your-username">
+          <div class="form-help">Your GitHub username or organization name</div>
+        </div>
+
+        <div class="form-group">
+          <label for="githubRepo">Repository Name</label>
+          <input type="text" id="githubRepo" placeholder="my-website">
+          <div class="form-help">The name of your GitHub Pages repository</div>
+        </div>
+
+        <div class="form-group">
+          <label for="githubBranch">Branch</label>
+          <input type="text" id="githubBranch" placeholder="main" value="main">
+          <div class="form-help">The branch to sync to (usually 'main' or 'gh-pages')</div>
+        </div>
+
+        <div class="form-group">
+          <label for="githubToken">Personal Access Token</label>
+          <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+          <div class="form-help">
+            Create a token at GitHub → Settings → Developer Settings → Personal Access Tokens<br>
+            Required permission: <strong>repo</strong> (Full control of private repositories)
+          </div>
+        </div>
+
+        <div class="connection-status" id="connectionStatus" style="display: none;">
+          <div class="status-indicator" id="statusIndicator"></div>
+          <div style="flex: 1;">
+            <div id="statusText"></div>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn" onclick="testConnection()">Test Connection</button>
+          <button class="btn" onclick="saveGitHubConfig()">Save Configuration</button>
+          <button class="btn secondary" onclick="clearGitHubConfig()">Clear</button>
+        </div>
+      </div>
+
+      <!-- Auto-Sync Settings -->
+      <div class="settings-section">
+        <h2>🔄 Sync Settings</h2>
+        
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="autoSync" onchange="toggleAutoSync()">
+            Enable Auto-Sync
+          </label>
+          <div class="form-help">Automatically sync changes to GitHub (coming soon)</div>
+        </div>
+
+        <div class="form-group">
+          <label for="syncInterval">Sync Interval</label>
+          <select id="syncInterval" disabled>
+            <option value="5">Every 5 minutes</option>
+            <option value="15" selected>Every 15 minutes</option>
+            <option value="30">Every 30 minutes</option>
+            <option value="60">Every hour</option>
+          </select>
+          <div class="form-help">How often to check for changes and sync</div>
+        </div>
+      </div>
+
+      <!-- Tag Management -->
+      <div class="settings-section">
+        <h2>🏷️ Tag Management</h2>
+        
+        <div style="margin-bottom: 1.5rem;">
+          <strong>Total Tags:</strong> <span id="totalTags">0</span>
+        </div>
+
+        <div id="tagsList" style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+          <!-- Tags will be loaded here -->
+        </div>
+
+        <button class="btn secondary" onclick="refreshTags()">Refresh Tags</button>
+      </div>
+
+      <!-- Data Management -->
+      <div class="settings-section">
+        <h2>💾 Data Management</h2>
+        
+        <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem;">
+          <div style="margin-bottom: 0.5rem;">
+            <strong>Characters:</strong> <span id="dataCharacters">0</span>
+          </div>
+          <div style="margin-bottom: 0.5rem;">
+            <strong>Images:</strong> <span id="dataImages">0</span>
+          </div>
+          <div style="margin-bottom: 0.5rem;">
+            <strong>Hero Backgrounds:</strong> <span id="dataBackgrounds">0</span>
+          </div>
+          <div>
+            <strong>Storage Used:</strong> <span id="dataStorage">0 MB</span>
+          </div>
+        </div>
+
+        <div class="button-group">
+          <button class="btn" onclick="window.location.href='dashboard.html'; openBackupDialog();">Backup Data</button>
+          <button class="btn secondary" onclick="window.location.href='dashboard.html'; openExportDialog();">Export Portfolio</button>
+        </div>
+      </div>
+
+      <!-- Danger Zone -->
+      <div class="settings-section danger-zone">
+        <h3>⚠️ Danger Zone</h3>
+        <p style="margin-bottom: 1.5rem;">These actions cannot be undone.</p>
+
+        <div class="button-group">
+          <button class="btn secondary" onclick="clearCache()">Clear Cache</button>
+          <button class="btn secondary" onclick="resetSettings()">Reset Settings</button>
+          <button class="btn" style="background: #ff4444;" onclick="clearAllData()">Delete All Data</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Notification -->
+  <div class="notification" id="notification"></div>
+
+  <!-- Scripts -->
+  <script src="js/store.js"></script>
+  <script src="js/github-sync-ui.js"></script>
+  <script src="js/tag-manager.js"></script>
+  <script src="js/export-tools.js"></script>
+  <script src="js/settings.js"></script>
+</body>
+</html>
