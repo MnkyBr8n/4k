@@ -9,7 +9,7 @@ const SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
 const USERS = {
   'MnkyBr8n': {
     username: 'MnkyBr8n',
-    password: 'Password.2023', // Default - user should change
+    password: 'Admin123!', // Default - user should change
     role: 'admin',
     displayName: 'Admin'
   },
