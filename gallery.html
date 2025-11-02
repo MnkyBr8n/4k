@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="assets/css/templates/dandy.css" />
   <link rel="stylesheet" href="assets/css/templates/classic.css" />
   <link rel="stylesheet" href="assets/css/templates/passport.css" />
+  <link rel="stylesheet" href="assets/css/templates/storycard.css" />
+  <link rel="stylesheet" href="assets/css/templates/roblox.css" />
+  <link rel="stylesheet" href="assets/css/templates/fortnite.css" />
 </head>
 <body>
   <!-- Navigation -->
@@ -60,13 +63,14 @@
   <script type="module" src="assets/js/templates/classic.js"></script>
   <script type="module" src="assets/js/templates/passport.js"></script>
 
+
   <!-- Global Site JS -->
   <script src="main.js" defer></script>
-  <script src="oc-modal-core.js" ></script>
-
+  
   <!-- Page script: render from /data/characters.js -->
   <script type="module">
-    import { CHARACTERS } from './data/characters.js';
+    import { CHARACTERS } from '../../data/characters.js';
+    import { openCharacter } from './assets/js/oc-modal-core.js';
 
     const grid = document.getElementById('galleryGrid');
     const filtersWrap = document.getElementById('filters');
@@ -77,10 +81,10 @@
         const category = c.category || 'ocs'; // default to Original Characters
         const tmplAttr = c.template ? ` data-template="${c.template}"` : '';
         const portrait = c.portrait || (c.images?.[0]?.src) || '';
-        const learnLink = c.link ? `<a href="${c.link}" class="slide-btn">Learn More</a>` : '';
+        const learnLink = c.link ? `<a href="${c.link}" class="slide-btn" onclick="event.stopPropagation()">Learn More</a>` : '';
 
         return `
-          <article class="gallery-item ${category}" data-character="${c.id}"${tmplAttr}>
+          <article class="gallery-item ${category}" data-character="${c.id}"${tmplAttr} style="cursor: pointer;">
             <img src="${portrait}" alt="${c.name || c.id}">
             <div class="gallery-item-content">
               <h3>${c.name || ''}</h3>
@@ -97,6 +101,22 @@
 
     // Initial render - Convert CHARACTERS object to array
     render(Object.values(CHARACTERS));
+
+    // Click handling for gallery items - OPEN MODAL
+    grid.addEventListener('click', (e) => {
+      // Don't trigger if clicking the "Learn More" link
+      if (e.target.closest('.slide-btn')) return;
+      
+      const item = e.target.closest('.gallery-item');
+      if (!item) return;
+      
+      const characterId = item.dataset.character;
+      
+      console.log('Opening modal for:', characterId); // Debug log
+      
+      // Open the character modal
+      openCharacter(characterId);
+    });
 
     // Filter logic
     filtersWrap.addEventListener('click', (e) => {
