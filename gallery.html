@@ -12,9 +12,6 @@
   <link rel="stylesheet" href="assets/css/templates/dandy.css" />
   <link rel="stylesheet" href="assets/css/templates/classic.css" />
   <link rel="stylesheet" href="assets/css/templates/passport.css" />
-  <link rel="stylesheet" href="assets/css/templates/storycard.css" />
-  <link rel="stylesheet" href="assets/css/templates/roblox.css" />
-  <link rel="stylesheet" href="assets/css/templates/fortnite.css" />
 </head>
 <body>
   <!-- Navigation -->
@@ -67,80 +64,68 @@
   <!-- Global Site JS -->
   <script src="main.js" defer></script>
   
-  <!-- Page script: render from /data/characters.js -->
-  <script type="module">
-    import { CHARACTERS } from './data/characters.js';
-    import { openCharacter } from './assets/js/oc-modal-core.js';
+ <!-- Page script: render from /data/characters.js -->
+<script type="module">
+  import { CHARACTERS } from './data/characters.js';
+  import { openCharacter } from './assets/js/oc-modal-core.js';
 
-    const grid = document.getElementById('galleryGrid');
-    const filtersWrap = document.getElementById('filters');
+  const grid = document.getElementById('galleryGrid');
+  const filtersWrap = document.getElementById('filters');
 
-    // Render all cards from the character data
-    function render(list) {
-      grid.innerHTML = list.map(c => {
-        const category = c.category || 'ocs'; // default to Original Characters
-        const tmplAttr = c.template ? ` data-template="${c.template}"` : '';
-        const portrait = c.portrait || (c.images?.[0]?.src) || '';
-        const learnLink = c.link ? `<a href="${c.link}" class="slide-btn" onclick="event.stopPropagation()">Learn More</a>` : '';
+  function render(entries) {
+    grid.innerHTML = entries.map(([key, c]) => {
+      const category = c.category || 'ocs';
+      const tmplAttr = c.template ? ` data-template="${c.template}"` : '';
+      const portrait = c.portrait || (c.images?.[0]?.src) || '';
+      const learnLink = c.link ? `<a href="${c.link}" class="slide-btn" onclick="event.stopPropagation()">Learn More</a>` : '';
 
-        return `
-          <article class="gallery-item ${category}" data-character="${c.id}"${tmplAttr} style="cursor: pointer;">
-            <img src="${portrait}" alt="${c.name || c.id}">
-            <div class="gallery-item-content">
-              <h3>${c.name || ''}</h3>
-              <p>${c.aboutQuick || c.role || ''}</p>
-              <div class="gallery-item-tags">
-                ${Array.isArray(c.tags) ? c.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
-                ${learnLink}
-              </div>
+      return `
+        <article class="gallery-item ${category}" data-character="${key}"${tmplAttr} style="cursor: pointer;">
+          <img src="${portrait}" alt="${c.name || c.id}">
+          <div class="gallery-item-content">
+            <h3>${c.name || ''}</h3>
+            <p>${c.aboutQuick || c.role || ''}</p>
+            <div class="gallery-item-tags">
+              ${Array.isArray(c.tags) ? c.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
+              ${learnLink}
             </div>
-          </article>
-        `;
-      }).join('');
-    }
+          </div>
+        </article>
+      `;
+    }).join('');
+  }
 
-    // Initial render - Convert CHARACTERS object to array
-    render(Object.values(CHARACTERS));
+  render(Object.entries(CHARACTERS));
 
-    // Click handling for gallery items - OPEN MODAL
-    grid.addEventListener('click', (e) => {
-      // Don't trigger if clicking the "Learn More" link
-      if (e.target.closest('.slide-btn')) return;
-      
-      const item = e.target.closest('.gallery-item');
-      if (!item) return;
-      
-      const characterId = item.dataset.character;
-      
-      console.log('Opening modal for:', characterId); // Debug log
-      
-      // Open the character modal
-      openCharacter(characterId);
+  grid.addEventListener('click', (e) => {
+    if (e.target.closest('.slide-btn')) return;
+    const item = e.target.closest('.gallery-item');
+    if (!item) return;
+    const characterId = item.dataset.character;
+    console.log('Opening modal for:', characterId);
+    openCharacter(characterId);
+  });
+
+  filtersWrap.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filtersWrap.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+    const items = grid.querySelectorAll('.gallery-item');
+
+    items.forEach((item, index) => {
+      const show = filter === 'all' || item.classList.contains(filter);
+      item.style.display = show ? 'block' : 'none';
+      if (show) {
+        item.style.animationDelay = `${index * 0.05}s`;
+        item.classList.add('fade-in');
+      } else {
+        item.classList.remove('fade-in');
+      }
     });
-
-    // Filter logic
-    filtersWrap.addEventListener('click', (e) => {
-      const btn = e.target.closest('.filter-btn');
-      if (!btn) return;
-
-      // Set active state
-      filtersWrap.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const filter = btn.dataset.filter;
-      const items = grid.querySelectorAll('.gallery-item');
-
-      items.forEach((item, index) => {
-        const show = filter === 'all' || item.classList.contains(filter);
-        item.style.display = show ? 'block' : 'none';
-        if (show) {
-          item.style.animationDelay = `${index * 0.05}s`;
-          item.classList.add('fade-in');
-        } else {
-          item.classList.remove('fade-in');
-        }
-      });
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
