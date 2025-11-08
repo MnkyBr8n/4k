@@ -7,7 +7,7 @@ export const CHARACTERS = {
     role: "Informatik-Student (B.Sc.)",
     portrait: "images/anton1.png",
     fullArt: "images/anton1.png",
-    link: "oc-pages/university.html",
+    link: "university.html",
     website: "https://4k-art.com/anton",
 
     // Passport-specific fields
@@ -34,7 +34,7 @@ export const CHARACTERS = {
     role: "Maschinenbau-Student (B.Sc.)",
     portrait: "componets/conrad1.png",
     fullArt: "componets/conrad1.png",
-    link: "oc-pages/university.html",
+    link: "university.html",
     website: "",
     university: "RWTH Aachen",
     faculty: "Fakultät für Maschinenwesen",
@@ -55,7 +55,7 @@ export const CHARACTERS = {
     role: "Artist / OC",
     portrait: "images/fatigue.jpg",
     fullArt: "images/fatigue.jpg",
-    link: "oc-dandy.html",
+    link: "dandy.html",
     website: "https://4k-art.com/",
     aboutQuick: "Vodoo doll",
     backstoryTeaser: "The sketchbook hums at midnight…",
@@ -69,7 +69,7 @@ export const CHARACTERS = {
     category: "ocs",
     name: "4K",
     portrait: "images/4k.jpg",
-    link: "oc-pages/oc-4k.html",
+    link: "oc-4k.html",
     website: "https://4k-art.com",
     
     // Classic template fields
