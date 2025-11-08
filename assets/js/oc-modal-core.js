@@ -67,7 +67,7 @@ export function openCharacter(id, templateOverride){
   cursor = ids.indexOf(id);
   const templateId = templateOverride || c.template || "classic";
   const render = TEMPLATES.get(templateId);
-  if(!render) throw new Error(`Template "${templateId}" not registered`);
+  if(!render) throw new Error(`template "${templateId}" not registered`);
   const { html, wrapperClass } = render(c, { UI });
   mount(html, wrapperClass);
 }
