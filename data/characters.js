@@ -7,7 +7,7 @@ export const CHARACTERS = {
     role: "Informatik-Student (B.Sc.)",
     portrait: "images/anton1.png",
     fullArt: "images/anton1.png",
-    link: "oc-pages/oc-anton.html",
+    link: "oc-pages/university.html",
     website: "https://4k-art.com/anton",
 
     // Passport-specific fields
