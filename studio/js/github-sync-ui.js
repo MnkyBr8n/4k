@@ -20,22 +20,39 @@ class GitHubSyncUI {
   /**
    * Load token from localStorage
    */
-  loadToken() {
-    const encrypted = localStorage.getItem('4k_github_token');
-    if (encrypted) {
-      try {
-        this.token = this.decrypt(encrypted);
+
+loadToken() {
+  const encrypted = localStorage.getItem('4k_github_token');
+  if (encrypted) {
+    try {
+      // Try to decrypt
+      const decrypted = this.decrypt(encrypted);
+      if (decrypted && decrypted.startsWith('ghp_')) {
+        this.token = decrypted;
         this.isConnected = true;
         console.log('✅ Token loaded from localStorage');
-      } catch (e) {
-        console.error('❌ Failed to load token:', e);
+      } else {
+        // Token might be stored unencrypted, use as-is
+        console.warn('⚠️ Token appears unencrypted, using directly');
+        this.token = encrypted;
+        this.isConnected = true;
+      }
+    } catch (e) {
+      console.error('❌ Failed to decrypt token, trying unencrypted:', e);
+      // Fallback: try using the encrypted value directly
+      if (encrypted.startsWith('ghp_')) {
+        this.token = encrypted;
+        this.isConnected = true;
+        console.log('✅ Using unencrypted token');
+      } else {
         this.token = null;
         this.isConnected = false;
       }
-    } else {
-      console.log('⚠️ No token found in localStorage');
     }
+  } else {
+    console.log('⚠️ No token found in localStorage');
   }
+}
 
   /**
    * Save token to localStorage (encrypted)
