@@ -219,7 +219,7 @@ function createCharacter() {
     return;
   }
   
-  // Save to localStorage (temporary - will be saved to characters.js via GitHub in production)
+  // Save to localStorage
   const characters = JSON.parse(localStorage.getItem('4k_characters') || '{}');
   
   // Check for duplicate
@@ -230,6 +230,27 @@ function createCharacter() {
   
   characters[characterData.id] = characterData;
   localStorage.setItem('4k_characters', JSON.stringify(characters));
+  
+  // ✨ NEW: Add to GitHub sync queue
+  if (window.githubSyncUI && window.githubSyncUI.isConfigured()) {
+    try {
+      // Convert characters object to array format for characters.js
+      const charactersArray = Object.values(characters);
+      const charactersJS = `export const CHARACTERS = ${JSON.stringify(charactersArray, null, 2)};`;
+      
+      // Add to sync queue
+      window.githubSyncUI.addToQueue({
+        action: 'create',
+        path: 'data/characters.js',
+        content: charactersJS,
+        commitMessage: `Add character: ${characterData.name}`
+      });
+      
+      console.log('✅ Character added to sync queue');
+    } catch (error) {
+      console.error('❌ Failed to add to sync queue:', error);
+    }
+  }
   
   alert(`✓ Character "${characterData.name}" created successfully!\n\nYou can now add more images and details in the edit page.`);
   
