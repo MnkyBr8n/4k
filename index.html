@@ -5,193 +5,611 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4K - Digital Artist Portfolio</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="hero-additions.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Shadows+Into+Light+Two&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
+    <!-- Brick Pattern Background Elements -->
+    <div class="brick-overlay"></div>
+    
+    <!-- Navigation - Stoop Style -->
+    <nav class="stoop-nav">
         <div class="nav-container">
             <div class="logo">
-                <!-- Watermark Logo - Replace 'images/watermark-logo.png' with your actual logo -->
-                <img src="images/watermark-logo.png" alt="4K Watermark" class="brand-logo">
+                <span class="logo-text">4K</span>
+                <span class="logo-subtitle">ART STUDIO</span>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="gallery.html">Gallery</a></li>
-                <li><a href="about.html">About Me</a></li>
-                <li><a href="commissions.html">Commissions</a></li>
-                <li><a href="drawing.html">Draw</a></li>
+                <li><a href="index.html" class="nav-btn active">Home</a></li>
+                <li><a href="gallery.html" class="nav-btn">Gallery</a></li>
+                <li><a href="about.html" class="nav-btn">About Me</a></li>
+                <li><a href="commissions.html" class="nav-btn">Commissions</a></li>
+                <li><a href="draw.html" class="nav-btn">Draw</a></li>
             </ul>
-            <button class="mobile-menu-btn" aria-label="Toggle menu"></button>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
         </div>
     </nav>
 
-    <!-- Hero Section - NEW LAYOUT -->
-    <section class="hero">
+    <!-- Hero Section - Sunset Boulevard Style -->
+    <section class="hero arnold-hero">
         <div class="container">
-            <div class="hero-content-new">
-                
-                <!-- Portrait Frame - Left Side (Desktop) / Top (Mobile) -->
-                <div class="portrait-frame-wrapper">
-                    <div class="portrait-frame">
+            <!-- Decorative City Skyline -->
+            <div class="skyline-deco"></div>
+            
+            <div class="hero-content-arnold">
+                <!-- Portrait Frame - Football Head Style -->
+                <div class="portrait-wrapper">
+                    <div class="arnold-frame">
+                        <div class="frame-corner tl"></div>
+                        <div class="frame-corner tr"></div>
+                        <div class="frame-corner bl"></div>
+                        <div class="frame-corner br"></div>
                         <div class="frame-inner">
-                            <!-- Replace 'images/portrait.jpg' with actual portrait photo -->
-                            <img src="images/4k.jpg" alt="4K Portrait" class="portrait-image">
+                            <img src="images/portrait.jpg" alt="4K Portrait" class="portrait-image">
+                            <div class="frame-label">Artist</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Side Content (Desktop) / Below Portrait (Mobile) -->
-                <div class="hero-right-content">
-                    <div class="hero-header">
-                        <h1>Welcome to My Art Gallery</h1>
+                <!-- Main Content - Stoop Side -->
+                <div class="hero-main-content">
+                    <div class="speech-bubble main-bubble">
+                        <h1>Hey There! Welcome to My Art Gallery</h1>
+                        <div class="bubble-tail"></div>
                     </div>
 
-                    <!-- Featured Carousel -->
-                    <div class="featured-carousel">
+                    <!-- Featured Characters Carousel - Comic Panel Style -->
+                    <div class="comic-carousel">
+                        <div class="carousel-header">
+                            <span class="header-ribbon">★ FEATURED CHARACTERS ★</span>
+                        </div>
                         <div class="carousel-container">
                             <div class="carousel-slide active" data-character="anton">
-                                <img src="images/anton.png" alt="Anton">
-                                <div class="slide-content">
-                                    <h3>Anton Wagnor</h3>
-                                    <p>Human</p>
-                                    <a href="oc-anton.html" class="slide-btn">Learn More</a>
+                                <div class="comic-panel">
+                                    <img src="anton.png" alt="Anton">
+                                    <div class="panel-info">
+                                        <h3 class="character-name">ANTON</h3>
+                                        <p class="character-type">Human</p>
+                                        <a href="university.html" class="comic-btn">Meet Anton!</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="carousel-slide" data-character="conrad">
-                                <img src="images/conrad.png" alt="conrad">
-                                <div class="slide-content">
-                                    <h3>conrad</h3>
-                                    <p>Conrad Wagnor</p>
-                                    <a href="oc-conrad.html" class="slide-btn">Learn More</a>
+                            <div class="carousel-slide" data-character="4k">
+                                <div class="comic-panel">
+                                    <img src="images/4k.jpg" alt="ME">
+                                    <div class="panel-info">
+                                        <h3 class="character-name">4K</h3>
+                                        <p class="character-type">Just Me</p>
+                                        <a href="oc-4k.html" class="comic-btn">That's Me!</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="carousel-slide" data-character="redrum">
-                                <img src="images/redrum.jpg" alt="redrum">
-                                <div class="slide-content">
-                                    <h3>redrum</h3>
-                                    <p>Demon Anthro</p>
-                                    <a href="oc-redrum.html" class="slide-btn">Learn More</a>
+                            <div class="carousel-slide" data-character="Conrad">
+                                <div class="comic-panel">
+                                    <img src="images/conrad.png" alt="Conrad">
+                                    <div class="panel-info">
+                                        <h3 class="character-name">Conrad</h3>
+                                        <p class="character-type">Human</p>
+                                        <a href="university.html" class="comic-btn">Check Out Conrad!</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="carousel-nav">
-                            <button class="carousel-dot active" data-slide="0" aria-label="View anton"></button>
-                            <button class="carousel-dot" data-slide="1" aria-label="View condrad"></button>
-                            <button class="carousel-dot" data-slide="2" aria-label="View redrum"></button>
+                        <div class="carousel-dots">
+                            <button class="carousel-dot active" data-slide="0" aria-label="View Anton"></button>
+                            <button class="carousel-dot" data-slide="1" aria-label="View 4K"></button>
+                            <button class="carousel-dot" data-slide="2" aria-label="View Reggie"></button>
                         </div>
-                        <button class="carousel-arrow prev" aria-label="Previous slide">..</button>
-                        <button class="carousel-arrow next" aria-label="Next slide">..</button>
+                        <button class="carousel-arrow prev" aria-label="Previous slide">◀</button>
+                        <button class="carousel-arrow next" aria-label="Next slide">▶</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Welcome Text & Social/CTA Section - Below Hero -->
-            <div class="hero-bottom">
-                <div class="welcome-intro">
-                    <p>Welcome to my digital art world! I'm a passionate 14-year-old artist who loves creating original characters and bringing imagination to life through digital art.</p>
+            <!-- Welcome Section - Journal Entry Style -->
+            <div class="welcome-section">
+                <div class="journal-entry">
+                    <div class="journal-header">
+                        <span class="journal-date">☀ About This Artist ☀</span>
+                    </div>
+                    <p class="journal-text">Welcome to my digital art world! I'm a passionate 14-year-old artist who loves creating original characters and bringing imagination to life through digital art.</p>
                 </div>
 
-                <div class="social-links">
-                    <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram" aria-label="Instagram"></a>
-                    <a href="#" title="Twitter" aria-label="Twitter"></a>
-                    <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok" aria-label="TikTok"></a>
-                    <a href="https://discord.com/users/1202037619345588295" title="Discord" aria-label="Discord"></a>
+                <!-- Social Links - Stoop Steps Style -->
+                <div class="stoop-socials">
+                    <span class="social-label">Find Me On:</span>
+                    <div class="social-icons">
+                        <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" class="social-step" title="Instagram" aria-label="Instagram">
+                            <span class="social-icon">📷</span>
+                            <span class="social-name">Insta</span>
+                        </a>
+                        <a href="#" class="social-step" title="Twitter" aria-label="Twitter">
+                            <span class="social-icon">🐦</span>
+                            <span class="social-name">Twitter</span>
+                        </a>
+                        <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" class="social-step" title="TikTok" aria-label="TikTok">
+                            <span class="social-icon">🎵</span>
+                            <span class="social-name">TikTok</span>
+                        </a>
+                        <a href="https://discord.com/users/1202037619345588295" class="social-step" title="Discord" aria-label="Discord">
+                            <span class="social-icon">💬</span>
+                            <span class="social-name">Discord</span>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="cta-buttons">
-                    <a href="gallery.html" class="btn primary">View Gallery</a>
-                    <a href="commissions.html" class="btn secondary">Commission Me</a>
+                <!-- CTA Buttons - Sidewalk Chalk Style -->
+                <div class="chalk-buttons">
+                    <a href="gallery.html" class="chalk-btn primary">
+                        <span class="btn-text">View Gallery</span>
+                        <span class="btn-shadow">View Gallery</span>
+                    </a>
+                    <a href="commissions.html" class="chalk-btn secondary">
+                        <span class="btn-text">Commission Me</span>
+                        <span class="btn-shadow">Commission Me</span>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Featured Work Section -->
-    <section class="featured-work">
+    <!-- Latest Creations - Comic Strip Style -->
+    <section class="featured-work comic-strip">
         <div class="container">
-            <h2>Latest Creations</h2>
-            <div class="work-grid">
-                <div class="work-item">
-                    <img src="https://via.placeholder.com/300x200/6c5ce7/ffffff?text=Dragon+Commission" alt="Recent Commission">
-                    <h3>Dragon Warrior Commission</h3>
-                    <p>Character design for a fantasy novel</p>
+            <h2 class="section-title">
+                <span class="title-main">Latest Creations</span>
+                <span class="title-underline"></span>
+            </h2>
+            <div class="comic-grid">
+                <div class="comic-card tilt-left">
+                    <div class="card-frame">
+                        <img src="https://via.placeholder.com/300x200/d4573b/ffffff?text=Dragon+Commission" alt="Recent Commission">
+                        <div class="card-caption">
+                            <h3>Dragon Warrior</h3>
+                            <p>Character design for a fantasy novel</p>
+                        </div>
+                        <div class="tape-strip tape-top"></div>
+                        <div class="tape-strip tape-bottom"></div>
+                    </div>
                 </div>
-                <div class="work-item">
-                    <img src="https://via.placeholder.com/300x200/c7cedb/ffffff?text=Work+in+Progress" alt="Work in Progress">
-                    <h3>New OC in Development</h3>
-                    <p>Sneak peek at my latest character</p>
+                <div class="comic-card">
+                    <div class="card-frame">
+                        <img src="https://via.placeholder.com/300x200/ffa500/ffffff?text=Work+in+Progress" alt="Work in Progress">
+                        <div class="card-caption">
+                            <h3>New OC Development</h3>
+                            <p>Sneak peek at my latest character</p>
+                        </div>
+                        <div class="tape-strip tape-top"></div>
+                        <div class="tape-strip tape-bottom"></div>
+                    </div>
                 </div>
-                <div class="work-item">
-                    <img src="https://via.placeholder.com/300x200/ffd93d/ffffff?text=Fan+Art" alt="Fan Art">
-                    <h3>Fan Art Friday</h3>
-                    <p>My take on a popular anime character</p>
+                <div class="comic-card tilt-right">
+                    <div class="card-frame">
+                        <img src="https://via.placeholder.com/300x200/f9d71c/ffffff?text=Fan+Art" alt="Fan Art">
+                        <div class="card-caption">
+                            <h3>Fan Art Friday</h3>
+                            <p>My take on a popular anime character</p>
+                        </div>
+                        <div class="tape-strip tape-top"></div>
+                        <div class="tape-strip tape-bottom"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Quick Links Section -->
-    <section class="quick-links">
+    <!-- Quick Links - Neighborhood Storefronts -->
+    <section class="quick-links storefront-section">
         <div class="container">
-            <div class="links-grid">
-                <a href="gallery.html" class="link-card">
-                    <div class="link-icon"></div>
-                    <h3>Browse Gallery</h3>
-                    <p>Explore my complete collection of original characters and artwork</p>
+            <div class="storefront-grid">
+                <a href="gallery.html" class="storefront-card">
+                    <div class="store-awning">
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                    </div>
+                    <div class="store-window">
+                        <div class="window-icon">🖼️</div>
+                        <h3>Gallery</h3>
+                        <p>Explore my complete collection of OCs and artwork</p>
+                    </div>
                 </a>
-                <a href="commissions.html" class="link-card">
-                    <div class="link-icon"></div>
-                    <h3>Commission Work</h3>
-                    <h3>Commission Work</h3>
-                    <p>Let's bring your character ideas to life together</p>
+                <a href="commissions.html" class="storefront-card">
+                    <div class="store-awning">
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                    </div>
+                    <div class="store-window">
+                        <div class="window-icon">✨</div>
+                        <h3>Commissions</h3>
+                        <p>Let's bring your character ideas to life together</p>
+                    </div>
                 </a>
-                <a href="drawing.html" class="link-card">
-                    <div class="link-icon"></div>
-                    <h3>Try Drawing</h3>
-                    <p>Use my interactive drawing tool to create your own art</p>
+                <a href="draw.html" class="storefront-card">
+                    <div class="store-awning">
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                    </div>
+                    <div class="store-window">
+                        <div class="window-icon">✏️</div>
+                        <h3>Drawing Tool</h3>
+                        <p>Try out my interactive drawing tool yourself</p>
+                    </div>
                 </a>
-                <a href="about.html" class="link-card">
-                    <div class="link-icon"></div>
-                    <h3>About Me</h3>
-                    <p>Learn more about my artistic journey and inspiration</p>
+                <a href="about.html" class="storefront-card">
+                    <div class="store-awning">
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                        <div class="awning-stripe"></div>
+                    </div>
+                    <div class="store-window">
+                        <div class="window-icon">👋</div>
+                        <h3>About Me</h3>
+                        <p>Learn more about my artistic journey</p>
+                    </div>
                 </a>
             </div>
         </div>
     </section>
 
-    <footer>
+    <!-- Footer - Sidewalk Style -->
+    <footer class="sidewalk-footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>4K Digital Art</h4>
-                    <p>Creating original characters and bringing imagination to life</p>
+                    <h4 class="footer-heading">4K Digital Art</h4>
+                    <p class="footer-text">Creating original characters and bringing imagination to life</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="gallery.html">Gallery</a></li>
-                        <li><a href="commissions.html">Commissions</a></li>
-                        <li><a href="about.html">About</a></li>
-                        <li><a href="drawing.html">Drawing Tool</a></li>
+                    <h4 class="footer-heading">Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="gallery.html">→ Gallery</a></li>
+                        <li><a href="commissions.html">→ Commissions</a></li>
+                        <li><a href="about.html">→ About</a></li>
+                        <li><a href="drawing.html">→ Drawing Tool</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Connect</h4>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram"></a>
-                        <a href="#" title="Twitter"></a>
-                        <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok"></a>
-                        <a href="https://discord.com/users/1202037619345588295" title="Discord"></a>
+                    <h4 class="footer-heading">Connect</h4>
+                    <div class="footer-socials">
+                        <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram">📷 Instagram</a>
+                        <a href="#" title="Twitter">🐦 Twitter</a>
+                        <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok">🎵 TikTok</a>
+                        <a href="https://discord.com/users/1202037619345588295" title="Discord">💬 Discord</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 4K Digital Art. All rights reserved.</p>
+                <p class="copyright-text">&copy; 2025 4K Digital Art · All rights reserved · Made with ❤️</p>
             </div>
         </div>
     </footer>
 
-    <script src="main.js"></script>
+    <script>
+// Mobile Navigation
+document.addEventListener('DOMContentLoaded', function() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('open');
+        });
+    }
+
+    // Close mobile menu when clicking on a link
+    const navLinkItems = document.querySelectorAll('.nav-links a');
+    navLinkItems.forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+        });
+    });
+});
+
+// Carousel Functionality
+class Carousel {
+    constructor() {
+        this.currentSlide = 0;
+        this.slides = document.querySelectorAll('.carousel-slide');
+        this.dots = document.querySelectorAll('.carousel-dot');
+        this.prevBtn = document.querySelector('.carousel-arrow.prev');
+        this.nextBtn = document.querySelector('.carousel-arrow.next');
+        this.autoPlayInterval = null;
+
+        this.init();
+    }
+
+    init() {
+        if (this.slides.length === 0) return;
+
+        // Add event listeners to dots
+        this.dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => this.goToSlide(index));
+        });
+
+        // Add event listeners to arrow buttons
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => this.previousSlide());
+        }
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => this.nextSlide());
+        }
+
+        // Start autoplay
+        this.startAutoPlay();
+
+        // Pause autoplay on hover
+        const carousel = document.querySelector('.featured-carousel');
+        if (carousel) {
+            carousel.addEventListener('mouseenter', () => this.stopAutoPlay());
+            carousel.addEventListener('mouseleave', () => this.startAutoPlay());
+        }
+
+        // Touch/swipe support for mobile
+        this.addTouchSupport();
+    }
+
+    goToSlide(slideIndex) {
+        // Remove active class from current slide and dot
+        this.slides[this.currentSlide].classList.remove('active');
+        this.dots[this.currentSlide].classList.remove('active');
+
+        // Update current slide index
+        this.currentSlide = slideIndex;
+
+        // Add active class to new slide and dot
+        this.slides[this.currentSlide].classList.add('active');
+        this.dots[this.currentSlide].classList.add('active');
+    }
+
+    nextSlide() {
+        const nextIndex = (this.currentSlide + 1) % this.slides.length;
+        this.goToSlide(nextIndex);
+    }
+
+    previousSlide() {
+        const prevIndex = (this.currentSlide - 1 + this.slides.length) % this.slides.length;
+        this.goToSlide(prevIndex);
+    }
+
+    startAutoPlay() {
+        this.stopAutoPlay(); // Clear any existing interval
+        this.autoPlayInterval = setInterval(() => {
+            this.nextSlide();
+        }, 5000); // Change slide every 5 seconds
+    }
+
+    stopAutoPlay() {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+            this.autoPlayInterval = null;
+        }
+    }
+
+    addTouchSupport() {
+        const carousel = document.querySelector('.carousel-container');
+        if (!carousel) return;
+
+        let startX = 0;
+        let startY = 0;
+        let endX = 0;
+        let endY = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        carousel.addEventListener('touchend', (e) => {
+            endX = e.changedTouches[0].clientX;
+            endY = e.changedTouches[0].clientY;
+
+            const deltaX = endX - startX;
+            const deltaY = endY - startY;
+
+            // Only trigger if horizontal swipe is more significant than vertical
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                if (deltaX > 0) {
+                    this.previousSlide();
+                } else {
+                    this.nextSlide();
+                }
+            }
+        });
+    }
+}
+
+// Initialize carousel when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    new Carousel();
+});
+
+// Smooth scrolling for anchor links
+document.addEventListener('DOMContentLoaded', function() {
+    const smoothScrollLinks = document.querySelectorAll('a[href^="#"]');
+
+    smoothScrollLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+                const headerHeight = document.querySelector('nav').offsetHeight;
+                const targetPosition = targetElement.offsetTop - headerHeight;
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+
+// Navbar background change on scroll
+window.addEventListener('scroll', function() {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+        nav.style.background = 'rgba(0, 0, 0, 0.95)';
+    } else {
+        nav.style.background = 'rgba(0, 0, 0, 0.9)';
+    }
+});
+
+// Intersection Observer for animations
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, observerOptions);
+
+// Observe elements for animation
+document.addEventListener('DOMContentLoaded', function() {
+    const animatedElements = document.querySelectorAll('.work-item, .link-card');
+
+    animatedElements.forEach(el => {
+        // Set initial state
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(30px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+
+        observer.observe(el);
+    });
+});
+
+// Utility functions
+const utils = {
+    // Debounce function for performance
+    debounce: function(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    },
+
+    // Format date for display
+    formatDate: function(date) {
+        return new Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }).format(date);
+    },
+
+    // Check if element is in viewport
+    isInViewport: function(element) {
+        const rect = element.getBoundingClientRect();
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+        );
+    }
+};
+
+// Preload images for better performance
+function preloadImages() {
+    const imageUrls = [
+        'https://via.placeholder.com/400x300/ff6b6b/ffffff?text=Luna+-+Moon+Guardian',
+        'https://via.placeholder.com/400x300/4ecdc4/ffffff?text=Zara+-+Tech+Witch',
+        'https://via.placeholder.com/400x300/a8e6cf/ffffff?text=Kai+-+Storm+Rider',
+        'https://via.placeholder.com/300x200/ff8b94/ffffff?text=Recent+Commission',
+        'https://via.placeholder.com/300x200/c7cedb/ffffff?text=Work+in+Progress',
+        'https://via.placeholder.com/300x200/ffd93d/ffffff?text=Fan+Art'
+    ];
+
+    imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
+}
+
+// Call preload function when DOM is ready
+document.addEventListener('DOMContentLoaded', preloadImages);
+
+// Error handling for images
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img');
+
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+            this.style.display = 'flex';
+            this.style.alignItems = 'center';
+            this.style.justifyContent = 'center';
+            this.style.color = 'white';
+            this.style.fontSize = '0.9rem';
+            this.innerHTML = 'Image Loading...';
+        });
+    });
+});
+
+// Keyboard navigation for carousel
+document.addEventListener('keydown', function(e) {
+    const carousel = document.querySelector('.featured-carousel');
+    if (!carousel || !utils.isInViewport(carousel)) return;
+
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        document.querySelector('.carousel-arrow.prev')?.click();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        document.querySelector('.carousel-arrow.next')?.click();
+    }
+});
+
+// Performance monitoring
+const performance = {
+    measurePageLoad: function() {
+        window.addEventListener('load', function() {
+            const loadTime = performance.now();
+            console.log(`Page loaded in ${Math.round(loadTime)}ms`);
+        });
+    },
+
+    measureFirstContentfulPaint: function() {
+        if ('PerformanceObserver' in window) {
+            const observer = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.name === 'first-contentful-paint') {
+                        console.log(`FCP: ${Math.round(entry.startTime)}ms`);
+                    }
+                }
+            });
+            observer.observe({entryTypes: ['paint']});
+        }
+    }
+};
+
+// Initialize performance monitoring in development
+if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    performance.measurePageLoad();
+    performance.measureFirstContentfulPaint();
+}
+
+// Export functions for use in other files
+window.PortfolioUtils = utils;
+window.Carousel = Carousel;
+</script>
 </body>
 </html>

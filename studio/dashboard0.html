@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - 4K Studio</title>
+  <link rel="stylesheet" href="css/studio.css">
+  <style>
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .dashboard-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .dashboard-card h2 {
+      margin: 0 0 16px;
+      font-size: var(--font-size-lg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .stat-item {
+      background: var(--bg-tertiary);
+      padding: 16px;
+      border-radius: var(--radius-sm);
+      text-align: center;
+      border: 1px solid var(--border-secondary);
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: var(--font-size-sm);
+      color: var(--text-secondary);
+    }
+
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+    }
+
+    .quick-action-btn {
+      padding: 20px 12px;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: var(--font-size-sm);
+      cursor: pointer;
+      transition: all 0.1s;
+      text-align: center;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .quick-action-btn:hover {
+      border-color: var(--border-hover);
+      background: var(--bg-secondary);
+    }
+
+    .quick-action-icon {
+      font-size: 28px;
+    }
+
+    .activity-feed {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .activity-item {
+      background: var(--bg-tertiary);
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      border: 1px solid var(--border-secondary);
+    }
+
+    .activity-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .activity-content {
+      flex: 1;
+    }
+
+    .activity-title {
+      font-weight: 500;
+      margin-bottom: 4px;
+      font-size: var(--font-size-sm);
+      color: var(--text-primary);
+    }
+
+    .activity-time {
+      font-size: var(--font-size-xs);
+      color: var(--text-tertiary);
+    }
+
+    .sync-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      margin-top: 16px;
+      border: 1px solid var(--border-secondary);
+    }
+
+    .sync-indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sync-indicator.connected {
+      background: var(--status-success);
+    }
+
+    .sync-indicator.disconnected {
+      background: var(--status-error);
+    }
+
+    .sync-indicator.syncing {
+      background: var(--status-warning);
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .sync-queue {
+      margin-top: 12px;
+    }
+
+    .queue-item {
+      background: var(--bg-tertiary);
+      padding: 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--font-size-sm);
+      border: 1px solid var(--border-secondary);
+    }
+
+    .storage-bar {
+      width: 100%;
+      height: 8px;
+      background: var(--bg-tertiary);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      margin-top: 8px;
+      border: 1px solid var(--border-secondary);
+    }
+
+    .storage-fill {
+      height: 100%;
+      background: var(--accent-blue);
+      transition: width 0.3s;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-md);
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      padding: 20px;
+      border-bottom: 1px solid var(--border-primary);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: var(--font-size-lg);
+    }
+
+    .modal-body {
+      padding: 20px;
+    }
+
+    .modal-footer {
+      padding: 20px;
+      border-top: 1px solid var(--border-primary);
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-primary);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      display: none;
+      z-index: 10000;
+    }
+
+    .notification.show {
+      display: block;
+      animation: slideIn 0.3s;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .dashboard-card.wide {
+        grid-column: span 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">📁 4K Studio</div>
+    <div class="actions">
+      <button id="themeToggle" class="theme-toggle">🌙 <span>Dark</span></button>
+      <a href="characters.html" class="btn">Characters</a>
+      <a href="gallery.html" class="btn">Gallery</a>
+      <a href="settings.html" class="btn">⚙️</a>
+      <button id="logoutBtn" class="btn secondary">Logout</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <h2 style="margin-top: 0;">📊 Dashboard</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;">Welcome to your 4K Studio control center</p>
+
+    <div class="dashboard-grid">
+      <!-- Quick Stats -->
+      <div class="dashboard-card">
+        <h2>📈 Quick Stats</h2>
+        <div class="stat-grid">
+          <div class="stat-item">
+            <div class="stat-value" id="statCharacters">0</div>
+            <div class="stat-label">Characters</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="statImages">0</div>
+            <div class="stat-label">Images</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="statBackgrounds">0</div>
+            <div class="stat-label">Backgrounds</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value" id="statTags">0</div>
+            <div class="stat-label">Tags</div>
+          </div>
+        </div>
+        <div style="margin-top: 20px;">
+          <strong style="font-size: var(--font-size-sm);">Storage Used:</strong>
+          <div class="storage-bar">
+            <div class="storage-fill" id="storageFill" style="width: 0%"></div>
+          </div>
+          <div style="font-size: var(--font-size-xs); margin-top: 8px; color: var(--text-secondary);" id="storageText">0 MB</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="dashboard-card">
+        <h2>⚡ Quick Actions</h2>
+        <div class="quick-actions">
+          <a href="create-character.html" class="quick-action-btn">
+            <span class="quick-action-icon">➕</span>
+            <span>New Character</span>
+          </a>
+          <a href="image-uploader.html" class="quick-action-btn">
+            <span class="quick-action-icon">📤</span>
+            <span>Upload Image</span>
+          </a>
+          <a href="draw-edit.html" class="quick-action-btn">
+            <span class="quick-action-icon">🎨</span>
+            <span>Draw Art</span>
+          </a>
+          <button class="quick-action-btn" onclick="openBackupDialog()">
+            <span class="quick-action-icon">💾</span>
+            <span>Backup Data</span>
+          </button>
+          <button class="quick-action-btn" onclick="openExportDialog()">
+            <span class="quick-action-icon">📄</span>
+            <span>Export PDF</span>
+          </button>
+          <a href="settings.html" class="quick-action-btn">
+            <span class="quick-action-icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- GitHub Sync Status -->
+      <div class="dashboard-card">
+        <h2>🔄 GitHub Sync</h2>
+        <div class="sync-status">
+          <div class="sync-indicator disconnected" id="syncIndicator"></div>
+          <div style="flex: 1;">
+            <div style="font-size: var(--font-size-sm); font-weight: 500;" id="syncStatusText">Not Connected</div>
+            <div style="font-size: var(--font-size-xs); color: var(--text-tertiary); margin-top: 4px;" id="syncStatusDetail">Configure GitHub in Settings</div>
+          </div>
+          <button class="btn secondary" onclick="manualSync()" id="syncButton" disabled>Sync Now</button>
+        </div>
+        
+        <div class="sync-queue" id="syncQueueContainer" style="display: none;">
+          <strong style="font-size: var(--font-size-sm);">Pending Sync:</strong>
+          <div id="syncQueueList" style="margin-top: 8px;"></div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div class="dashboard-card wide" style="grid-column: span 2;">
+        <h2>📝 Recent Activity</h2>
+        <div class="activity-feed" id="activityFeed">
+          <div style="text-align: center; padding: 40px; color: var(--text-tertiary);">
+            No recent activity
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Backup Dialog -->
+  <div class="modal" id="backupDialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>💾 Backup & Restore</h2>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 20px; color: var(--text-secondary);">Backup all your data or restore from a previous backup.</p>
+        
+        <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+          <button class="btn primary" onclick="downloadBackup()" style="flex: 1;">
+            📥 Download Backup
+          </button>
+          <button class="btn secondary" onclick="document.getElementById('restoreFile').click()" style="flex: 1;">
+            📤 Restore Backup
+          </button>
+        </div>
+        
+        <input type="file" id="restoreFile" accept=".json" style="display: none;" onchange="restoreFromFile(this.files[0])">
+        
+        <div style="background: var(--bg-tertiary); padding: 12px; border-radius: var(--radius-sm); font-size: var(--font-size-sm); border: 1px solid var(--border-secondary);">
+          <strong>Last Backup:</strong> <span id="lastBackupDate">Never</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="closeBackupDialog()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Export Dialog -->
+  <div class="modal" id="exportDialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📄 Export Portfolio</h2>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 20px; color: var(--text-secondary);">Export your characters as a PDF portfolio or generate social media cards.</p>
+        
+        <div class="form-group">
+          <label style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="exportIncludeImages" checked>
+            <span>Include character images</span>
+          </label>
+        </div>
+        
+        <div style="display: flex; gap: 12px; margin-top: 20px;">
+          <button class="btn primary" onclick="exportPDFPortfolio()" style="flex: 1;">
+            📄 Export PDF
+          </button>
+          <button class="btn secondary" onclick="exportSocialCards()" style="flex: 1;">
+            📱 Social Cards
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn secondary" onclick="closeExportDialog()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification -->
+  <div class="notification" id="notification"></div>
+
+  <script type="module">
+    import { requireAuth, logout } from './js/auth.js';
+    
+    // Theme toggle
+    function initTheme() {
+      const theme = localStorage.getItem('4k_studio_theme') || 'light';
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('themeToggle').innerHTML = theme === 'light' ? '🌙 <span>Dark</span>' : '☀️ <span>Light</span>';
+    }
+    
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = current === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('4k_studio_theme', newTheme);
+      document.getElementById('themeToggle').innerHTML = newTheme === 'light' ? '🌙 <span>Dark</span>' : '☀️ <span>Light</span>';
+    }
+    
+    initTheme();
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    
+    if (!requireAuth()) {}
+    
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Logout?')) logout();
+    });
+
+    // Load stats
+    function loadStats() {
+      const characters = JSON.parse(localStorage.getItem('4k_studio_characters') || '[]');
+      const images = JSON.parse(localStorage.getItem('4k_studio_images') || '[]');
+      const backgrounds = JSON.parse(localStorage.getItem('4k_studio_backgrounds') || '[]');
+      
+      document.getElementById('statCharacters').textContent = characters.length;
+      document.getElementById('statImages').textContent = images.length;
+      document.getElementById('statBackgrounds').textContent = backgrounds.length;
+      document.getElementById('statTags').textContent = '0';
+
+      // Storage calculation (rough estimate)
+      const storage = new Blob([JSON.stringify({characters, images, backgrounds})]).size;
+      const storageMB = (storage / 1024 / 1024).toFixed(2);
+      document.getElementById('storageText').textContent = storageMB + ' MB';
+      document.getElementById('storageFill').style.width = Math.min(100, (storage / (5 * 1024 * 1024)) * 100) + '%';
+    }
+
+    // GitHub sync status check
+    function checkGitHubSync() {
+      const githubSettings = JSON.parse(localStorage.getItem('4k_studio_github') || '{}');
+      const indicator = document.getElementById('syncIndicator');
+      const statusText = document.getElementById('syncStatusText');
+      const statusDetail = document.getElementById('syncStatusDetail');
+      const syncButton = document.getElementById('syncButton');
+      
+      if (githubSettings.token && githubSettings.repo) {
+        indicator.className = 'sync-indicator connected';
+        statusText.textContent = 'Connected';
+        statusDetail.textContent = `${githubSettings.owner}/${githubSettings.repo}`;
+        syncButton.disabled = false;
+      } else {
+        indicator.className = 'sync-indicator disconnected';
+        statusText.textContent = 'Not Connected';
+        statusDetail.textContent = 'Configure GitHub in Settings';
+        syncButton.disabled = true;
+      }
+    }
+
+    // Load activity
+    function loadActivity() {
+      const activity = JSON.parse(localStorage.getItem('4k_studio_activity') || '[]');
+      const feed = document.getElementById('activityFeed');
+      
+      if (activity.length === 0) {
+        feed.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-tertiary);">No recent activity</div>';
+        return;
+      }
+
+      feed.innerHTML = activity.slice(0, 10).map(item => `
+        <div class="activity-item">
+          <div class="activity-icon">${item.icon || '📝'}</div>
+          <div class="activity-content">
+            <div class="activity-title">${item.title}</div>
+            <div class="activity-time">${item.time}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Modals
+    window.openBackupDialog = () => {
+      document.getElementById('backupDialog').classList.add('active');
+      const lastBackup = localStorage.getItem('4k_studio_last_backup');
+      document.getElementById('lastBackupDate').textContent = lastBackup || 'Never';
+    };
+
+    window.closeBackupDialog = () => {
+      document.getElementById('backupDialog').classList.remove('active');
+    };
+
+    window.openExportDialog = () => {
+      document.getElementById('exportDialog').classList.add('active');
+    };
+
+    window.closeExportDialog = () => {
+      document.getElementById('exportDialog').classList.remove('active');
+    };
+
+    // Backup functions
+    window.downloadBackup = () => {
+      const data = {
+        characters: localStorage.getItem('4k_studio_characters'),
+        images: localStorage.getItem('4k_studio_images'),
+        backgrounds: localStorage.getItem('4k_studio_backgrounds'),
+        settings: localStorage.getItem('4k_studio_settings'),
+        exportDate: new Date().toISOString()
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `4k-studio-backup-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      
+      localStorage.setItem('4k_studio_last_backup', new Date().toLocaleString());
+      closeBackupDialog();
+      showNotification('Backup downloaded successfully!');
+    };
+
+    window.restoreFromFile = (file) => {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (confirm('This will overwrite all current data. Continue?')) {
+            if (data.characters) localStorage.setItem('4k_studio_characters', data.characters);
+            if (data.images) localStorage.setItem('4k_studio_images', data.images);
+            if (data.backgrounds) localStorage.setItem('4k_studio_backgrounds', data.backgrounds);
+            if (data.settings) localStorage.setItem('4k_studio_settings', data.settings);
+            closeBackupDialog();
+            showNotification('Data restored successfully!');
+            setTimeout(() => window.location.reload(), 1000);
+          }
+        } catch (err) {
+          alert('Error restoring backup: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    window.exportPDFPortfolio = () => {
+      showNotification('PDF export coming soon!');
+      closeExportDialog();
+    };
+
+    window.exportSocialCards = () => {
+      showNotification('Social cards export coming soon!');
+      closeExportDialog();
+    };
+
+    window.manualSync = () => {
+      showNotification('Manual sync coming soon!');
+    };
+
+    function showNotification(message) {
+      const notif = document.getElementById('notification');
+      notif.textContent = message;
+      notif.classList.add('show');
+      setTimeout(() => {
+        notif.classList.remove('show');
+      }, 3000);
+    }
+
+    // Initialize
+    loadStats();
+    checkGitHubSync();
+    loadActivity();
+  </script>
+</body>
+</html>
