@@ -2,7 +2,7 @@
 // Handles upload, CRUD, compression, and GitHub sync
 
 import { logActivity } from './image-logger.js';
-import { syncToGitHub } from './github-sync.js';
+// Uses global window.githubSync from github-sync.js
 
 // Configuration
 const CONFIG = {
@@ -38,14 +38,7 @@ export class CharacterImage {
 
   // Get GitHub path for this image
   getGitHubPath() {
-    const characterName = this.getCharacterName();
-    return `assets/oc/${characterName}/${this.album}/${this.fileName}`;
-  }
-
-  getCharacterName() {
-    const characters = JSON.parse(localStorage.getItem('4k_characters') || '{}');
-    const character = characters[this.characterId];
-    return character ? character.name.toLowerCase().replace(/\s+/g, '-') : 'unknown';
+    return `images/${this.album}/${this.fileName}`;
   }
 
   // Convert to JSON for storage
@@ -530,28 +523,31 @@ function blobToDataUrl(blob) {
 // Sync image to GitHub
 async function syncImageToGitHub(image, blob) {
   try {
+    // Check if GitHub sync is available and configured
+    if (!window.githubSync || !window.githubSync.isConfigured()) {
+      console.log('GitHub sync not configured, skipping upload');
+      return;
+    }
+
     const path = image.getGitHubPath();
-    
-    // Convert blob to base64
-    const base64 = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const dataUrl = reader.result;
-        const base64 = dataUrl.split(',')[1];
-        resolve(base64);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-    
-    // Upload to GitHub
-    await syncToGitHub(path, base64, true); // true = binary file
-    
-    // Update image with GitHub URL
-    const githubUrl = `https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/${path}`;
-    updateImage(image.id, { url: githubUrl });
-    
-    console.log(`✓ Image synced to GitHub: ${path}`);
+
+    // Create a File object from the blob
+    const file = new File([blob], image.fileName, { type: blob.type });
+
+    // Upload to GitHub using the global githubSync
+    const result = await window.githubSync.uploadBinaryFile(
+      path,
+      file,
+      `Upload ${image.fileName} via 4K Studio`
+    );
+
+    if (result.success) {
+      // Update image with GitHub URL
+      updateImage(image.id, { url: result.url });
+      console.log(`✓ Image synced to GitHub: ${path}`);
+    } else {
+      throw new Error(result.error);
+    }
   } catch (error) {
     console.error('Failed to sync image to GitHub:', error);
     logActivity('github_sync_failed', {

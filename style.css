@@ -1399,6 +1399,155 @@ textarea:focus {
 }
 
 /* ========================================
+   CHARACTER MODAL SYSTEM
+   ======================================== */
+
+#ocm-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top)); /* iPhone notch */
+    padding-bottom: max(20px, env(safe-area-inset-bottom)); /* iPhone home bar */
+    background: rgba(0, 0, 0, 0.85);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+#ocm-root[hidden] {
+    display: none;
+}
+
+.oc-sheet {
+    position: relative;
+    width: 100%;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    border-radius: var(--oc-radius, 18px);
+    box-shadow: var(--oc-shadow, 0 6px 24px rgba(0,0,0,.35));
+    -webkit-transform: translateZ(0); /* Force GPU acceleration on iOS */
+    transform: translateZ(0);
+}
+
+/* Modal images auto-size */
+.oc-sheet img,
+.dandy-card img,
+.id-card img,
+.classic-card img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Portrait containers should adapt to image */
+.dandy-card .portrait-container {
+    height: auto;
+    min-height: 200px;
+    max-height: 400px;
+}
+
+.dandy-card .character-portrait {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.id-card .id-photo {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    min-height: 150px;
+    max-height: 280px;
+    object-fit: contain;
+}
+
+.classic-card .character-photo {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: contain;
+}
+
+/* Modal navigation buttons */
+.oc-close,
+.oc-prev,
+.oc-next {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.oc-close {
+    top: 20px;
+    right: 20px;
+}
+
+.oc-prev {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.oc-next {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.oc-close:hover,
+.oc-prev:hover,
+.oc-next:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.oc-prev:hover,
+.oc-next:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    .oc-sheet {
+        max-width: 95vw;
+        max-height: 85vh;
+    }
+
+    .dandy-card .portrait-container {
+        max-height: 300px;
+    }
+
+    .oc-prev,
+    .oc-next {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ========================================
    PRINT STYLES
    ======================================== */
 

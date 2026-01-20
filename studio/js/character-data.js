@@ -3,7 +3,7 @@
 class CharacterDataManager {
     constructor() {
         this.characters = [];
-        this.dataFile = '/data/characters.js';
+        this.dataFile = 'data/characters.js';
         this.githubSync = null;
     }
 
@@ -74,24 +74,11 @@ class CharacterDataManager {
             // Generate the JavaScript file content
             const fileContent = this.generateCharactersJS();
 
-            // Get current file SHA (needed for updates)
-            let sha = null;
-            try {
-                const currentFile = await this.githubSync.getFile(this.dataFile);
-                if (currentFile && currentFile.sha) {
-                    sha = currentFile.sha;
-                }
-            } catch (e) {
-                // File doesn't exist yet, that's okay
-                console.log('Creating new characters.js file');
-            }
-
-            // Save to GitHub
+            // Save to GitHub (updateFile handles SHA internally)
             const result = await this.githubSync.updateFile(
                 this.dataFile,
                 fileContent,
-                `Update characters data - ${new Date().toISOString()}`,
-                sha
+                `Update characters data - ${new Date().toISOString()}`
             );
 
             // Cache in localStorage
