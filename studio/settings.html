@@ -233,11 +233,29 @@
       statusText.textContent = message;
     }
 
+    // Decrypt token from base64
+    function decryptToken(encoded) {
+      if (!encoded) return '';
+      try {
+        const decoded = atob(encoded);
+        // Check if it looks like a valid token
+        if (decoded.startsWith('ghp_') || decoded.startsWith('github_pat_')) {
+          return decoded;
+        }
+        // If not, maybe it was stored unencrypted
+        return encoded;
+      } catch (e) {
+        // If decode fails, return as-is (might be unencrypted)
+        return encoded;
+      }
+    }
+
     // Load saved configuration
     function loadConfig() {
       console.log('Loading GitHub configuration...');
-      
-      const token = localStorage.getItem(KEYS.token) || '';
+
+      const encryptedToken = localStorage.getItem(KEYS.token) || '';
+      const token = decryptToken(encryptedToken);
       const owner = localStorage.getItem(KEYS.owner) || '';
       const repo = localStorage.getItem(KEYS.repo) || '';
       const branch = localStorage.getItem(KEYS.branch) || 'main';
@@ -257,7 +275,8 @@
 
     // Update display section
     function updateDisplay() {
-      const token = localStorage.getItem(KEYS.token);
+      const encryptedToken = localStorage.getItem(KEYS.token);
+      const token = decryptToken(encryptedToken);
       const owner = localStorage.getItem(KEYS.owner);
       const repo = localStorage.getItem(KEYS.repo);
       const branch = localStorage.getItem(KEYS.branch);
@@ -309,10 +328,17 @@
 
       // Save to localStorage
       try {
-        localStorage.setItem(KEYS.token, token);
+        // Encrypt token with base64 to match github-sync-ui.js expectations
+        const encryptedToken = btoa(token);
+        localStorage.setItem(KEYS.token, encryptedToken);
         localStorage.setItem(KEYS.owner, owner);
         localStorage.setItem(KEYS.repo, repo);
         localStorage.setItem(KEYS.branch, branch);
+
+        // Reinitialize githubSyncUI if it exists so it picks up the new token
+        if (window.githubSyncUI) {
+          window.githubSyncUI.loadToken();
+        }
 
         console.log('Configuration saved to localStorage:', {
           token: token.substring(0, 10) + '...',
