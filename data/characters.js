@@ -1,16 +1,16 @@
 // data/characters.js
 export const CHARACTERS = {
-  "joe": {
-    "id": "char_1769022330036_y4ubi07",
+  "me": {
+    "id": "char_1769025440824_1wiq1p4",
     "template": "classic",
-    "name": "joe",
+    "name": "me",
     "category": "ocs",
-    "portrait": "oc/joe/portrait.png",
+    "portrait": "oc/me/portrait.png",
     "link": "",
     "website": "",
-    "age": 33,
+    "age": 11,
     "dateOfBirth": "1984-01-13",
     "placeOfBirth": "overyawnder,SC",
-    "aboutQuick": "this guy"
+    "aboutQuick": "11"
   }
 };
