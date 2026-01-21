@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @apply bg-light-bg text-gray-900 dark:bg-dark-bg dark:text-gray-100;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Light theme (default) */
+:root {
+  --bg-primary: #f5f5f5;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e8e8e8;
+  --border-primary: #d0d0d0;
+  --border-secondary: #e0e0e0;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-tertiary: #999999;
+}
+
+/* Dark theme */
+.dark {
+  --bg-primary: #1e1e1e;
+  --bg-secondary: #2d2d2d;
+  --bg-tertiary: #252525;
+  --border-primary: #3a3a3a;
+  --border-secondary: #2f2f2f;
+  --text-primary: #e4e4e4;
+  --text-secondary: #b0b0b0;
+  --text-tertiary: #808080;
+}
+
+/* Custom component styles */
+@layer components {
+  .btn {
+    @apply px-3 py-1.5 text-sm border rounded-sm font-normal transition-all duration-100 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply bg-primary border-primary text-white hover:bg-primary-hover hover:border-primary-hover;
+  }
+
+  .btn-secondary {
+    @apply bg-white border-gray-300 text-gray-900 hover:bg-gray-100 hover:border-primary;
+    @apply dark:bg-dark-panel dark:border-dark-border dark:text-gray-100 dark:hover:bg-dark-tertiary;
+  }
+
+  .btn-danger {
+    @apply bg-error border-error text-white hover:opacity-90;
+  }
+
+  .btn-success {
+    @apply bg-success border-success text-white hover:opacity-90;
+  }
+
+  .input {
+    @apply w-full px-2 py-1.5 text-sm border rounded-sm transition-colors duration-100;
+    @apply bg-white border-gray-300 text-gray-900;
+    @apply dark:bg-dark-panel dark:border-dark-border dark:text-gray-100;
+    @apply focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary;
+  }
+
+  .card {
+    @apply bg-white border border-gray-200 rounded p-4;
+    @apply dark:bg-dark-panel dark:border-dark-border;
+  }
+
+  .panel {
+    @apply bg-white border border-gray-200 rounded;
+    @apply dark:bg-dark-panel dark:border-dark-border;
+  }
+
+  .status-badge {
+    @apply inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-sm font-medium;
+  }
+
+  .status-success {
+    @apply bg-green-100 text-success dark:bg-green-900/30 dark:text-success-dark;
+  }
+
+  .status-warning {
+    @apply bg-yellow-100 text-warning dark:bg-yellow-900/30 dark:text-warning-dark;
+  }
+
+  .status-error {
+    @apply bg-red-100 text-error dark:bg-red-900/30 dark:text-error-dark;
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-tertiary);
+}
+
+/* Animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 1s infinite;
+}

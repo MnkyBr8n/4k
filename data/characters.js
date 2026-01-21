@@ -5,10 +5,10 @@ export const CHARACTERS = {
     template: "passport",
     name: "Anton Wagner",
     role: "Informatik-Student (B.Sc.)",
-    portrait: "images/anton1.png",
-    fullArt: "images/anton1.png",
+    portrait: "oc/anton-wagner/anton.png",
+    fullArt: "oc/anton-wagner/anton1.png",
     link: "university.html",
-    website: "https://4k-art.com/anton",
+    website: "https://4k-art.com/university.html",
 
     // Passport-specific fields
     university: "TUM",
@@ -32,8 +32,8 @@ export const CHARACTERS = {
     template: "passport",
     name: "Conrad Wagnor",
     role: "Maschinenbau-Student (B.Sc.)",
-    portrait: "componets/conrad1.png",
-    fullArt: "componets/conrad1.png",
+    portrait: "oc/conrad-wagner/conrad.png",
+    fullArt: "oc/conrad-wagner/conrad.png",
     link: "university.html",
     website: "",
     university: "RWTH Aachen",
@@ -53,8 +53,8 @@ export const CHARACTERS = {
     template: "dandy",
     name: "Fatigue",
     role: "Artist / OC",
-    portrait: "images/fatigue.jpg",
-    fullArt: "images/fatigue.jpg",
+    portrait: "oc/fatigue/fatigue.jpg",
+    fullArt: "oc/fatigue/fatigue.jpg",
     link: "dandy.html",
     website: "https://4k-art.com/",
     aboutQuick: "Vodoo doll",
@@ -68,7 +68,7 @@ export const CHARACTERS = {
     template: "classic",
     category: "ocs",
     name: "4K",
-    portrait: "images/4k.jpg",
+    portrait: "oc/4k/4k.jpg",
     link: "oc-4k.html",
     website: "https://4k-art.com",
     
@@ -80,9 +80,9 @@ export const CHARACTERS = {
     
     // Thumbnail gallery
     images: [
-      { src: "images/4k1.jpg", title: "Artwork 1" },
-      { src: "images/4k2.jpg", title: "Artwork 2" },
-      { src: "images/4k3.jpg", title: "Artwork 3" }
+      { src: "oc/4k/4k1.jpg", title: "Artwork 1" },
+      { src: "oc/4k/4k2.jpg", title: "Artwork 2" },
+      { src: "oc/4k/4k3.jpg", title: "Artwork 3" }
     ],
     
     tags: ["Artist", "Creator", "Designer"]
