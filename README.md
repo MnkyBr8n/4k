@@ -1,1 +1,0 @@
-# 4k-art.com. Digital Art studio of 4K the artist.
