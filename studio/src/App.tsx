@@ -20,7 +20,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/studio">
       <Routes>
         {/* Public route */}
         <Route path="/login" element={<Login />} />
