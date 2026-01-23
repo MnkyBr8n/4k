@@ -38,7 +38,7 @@ jobs:
         run: npm run build
 
       - name: Copy studio build to root
-        run: cp -r studio/dist 4k
+        run: rm -rf studio/node_modules studio/src studio/public && cp -r studio/dist/* studio/ && rm -rf studio/dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
