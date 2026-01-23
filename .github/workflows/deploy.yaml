@@ -43,6 +43,9 @@ jobs:
       - name: Copy studio build to root
         run: rm -rf studio/node_modules studio/src studio/public && cp -r studio/dist/* studio/ && rm -rf studio/dist
 
+      - name: Create 404.html for SPA routing
+        run: cp studio/index.html 404.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
