@@ -5,6 +5,7 @@ interface HeaderProps {
   onThemeToggle: () => void;
   isDark: boolean;
   onLogout: () => void;
+  onMobileMenuOpen: () => void;
 }
 
 const navLinks = [
@@ -15,7 +16,7 @@ const navLinks = [
   { path: '/settings', label: 'Settings' },
 ];
 
-export function Header({ onThemeToggle, isDark, onLogout }: HeaderProps) {
+export function Header({ onThemeToggle, isDark, onLogout, onMobileMenuOpen }: HeaderProps) {
   const location = useLocation();
 
   return (
@@ -74,7 +75,10 @@ export function Header({ onThemeToggle, isDark, onLogout }: HeaderProps) {
         </Button>
 
         {/* Mobile menu button */}
-        <button className="md:hidden p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+        <button
+          onClick={onMobileMenuOpen}
+          className="md:hidden p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+        >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
           </svg>

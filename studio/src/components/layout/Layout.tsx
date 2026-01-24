@@ -51,6 +51,7 @@ export function Layout({ children }: LayoutProps) {
           onThemeToggle={handleThemeToggle}
           isDark={isDark}
           onLogout={handleLogout}
+          onMobileMenuOpen={() => setMobileNavOpen(true)}
         />
         <MobileNav
           isOpen={mobileNavOpen}
