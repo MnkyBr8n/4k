@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 interface CardProps {
   children: ReactNode;
@@ -126,9 +127,9 @@ export function ActionCard({ icon, label, onClick, href, className = '' }: Actio
 
   if (href) {
     return (
-      <a href={href} className={baseClasses}>
+      <Link to={href} className={baseClasses}>
         {content}
-      </a>
+      </Link>
     );
   }
 

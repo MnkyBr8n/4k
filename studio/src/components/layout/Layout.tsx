@@ -1,5 +1,5 @@
 import { useState, useEffect, type ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Header, MobileNav } from './Header';
 import { NotificationProvider } from '../ui';
 import { getSettings, saveSetting } from '../../services/storage';
@@ -106,12 +106,12 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
         <span key={index} className="flex items-center gap-1">
           {index > 0 && <span className="text-gray-300 dark:text-gray-600">/</span>}
           {item.href ? (
-            <a
-              href={item.href}
+            <Link
+              to={item.href}
               className="text-primary hover:underline"
             >
               {item.label}
-            </a>
+            </Link>
           ) : (
             <span className="text-gray-700 dark:text-gray-300">{item.label}</span>
           )}
