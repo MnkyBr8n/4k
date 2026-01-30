@@ -1,0 +1,1569 @@
+/* ========================================
+   4K DIGITAL ART - HEY ARNOLD THEME
+   90s Nickelodeon Urban Aesthetic
+   ======================================== */
+
+/* ========================================
+   CSS VARIABLES - HEY ARNOLD PALETTE
+   ======================================== */
+
+:root {
+    /* Hey Arnold Color Palette */
+    --brick-red: #d4573b;
+    --brick-dark: #b43f2a;
+    --sunset-orange: #ffa500;
+    --urban-yellow: #f9d71c;
+    --sky-blue: #a8dadc;
+    --concrete-gray: #8b8b8b;
+    --sidewalk: #d3d3d3;
+    --stoop-cream: #f5e6d3;
+    --chalk-white: #fefefe;
+    --shadow-dark: #2d2d2d;
+    --awning-green: #6fa572;
+    --streetlight-glow: #ffe066;
+    
+    /* Modal System Variables (preserved) */
+    --oc-bg: #0f1015;
+    --oc-ink: #e9ecf1;
+    --oc-muted: #aeb6c5;
+    --oc-panel: #1b1e26;
+    --oc-panel-2: #232734;
+    --oc-accent: #ffa500;
+    --oc-accent2: #f9d71c;
+    --oc-good: #6fa572;
+    --oc-radius: 18px;
+    --oc-shadow: 0 6px 24px rgba(0,0,0,.35);
+}
+
+/* ========================================
+   RESET AND BASE STYLES
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Shadows Into Light Two', 'Comic Sans MS', cursive;
+    background: linear-gradient(180deg, #ffa07a 0%, #ff8c69 50%, #ff7f50 100%);
+    min-height: 100vh;
+    color: #2d2d2d;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Brick Overlay Background */
+.brick-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.15;
+    pointer-events: none;
+    background-image: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 30px,
+            rgba(212, 87, 59, 0.3) 30px,
+            rgba(212, 87, 59, 0.3) 32px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 60px,
+            rgba(180, 63, 42, 0.3) 60px,
+            rgba(180, 63, 42, 0.3) 62px
+        );
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ========================================
+   TYPOGRAPHY - HEY ARNOLD STYLE
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bangers', cursive;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   NAVIGATION - STOOP STYLE
+   ======================================== */
+
+.stoop-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: linear-gradient(180deg, var(--brick-red) 0%, var(--brick-dark) 100%);
+    z-index: 1000;
+    padding: 0.5rem 0;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4), inset 0 -3px 0 rgba(0,0,0,0.2);
+    border-bottom: 4px solid var(--shadow-dark);
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.logo-text {
+    font-family: 'Bangers', cursive;
+    font-size: 2.5rem;
+    color: var(--urban-yellow);
+    text-shadow: 
+        3px 3px 0 var(--shadow-dark),
+        -1px -1px 0 var(--chalk-white);
+    letter-spacing: 3px;
+    line-height: 1;
+}
+
+.logo-subtitle {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 0.7rem;
+    color: var(--stoop-cream);
+    letter-spacing: 2px;
+    margin-top: -5px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    font-family: 'Permanent Marker', cursive;
+    text-decoration: none;
+    color: var(--chalk-white);
+    background: rgba(0,0,0,0.2);
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: var(--urban-yellow);
+    color: var(--shadow-dark);
+    border-color: var(--shadow-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.mobile-menu-btn {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--chalk-white);
+    background: rgba(0,0,0,0.3);
+    border: 2px solid var(--urban-yellow);
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-family: 'Bangers', cursive;
+}
+
+/* ========================================
+   HERO SECTION - SUNSET BOULEVARD
+   ======================================== */
+
+.arnold-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 60px;
+    position: relative;
+}
+
+.skyline-deco {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.hero-content-arnold {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 50px;
+    align-items: start;
+    margin-bottom: 60px;
+}
+
+/* ========================================
+   PORTRAIT FRAME - FOOTBALL HEAD STYLE
+   ======================================== */
+
+.portrait-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.arnold-frame {
+    position: relative;
+    width: 320px;
+    height: 400px;
+    background: var(--stoop-cream);
+    border: 8px solid var(--brick-red);
+    box-shadow: 
+        0 12px 40px rgba(0,0,0,0.5),
+        inset 0 0 20px rgba(0,0,0,0.1);
+    transform: rotate(-2deg);
+    transition: transform 0.3s ease;
+}
+
+.arnold-frame:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.frame-corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: var(--urban-yellow);
+    border: 3px solid var(--shadow-dark);
+}
+
+.frame-corner.tl { top: -8px; left: -8px; }
+.frame-corner.tr { top: -8px; right: -8px; }
+.frame-corner.bl { bottom: -8px; left: -8px; }
+.frame-corner.br { bottom: -8px; right: -8px; }
+
+.frame-inner {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, var(--sky-blue) 0%, var(--sunset-orange) 100%);
+}
+
+.portrait-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.arnold-frame:hover .portrait-image {
+    transform: scale(1.1);
+}
+
+.frame-label {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--urban-yellow);
+    color: var(--shadow-dark);
+    font-family: 'Permanent Marker', cursive;
+    padding: 5px 20px;
+    border: 3px solid var(--shadow-dark);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* ========================================
+   SPEECH BUBBLE
+   ======================================== */
+
+.speech-bubble {
+    background: var(--chalk-white);
+    border: 5px solid var(--shadow-dark);
+    border-radius: 30px;
+    padding: 30px 40px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    margin-bottom: 30px;
+}
+
+.main-bubble h1 {
+    font-family: 'Bangers', cursive;
+    font-size: 2.8rem;
+    color: var(--brick-red);
+    text-shadow: 3px 3px 0 var(--urban-yellow);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.bubble-tail {
+    position: absolute;
+    bottom: -25px;
+    left: 50px;
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-top: 30px solid var(--shadow-dark);
+}
+
+.bubble-tail::before {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: -25px;
+    width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-top: 25px solid var(--chalk-white);
+}
+
+/* ========================================
+   COMIC CAROUSEL
+   ======================================== */
+
+.comic-carousel {
+    position: relative;
+    width: 100%;
+    background: var(--stoop-cream);
+    border: 6px solid var(--shadow-dark);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+}
+
+.carousel-header {
+    background: var(--brick-red);
+    padding: 15px;
+    text-align: center;
+    border-bottom: 4px solid var(--shadow-dark);
+}
+
+.header-ribbon {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--urban-yellow);
+    text-shadow: 2px 2px 0 var(--shadow-dark);
+    letter-spacing: 3px;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 450px;
+    background: var(--sidewalk);
+}
+
+.carousel-slide {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.comic-panel {
+    width: 90%;
+    height: 90%;
+    background: var(--chalk-white);
+    border: 5px solid var(--shadow-dark);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    transform: rotate(-1deg);
+    transition: transform 0.3s ease;
+}
+
+.comic-panel:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
+.comic-panel img {
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
+    border-bottom: 4px solid var(--shadow-dark);
+}
+
+.panel-info {
+    padding: 20px;
+    background: var(--urban-yellow);
+    text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.character-name {
+    font-family: 'Bangers', cursive;
+    font-size: 2rem;
+    color: var(--shadow-dark);
+    text-shadow: 2px 2px 0 var(--chalk-white);
+    margin: 0;
+}
+
+.character-type {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1rem;
+    color: var(--brick-red);
+    margin: 0;
+}
+
+.comic-btn {
+    display: inline-block;
+    background: var(--brick-red);
+    color: var(--chalk-white);
+    font-family: 'Permanent Marker', cursive;
+    padding: 10px 20px;
+    border: 3px solid var(--shadow-dark);
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    margin-top: 5px;
+}
+
+.comic-btn:hover {
+    background: var(--shadow-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.carousel-dots {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    z-index: 3;
+}
+
+.carousel-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    border: 3px solid var(--shadow-dark);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-dot.active,
+.carousel-dot:hover {
+    background: var(--urban-yellow);
+    transform: scale(1.3);
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--urban-yellow);
+    border: 4px solid var(--shadow-dark);
+    color: var(--shadow-dark);
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-arrow:hover {
+    background: var(--brick-red);
+    color: var(--chalk-white);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-arrow.prev { left: 15px; }
+.carousel-arrow.next { right: 15px; }
+
+/* ========================================
+   WELCOME SECTION - JOURNAL ENTRY
+   ======================================== */
+
+.welcome-section {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 60px;
+}
+
+.journal-entry {
+    background: var(--stoop-cream);
+    border: 5px solid var(--shadow-dark);
+    border-radius: 20px;
+    padding: 30px 40px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    margin-bottom: 40px;
+    transform: rotate(-1deg);
+    transition: transform 0.3s ease;
+}
+
+.journal-entry:hover {
+    transform: rotate(0deg);
+}
+
+.journal-header {
+    margin-bottom: 20px;
+}
+
+.journal-date {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.3rem;
+    color: var(--brick-red);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.journal-text {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 1.2rem;
+    color: var(--shadow-dark);
+    line-height: 1.8;
+}
+
+/* ========================================
+   SOCIAL LINKS - STOOP STEPS
+   ======================================== */
+
+.stoop-socials {
+    margin-bottom: 40px;
+}
+
+.social-label {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.2rem;
+    color: var(--shadow-dark);
+    display: block;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.social-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: var(--brick-red);
+    border: 4px solid var(--shadow-dark);
+    border-radius: 15px;
+    padding: 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    min-width: 100px;
+}
+
+.social-step:hover {
+    transform: translateY(-5px) rotate(2deg);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.4);
+    background: var(--urban-yellow);
+}
+
+.social-icon {
+    font-size: 2rem;
+}
+
+.social-name {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 0.9rem;
+    color: var(--chalk-white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.social-step:hover .social-name {
+    color: var(--shadow-dark);
+}
+
+/* ========================================
+   CTA BUTTONS - SIDEWALK CHALK
+   ======================================== */
+
+.chalk-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.chalk-btn {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    padding: 18px 40px;
+    border: 5px solid var(--shadow-dark);
+    border-radius: 15px;
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.chalk-btn.primary {
+    background: var(--urban-yellow);
+    color: var(--shadow-dark);
+}
+
+.chalk-btn.secondary {
+    background: var(--sunset-orange);
+    color: var(--chalk-white);
+}
+
+.btn-text {
+    position: relative;
+    z-index: 2;
+    display: block;
+}
+
+.btn-shadow {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    color: rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.chalk-btn:hover {
+    transform: translateY(-4px) rotate(-2deg);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.chalk-btn.primary:hover {
+    background: var(--brick-red);
+    color: var(--chalk-white);
+}
+
+.chalk-btn.secondary:hover {
+    background: var(--brick-red);
+}
+
+/* ========================================
+   LATEST CREATIONS - COMIC STRIP
+   ======================================== */
+
+.comic-strip {
+    padding: 80px 0;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.title-main {
+    font-family: 'Bangers', cursive;
+    font-size: 3.5rem;
+    color: var(--urban-yellow);
+    text-shadow: 
+        4px 4px 0 var(--shadow-dark),
+        -2px -2px 0 var(--brick-red);
+    display: block;
+    letter-spacing: 4px;
+}
+
+.title-underline {
+    display: block;
+    width: 200px;
+    height: 6px;
+    background: var(--brick-red);
+    margin: 15px auto 0;
+    border: 2px solid var(--shadow-dark);
+}
+
+.comic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.comic-card {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.comic-card.tilt-left {
+    transform: rotate(-2deg);
+}
+
+.comic-card.tilt-right {
+    transform: rotate(2deg);
+}
+
+.comic-card:hover {
+    transform: rotate(0deg) scale(1.05);
+    z-index: 10;
+}
+
+.card-frame {
+    background: var(--chalk-white);
+    border: 6px solid var(--shadow-dark);
+    padding: 15px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    position: relative;
+}
+
+.card-frame img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border: 3px solid var(--shadow-dark);
+    display: block;
+}
+
+.card-caption {
+    padding: 20px 10px 10px;
+    text-align: center;
+}
+
+.card-caption h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--brick-red);
+    margin-bottom: 10px;
+}
+
+.card-caption p {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 1rem;
+    color: var(--shadow-dark);
+}
+
+.tape-strip {
+    position: absolute;
+    background: rgba(255, 255, 200, 0.6);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.tape-strip.tape-top {
+    top: 5px;
+    left: 20%;
+    width: 60%;
+    height: 25px;
+    transform: rotate(-2deg);
+}
+
+.tape-strip.tape-bottom {
+    bottom: 5px;
+    right: 20%;
+    width: 60%;
+    height: 25px;
+    transform: rotate(2deg);
+}
+
+/* ========================================
+   STOREFRONT SECTION
+   ======================================== */
+
+.storefront-section {
+    padding: 80px 0;
+}
+
+.storefront-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.storefront-card {
+    position: relative;
+    text-decoration: none;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.storefront-card:hover {
+    transform: translateY(-10px);
+}
+
+.store-awning {
+    height: 40px;
+    background: var(--awning-green);
+    border: 4px solid var(--shadow-dark);
+    border-bottom: none;
+    display: flex;
+    border-radius: 15px 15px 0 0;
+    overflow: hidden;
+}
+
+.awning-stripe {
+    flex: 1;
+    background: linear-gradient(180deg, var(--awning-green) 0%, #5a8a5f 100%);
+}
+
+.awning-stripe:nth-child(even) {
+    background: linear-gradient(180deg, var(--chalk-white) 0%, #e8e8e8 100%);
+}
+
+.store-window {
+    background: var(--stoop-cream);
+    border: 4px solid var(--shadow-dark);
+    border-top: none;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+    border-radius: 0 0 15px 15px;
+}
+
+.window-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.store-window h3 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.8rem;
+    color: var(--brick-red);
+    margin: 0;
+}
+
+.store-window p {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 1rem;
+    color: var(--shadow-dark);
+    margin: 0;
+}
+
+.storefront-card:hover .store-window {
+    background: var(--urban-yellow);
+}
+
+/* ========================================
+   GALLERY PAGE - BILLBOARD & POLAROIDS
+   ======================================== */
+
+.arnold-gallery {
+    min-height: 100vh;
+    padding-top: 100px;
+    padding-bottom: 80px;
+}
+
+.billboard-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.billboard-frame {
+    background: var(--brick-red);
+    border: 8px solid var(--shadow-dark);
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.billboard-title {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title-word {
+    font-family: 'Bangers', cursive;
+    font-size: 4rem;
+    color: var(--urban-yellow);
+    text-shadow: 
+        5px 5px 0 var(--shadow-dark),
+        -2px -2px 0 var(--chalk-white);
+    letter-spacing: 6px;
+    line-height: 1;
+}
+
+.billboard-subtitle {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.2rem;
+    color: var(--stoop-cream);
+    margin-top: 20px;
+    letter-spacing: 1px;
+}
+
+.billboard-lights {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.bulb {
+    width: 20px;
+    height: 20px;
+    background: var(--streetlight-glow);
+    border-radius: 50%;
+    border: 3px solid var(--shadow-dark);
+    animation: bulbGlow 2s infinite alternate;
+}
+
+.bulb:nth-child(2) { animation-delay: 0.2s; }
+.bulb:nth-child(3) { animation-delay: 0.4s; }
+.bulb:nth-child(4) { animation-delay: 0.6s; }
+.bulb:nth-child(5) { animation-delay: 0.8s; }
+
+@keyframes bulbGlow {
+    0%, 100% { 
+        box-shadow: 0 0 10px var(--streetlight-glow),
+                    0 0 20px var(--urban-yellow);
+    }
+    50% { 
+        box-shadow: 0 0 20px var(--streetlight-glow),
+                    0 0 40px var(--urban-yellow),
+                    0 0 60px var(--sunset-orange);
+    }
+}
+
+/* ========================================
+   STREET SIGNS - FILTERS
+   ======================================== */
+
+.street-signs {
+    margin-bottom: 60px;
+}
+
+.sign-post {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.street-sign {
+    background: var(--awning-green);
+    border: 4px solid var(--shadow-dark);
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 0.9rem;
+    color: var(--chalk-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.street-sign:hover {
+    background: var(--urban-yellow);
+    color: var(--shadow-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.street-sign.active {
+    background: var(--brick-red);
+    border-color: var(--urban-yellow);
+    box-shadow: 0 0 20px rgba(249, 215, 28, 0.6);
+    transform: scale(1.05);
+}
+
+.sign-text {
+    font-weight: bold;
+}
+
+.sign-arrow {
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+}
+
+/* ========================================
+   POLAROID WALL - GALLERY GRID
+   ======================================== */
+
+.polaroid-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 40px;
+    padding: 20px 0;
+}
+
+.polaroid-card {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.polaroid-card.tilt-left {
+    transform: rotate(-3deg);
+}
+
+.polaroid-card.tilt-right {
+    transform: rotate(3deg);
+}
+
+.polaroid-card:hover {
+    transform: rotate(0deg) translateY(-10px) scale(1.05);
+    z-index: 10;
+}
+
+.polaroid-frame {
+    background: var(--chalk-white);
+    padding: 15px 15px 60px 15px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    border: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.polaroid-photo {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    background: var(--sidewalk);
+    border: 2px solid rgba(0,0,0,0.1);
+}
+
+.polaroid-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.polaroid-caption {
+    padding: 15px 10px 10px;
+    text-align: center;
+}
+
+.polaroid-caption .character-name {
+    font-family: 'Permanent Marker', cursive;
+    font-size: 1.3rem;
+    color: var(--shadow-dark);
+    margin: 0 0 8px 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.character-desc {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 0.95rem;
+    color: var(--concrete-gray);
+    margin: 0 0 12px 0;
+}
+
+.character-tags {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+}
+
+.tag-sticker {
+    background: var(--urban-yellow);
+    color: var(--shadow-dark);
+    font-family: 'Permanent Marker', cursive;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border: 2px solid var(--shadow-dark);
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.polaroid-btn {
+    display: inline-block;
+    background: var(--brick-red);
+    color: var(--chalk-white);
+    font-family: 'Permanent Marker', cursive;
+    padding: 8px 16px;
+    border: 2px solid var(--shadow-dark);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.polaroid-btn:hover {
+    background: var(--urban-yellow);
+    color: var(--shadow-dark);
+    transform: scale(1.05);
+}
+
+.tape-piece {
+    position: absolute;
+    width: 60px;
+    height: 25px;
+    background: rgba(255, 255, 200, 0.7);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.tape-piece.tape-top-left {
+    top: -5px;
+    left: 20px;
+    transform: rotate(-15deg);
+}
+
+.tape-piece.tape-top-right {
+    top: -5px;
+    right: 20px;
+    transform: rotate(15deg);
+}
+
+.polaroid-shadow {
+    position: absolute;
+    bottom: -10px;
+    left: 10px;
+    right: 10px;
+    height: 20px;
+    background: rgba(0,0,0,0.2);
+    filter: blur(10px);
+    z-index: -1;
+}
+
+/* Fade in animation for gallery items */
+@keyframes fadeInPolaroid {
+    from {
+        opacity: 0;
+        transform: translateY(30px) rotate(5deg);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) rotate(var(--rotation, 0deg));
+    }
+}
+
+.fade-in-polaroid {
+    animation: fadeInPolaroid 0.5s ease forwards;
+}
+
+/* ========================================
+   FOOTER - SIDEWALK
+   ======================================== */
+
+.sidewalk-footer {
+    background: linear-gradient(180deg, var(--concrete-gray) 0%, var(--shadow-dark) 100%);
+    border-top: 6px solid var(--brick-red);
+    padding: 60px 0 30px;
+    color: var(--chalk-white);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section h4 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--urban-yellow);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+}
+
+.footer-heading {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--urban-yellow);
+    text-shadow: 2px 2px 0 var(--shadow-dark);
+    margin-bottom: 15px;
+}
+
+.footer-text {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--sidewalk);
+}
+
+.footer-links {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-links a {
+    font-family: 'Permanent Marker', cursive;
+    color: var(--sidewalk);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.footer-links a:hover {
+    color: var(--urban-yellow);
+    padding-left: 10px;
+}
+
+.footer-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-socials a {
+    font-family: 'Permanent Marker', cursive;
+    color: var(--sidewalk);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.footer-socials a:hover {
+    color: var(--urban-yellow);
+    padding-left: 10px;
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 30px;
+    border-top: 3px solid rgba(255,255,255,0.1);
+}
+
+.copyright-text {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: 0.9rem;
+    color: var(--sidewalk);
+}
+
+/* ========================================
+   MOBILE RESPONSIVE
+   ======================================== */
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--brick-red);
+        flex-direction: column;
+        padding: 20px;
+        border-top: 4px solid var(--shadow-dark);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .hero-content-arnold {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .arnold-frame {
+        width: 280px;
+        height: 350px;
+        margin: 0 auto;
+    }
+
+    .main-bubble h1 {
+        font-size: 2rem;
+    }
+
+    .title-word {
+        font-size: 2.5rem;
+    }
+
+    .comic-grid,
+    .storefront-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .polaroid-wall {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .sign-post {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .carousel-arrow {
+        display: none;
+    }
+
+    .social-icons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chalk-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 3px solid var(--urban-yellow);
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ========================================
+   CHARACTER MODAL SYSTEM
+   ======================================== */
+
+#ocm-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top)); /* iPhone notch */
+    padding-bottom: max(20px, env(safe-area-inset-bottom)); /* iPhone home bar */
+    background: rgba(0, 0, 0, 0.85);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+#ocm-root[hidden] {
+    display: none;
+}
+
+.oc-sheet {
+    position: relative;
+    width: 100%;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    border-radius: var(--oc-radius, 18px);
+    box-shadow: var(--oc-shadow, 0 6px 24px rgba(0,0,0,.35));
+    -webkit-transform: translateZ(0); /* Force GPU acceleration on iOS */
+    transform: translateZ(0);
+}
+
+/* Modal images auto-size */
+.oc-sheet img,
+.dandy-card img,
+.id-card img,
+.classic-card img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Portrait containers should adapt to image */
+.dandy-card .portrait-container {
+    height: auto;
+    min-height: 200px;
+    max-height: 400px;
+}
+
+.dandy-card .character-portrait {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+.id-card .id-photo {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    min-height: 150px;
+    max-height: 280px;
+    object-fit: contain;
+}
+
+.classic-card .character-photo {
+    width: 100%;
+    height: auto;
+    max-height: 350px;
+    object-fit: contain;
+}
+
+/* Modal navigation buttons */
+.oc-close,
+.oc-prev,
+.oc-next {
+    position: fixed;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 10001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.oc-close {
+    top: 20px;
+    right: 20px;
+}
+
+.oc-prev {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.oc-next {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.oc-close:hover,
+.oc-prev:hover,
+.oc-next:hover {
+    background: white;
+    transform: scale(1.1);
+}
+
+.oc-prev:hover,
+.oc-next:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Responsive modal */
+@media (max-width: 768px) {
+    .oc-sheet {
+        max-width: 95vw;
+        max-height: 85vh;
+    }
+
+    .dandy-card .portrait-container {
+        max-height: 300px;
+    }
+
+    .oc-prev,
+    .oc-next {
+        width: 36px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    .brick-overlay,
+    .stoop-nav,
+    .carousel-arrow,
+    .carousel-dots,
+    .mobile-menu-btn,
+    .social-icons,
+    .chalk-buttons {
+        display: none;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+}

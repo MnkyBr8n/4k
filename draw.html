@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Art Studio - 4K Digital Art</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Permanent+Marker&family=Shadows+Into+Light+Two&display=swap" rel="stylesheet">
+
+  <style>
+    /* Hey Arnold Drawing Studio Overrides */
+    .drawing-section {
+      min-height: 100vh;
+      padding: 120px 20px 50px;
+      position: relative;
+    }
+
+    .drawing-header {
+      text-align: center;
+      margin-bottom: 3rem;
+      background: var(--stoop-cream);
+      border: 6px solid var(--shadow-dark);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      transform: rotate(-1deg);
+    }
+
+    .drawing-header h1 {
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      color: var(--brick-red);
+      text-shadow: 3px 3px 0 var(--urban-yellow);
+      letter-spacing: 3px;
+      margin-bottom: 15px;
+    }
+
+    .drawing-header p {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: 1.1rem;
+      color: var(--shadow-dark);
+      line-height: 1.6;
+    }
+
+    .drawing-app {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      background: rgba(245, 230, 211, 0.3);
+      border: 5px solid var(--shadow-dark);
+      border-radius: 20px;
+      padding: 2rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    }
+
+    /* Left Panel - Toolbox Style */
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .panel-section {
+      background: var(--stoop-cream);
+      border: 4px solid var(--shadow-dark);
+      border-radius: 15px;
+      padding: 1.5rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    }
+
+    .panel-section h3 {
+      margin-bottom: 1rem;
+      font-family: 'Permanent Marker', cursive;
+      color: var(--brick-red);
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 3px solid var(--urban-yellow);
+      padding-bottom: 8px;
+    }
+
+    /* Color Wheel */
+    .color-wheel-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .color-wheel {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      position: relative;
+      cursor: crosshair;
+      border: 4px solid var(--shadow-dark);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+      background: conic-gradient(
+        hsl(0, 100%, 50%),
+        hsl(30, 100%, 50%),
+        hsl(60, 100%, 50%),
+        hsl(90, 100%, 50%),
+        hsl(120, 100%, 50%),
+        hsl(150, 100%, 50%),
+        hsl(180, 100%, 50%),
+        hsl(210, 100%, 50%),
+        hsl(240, 100%, 50%),
+        hsl(270, 100%, 50%),
+        hsl(300, 100%, 50%),
+        hsl(330, 100%, 50%),
+        hsl(360, 100%, 50%)
+      );
+    }
+
+    .color-picker {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 3px solid white;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    }
+
+    .color-preview {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .current-color {
+      width: 60px;
+      height: 40px;
+      border: 3px solid var(--shadow-dark);
+      border-radius: 8px;
+      cursor: pointer;
+      background: #000000;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    .hex-input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 2px solid var(--shadow-dark);
+      border-radius: 8px;
+      background: white;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.9rem;
+      color: var(--shadow-dark);
+    }
+
+    /* Color Swatches */
+    .color-swatches {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
+      margin-top: 1rem;
+    }
+
+    .color-swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid var(--shadow-dark);
+      transition: transform 0.2s, border-color 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .color-swatch:hover {
+      transform: scale(1.15);
+      border-color: var(--urban-yellow);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* Controls */
+    .control-group {
+      margin-bottom: 1rem;
+    }
+
+    .control-group label {
+      display: block;
+      font-family: 'Permanent Marker', cursive;
+      color: var(--shadow-dark);
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .control-group input,
+    .control-group select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 2px solid var(--shadow-dark);
+      border-radius: 8px;
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: 14px;
+      background: white;
+      color: var(--shadow-dark);
+    }
+
+    .range-display {
+      font-family: 'Permanent Marker', cursive;
+      color: var(--brick-red);
+      font-weight: bold;
+      text-align: center;
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+
+    /* Brush Preview */
+    .brush-preview {
+      width: 100%;
+      height: 60px;
+      background: white;
+      border: 3px solid var(--shadow-dark);
+      border-radius: 10px;
+      margin-top: 1rem;
+      overflow: hidden;
+      box-shadow: inset 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .brush-preview canvas {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Layers */
+    .layers-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .layer-item {
+      display: grid;
+      grid-template-columns: 30px 1fr 70px;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 2px solid var(--shadow-dark);
+      padding: 8px 10px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .layer-item:hover {
+      background: var(--urban-yellow);
+      transform: translateX(4px);
+    }
+
+    .layer-item.active {
+      outline: 3px solid var(--brick-red);
+      background: var(--urban-yellow);
+      box-shadow: 0 4px 12px rgba(212, 87, 59, 0.3);
+    }
+
+    .layer-visibility {
+      width: 20px;
+      height: 20px;
+    }
+
+    .layer-name {
+      background: transparent;
+      border: none;
+      font-family: 'Shadows Into Light Two', cursive;
+      color: var(--shadow-dark);
+      font-size: 12px;
+      width: 100%;
+      outline: none;
+    }
+
+    .layer-opacity {
+      width: 60px;
+      height: 18px;
+    }
+
+    /* Canvas Area */
+    .canvas-area {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .canvas-container {
+      position: relative;
+      text-align: center;
+      flex: 1;
+      background: var(--sidewalk);
+      border: 6px solid var(--shadow-dark);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+    }
+
+    #drawingCanvas {
+      border: 4px solid var(--shadow-dark);
+      border-radius: 10px;
+      background: white;
+      cursor: crosshair;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Buttons - Sidewalk Chalk Style */
+    .btn {
+      padding: 10px 20px;
+      background: var(--brick-red);
+      border: 3px solid var(--shadow-dark);
+      border-radius: 12px;
+      color: white;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      background: var(--urban-yellow);
+      color: var(--shadow-dark);
+    }
+
+    .btn.secondary {
+      background: var(--sunset-orange);
+      border: 3px solid var(--shadow-dark);
+    }
+
+    .btn.secondary:hover {
+      background: var(--awning-green);
+    }
+
+    .btn.small {
+      padding: 6px 12px;
+      font-size: 0.75rem;
+    }
+
+    .canvas-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Upload Area */
+    .upload-area {
+      border: 3px dashed var(--shadow-dark);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+      background: white;
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: 1rem;
+      color: var(--shadow-dark);
+    }
+
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--brick-red);
+      background: var(--urban-yellow);
+      transform: scale(1.02);
+    }
+
+    .upload-area input[type="file"] {
+      display: none;
+    }
+
+    /* Scrollbar - Urban Style */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--sidewalk);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--brick-red);
+      border-radius: 5px;
+      border: 2px solid var(--shadow-dark);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--urban-yellow);
+    }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .drawing-app {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .left-panel {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 1rem;
+        max-height: none;
+      }
+
+      .panel-section {
+        min-width: 300px;
+        flex-shrink: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .left-panel {
+        flex-direction: column;
+        overflow-x: visible;
+      }
+
+      .panel-section {
+        min-width: auto;
+      }
+
+      .drawing-header h1 {
+        font-size: 2rem;
+      }
+
+      .canvas-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .drawing-app {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Brick Pattern Background -->
+  <div class="brick-overlay"></div>
+
+  <!-- Navigation - Stoop Style -->
+  <nav class="stoop-nav">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-text">4K</span>
+        <span class="logo-subtitle">ART STUDIO</span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-btn">Home</a></li>
+        <li><a href="gallery.html" class="nav-btn">Gallery</a></li>
+        <li><a href="about.html" class="nav-btn">About Me</a></li>
+        <li><a href="commissions.html" class="nav-btn">Commissions</a></li>
+        <li><a href="draw.html" class="nav-btn active" aria-current="page">Draw</a></li>
+      </ul>
+      <button class="mobile-menu-btn" id="menuBtn" type="button" aria-label="Toggle menu">☰</button>
+    </div>
+  </nav>
+
+  <!-- Drawing Section -->
+  <section class="drawing-section">
+    <div class="drawing-header">
+      <h1>🎨 Art Studio</h1>
+      <p>Create stunning artwork with professional tools including layers, custom brushes, and a full color wheel!</p>
+    </div>
+
+    <div class="drawing-app">
+      <!-- Left Panel - Tools and Controls -->
+      <div class="left-panel">
+        <!-- Color Section -->
+        <div class="panel-section">
+          <h3>🎨 Colors</h3>
+          <div class="color-wheel-container">
+            <div class="color-wheel" id="colorWheel" aria-label="Color wheel" role="application" tabindex="0">
+              <div class="color-picker" id="colorPicker"></div>
+            </div>
+            <div class="color-preview">
+              <div class="current-color" id="currentColor" aria-label="Current color" title="Current color"></div>
+              <input type="text" class="hex-input" id="hexInput" value="#000000" placeholder="#RRGGBB" aria-label="Hex color"/>
+            </div>
+          </div>
+          <div class="color-swatches" id="colorSwatches" aria-label="Color swatches"></div>
+        </div>
+
+        <!-- Brush Controls -->
+        <div class="panel-section">
+          <h3>🖌️ Brush</h3>
+
+          <div class="control-group">
+            <label for="brushType">Brush Type</label>
+            <select id="brushType" aria-label="Brush type">
+              <option value="round">Round Brush</option>
+              <option value="square">Square Brush</option>
+              <option value="spray">Spray Paint</option>
+              <option value="marker">Marker</option>
+              <option value="pencil">Pencil</option>
+              <option value="eraser">Eraser</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="brushSize">Brush Size</label>
+            <input type="range" id="brushSize" min="1" max="100" value="5" aria-describedby="sizeDisplay"/>
+            <div class="range-display" id="sizeDisplay">5px</div>
+          </div>
+
+          <div class="control-group">
+            <label for="brushOpacity">Opacity</label>
+            <input type="range" id="brushOpacity" min="1" max="100" value="100" aria-describedby="opacityDisplay"/>
+            <div class="range-display" id="opacityDisplay">100%</div>
+          </div>
+
+          <div class="brush-preview">
+            <canvas id="brushPreview" width="280" height="60"></canvas>
+          </div>
+        </div>
+
+        <!-- Layers Panel -->
+        <div class="panel-section">
+          <h3>📑 Layers</h3>
+
+          <div class="layers-controls">
+            <button class="btn small" type="button" onclick="drawingApp.addLayer()">+ Layer</button>
+            <button class="btn small secondary" type="button" onclick="drawingApp.duplicateLayer()">Duplicate</button>
+            <button class="btn small secondary" type="button" onclick="drawingApp.deleteLayer()">Delete</button>
+          </div>
+
+          <div id="layersList" aria-label="Layers list"></div>
+        </div>
+
+        <!-- File Upload -->
+        <div class="panel-section">
+          <h3>📁 Import</h3>
+          <div class="upload-area" onclick="document.getElementById('imageUpload').click()" aria-label="Upload image" role="button" tabindex="0">
+            <p>📷 Click to upload</p>
+            <p style="font-size: 0.85rem; opacity: 0.7;">PNG, JPG, GIF</p>
+            <input type="file" id="imageUpload" accept="image/*" multiple/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Canvas Area -->
+      <div class="canvas-area">
+        <div class="canvas-container">
+          <canvas id="drawingCanvas" width="900" height="700"></canvas>
+        </div>
+
+        <div class="canvas-actions">
+          <button class="btn" type="button" onclick="drawingApp.clearActiveLayer()">Clear Layer</button>
+          <button class="btn" type="button" onclick="drawingApp.clearAllLayers()">Clear All</button>
+          <button class="btn" type="button" onclick="drawingApp.undoLastStroke()">↶ Undo</button>
+          <button class="btn" type="button" onclick="drawingApp.redoLastStroke()">↷ Redo</button>
+          <button class="btn secondary" type="button" onclick="drawingApp.saveAsImage()">💾 Save Image</button>
+          <button class="btn secondary" type="button" onclick="drawingApp.saveProject()">📄 Save Project</button>
+          <button class="btn secondary" type="button" onclick="drawingApp.loadProject()">📁 Load Project</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer - Sidewalk Style -->
+  <footer class="sidewalk-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4 class="footer-heading">4K Digital Art</h4>
+          <p class="footer-text">Creating original characters and bringing imagination to life</p>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">→ Home</a></li>
+            <li><a href="gallery.html">→ Gallery</a></li>
+            <li><a href="about.html">→ About</a></li>
+            <li><a href="commissions.html">→ Commissions</a></li>
+            <li><a href="draw.html">→ Drawing Tool</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-heading">Connect</h4>
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/4k_arts_yes?igsh=NTc4MTIwNjQ2YQ==" title="Instagram">📷 Instagram</a>
+            <a href="#" title="Twitter">🐦 Twitter</a>
+            <a href="https://www.tiktok.com/@4k_art_yes?_t=ZP-8zgLmKsreW7&_r=1" title="TikTok">🎵 TikTok</a>
+            <a href="https://discord.com/users/1202037619345588295" title="Discord">💬 Discord</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="copyright-text">&copy; 2025 4K Digital Art · All rights reserved · Made with ❤️</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+  <script src="script.js" defer></script>
+</body>
+</html>
