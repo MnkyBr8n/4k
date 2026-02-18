@@ -16,10 +16,18 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+<<<<<<< HEAD
+=======
+  build: 
+>>>>>>> cff276353353c993fda98f264f2e7c15b0906d4a
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+<<<<<<< HEAD
+=======
+
+>>>>>>> cff276353353c993fda98f264f2e7c15b0906d4a
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,7 +48,12 @@ jobs:
         working-directory: studio
         run: npm run build
 
+<<<<<<< HEAD
       - name: Copy studio build into studio folder
+=======
+      - name: Copy studio build to root
+        run: cp -r studio/dist 4k
+>>>>>>> cff276353353c993fda98f264f2e7c15b0906d4a
         run: rm -rf studio/node_modules studio/src studio/public && cp -r studio/dist/* studio/ && rm -rf studio/dist
 
       - name: Create 404.html for SPA routing
@@ -53,6 +66,16 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+<<<<<<< HEAD
+=======
+deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+>>>>>>> cff276353353c993fda98f264f2e7c15b0906d4a
 
       - name: Deploy to GitHub Pages
         id: deployment
